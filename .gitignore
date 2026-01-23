@@ -1,0 +1,23 @@
+node_modules/
+dist/
+.env
+.env.local
+*.log
+.DS_Store
+.claude/settings.local.json
+
+# Build outputs
+bin/
+obj/
+*.dll
+*.pdb
+*.exe
+
+# IDE
+.vs/
+.idea/
+*.suo
+*.user
+
+# Sensitive files
+.mcp.json

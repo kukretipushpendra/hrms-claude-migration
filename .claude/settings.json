@@ -1,0 +1,37 @@
+{
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true,
+    "fullstack-dev-skills@fullstack-dev-skills": true,
+    "safety-net@cc-marketplace": true
+  },
+  "permissions": {
+    "allow": [
+      "Bash(mkdir:*)",
+      "Read(*)",
+      "Bash(npm install:*)",
+      "Edit(*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm run build:*)",
+      "Bash(git worktree:*)",
+      "Bash(git checkout:*)",
+      "Bash(git merge:*)",
+      "Bash(git stash:*)",
+      "Bash(git branch:*)",
+      "Bash(nest:*)",
+      "Bash(npx:*)"
+    ]
+  },
+  "hooks": {
+    "SubagentStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/skill-activation-forced-eval.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,9 +1,27 @@
 ---
-description: Initialize migration - discover legacy, scaffold projects
+description: Initialize migration - discover legacy, scaffold projects (Frontend First approach)
 allowed-tools: Read, Glob, Grep, Bash, Write, Edit, AskUserQuestion, Task
 ---
 
-# Initialize Migration
+# Initialize Migration (Frontend First Approach)
+
+## Migration Strategy: Frontend First
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PHASE 1: FRONTEND MIGRATION                                             │
+│ - Vue.js frontend talks to EXISTING .NET backend                        │
+│ - No backend changes needed initially                                   │
+│ - Full frontend parity with legacy React app                            │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    ↓
+┌─────────────────────────────────────────────────────────────────────────┐
+│ PHASE 2: BACKEND MIGRATION (Later)                                      │
+│ - Migrate .NET APIs to Node.js/Express                                  │
+│ - Same SQL Server database (no DB migration)                            │
+│ - Switch frontend to new backend incrementally                          │
+└─────────────────────────────────────────────────────────────────────────┘
+```
 
 ## Thin Context: Main agent NEVER reads legacy/discovery/spec contents
 
@@ -11,25 +29,70 @@ allowed-tools: Read, Glob, Grep, Bash, Write, Edit, AskUserQuestion, Task
 
 ```bash
 ls -la legacy/ 2>/dev/null || echo "NO_LEGACY_FOLDER"
-docker ps 2>/dev/null || echo "DOCKER_NOT_AVAILABLE"
+ls -la legacy/Frontend/ 2>/dev/null || echo "NO_FRONTEND_FOLDER"
+ls -la legacy/Backend/ 2>/dev/null || echo "NO_BACKEND_FOLDER"
 ```
 
-## Phase 2: Start Database
+**Note**:
+- No Docker required - we use the existing SQL Server database
+- Frontend First: Vue.js app will talk to existing .NET backend during migration
+
+## Phase 2: Verify Legacy .NET Backend is Running
 
 ```bash
-docker compose up -d && docker compose ps
+# The existing .NET backend must be running for frontend development
+# Ask user for the .NET backend URL
+```
+
+AskUserQuestion:
+- What is the URL of the existing .NET backend API? (e.g., https://localhost:7001/api or http://localhost:5000/api)
+- Is the .NET backend currently running and accessible?
+
+Store in `/migration/legacy-api-config.md`:
+```markdown
+# Legacy API Configuration
+LEGACY_API_URL: {user_provided_url}
+LEGACY_API_RUNNING: true/false
 ```
 
 ## Phase 3: Discovery (Sub-Agent)
 
 ```
 Task (explorer): "Analyze legacy at /legacy.
+Focus on:
+1. Frontend structure (React components, pages, routes, state management)
+2. Backend API endpoints (controllers, response shapes)
+3. UI framework (MUI/CSS)
 Create discovery files. Return ONLY paths and counts."
 ```
 
 Wait for: `DISCOVERY_COMPLETE` with stats.
 
-## Phase 4: Create Specs (Parallel Sub-Agents)
+**Expected discovery outputs:**
+- `/migration/discovery/overview.md` - Tech stack summary
+- `/migration/discovery/modules.md` - Module breakdown
+- `/migration/discovery/frontend-routes.json` - All React routes
+- `/migration/discovery/api-endpoints.json` - All .NET API endpoints
+- `/migration/discovery/ui-framework.json` - CSS/UI framework details
+
+## Phase 4: Document Existing API Contracts (CRITICAL)
+
+**Before ANY frontend work, document all existing .NET API responses.**
+
+```
+Task (explorer): "Extract ALL API contracts from legacy .NET backend.
+For each controller in legacy/Backend/**/Controllers/:
+1. Extract endpoint URL, method, request/response shapes
+2. Document authentication requirements
+3. Create API contract file
+
+Output: /migration/api-contracts/{module}/{endpoint}.api.md
+Return ONLY paths created."
+```
+
+This is critical because Vue.js frontend must call EXACT same endpoints with SAME request/response shapes.
+
+## Phase 5: Create Feature Specs (Parallel Sub-Agents)
 
 ```bash
 cat migration/discovery/modules.json | jq -r '.modules[].name'
@@ -39,325 +102,303 @@ For each module IN PARALLEL:
 ```
 Task (spec-writer): "Create specs for module '{module}'.
 DISCOVERY: /migration/discovery/modules.json
+Focus on FRONTEND features (React → Vue.js migration).
 Return ONLY paths."
 ```
 
-## Phase 5: Tech Stack (User Discussion)
+## Phase 6: Tech Stack Confirmation (User Discussion)
 
 AskUserQuestion:
-- State Management: TanStack Query | Zustand | None
-- Form Handling: React Hook Form + Zod | Formik | Native
-- Ready to scaffold?
-- Any Other Requirements - Type
+- State Management: Pinia (Recommended) | Vuex | None
+- Form Handling: VeeValidate + Zod (Recommended) | FormKit | Native
+- UI Framework: Vuetify (MUI equivalent) | Copy MUI CSS | Custom
+- Ready to scaffold Vue.js project?
 
-Write to `/migration/tech-stack.md`.
+Write to `/migration/tech-stack.md`:
+```markdown
+# Tech Stack Configuration
 
-## Phase 6: Scaffold Projects
+## Migration Approach
+APPROACH: Frontend First
+PHASE: 1 - Frontend Migration
+
+## Legacy Stack (Source)
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 18 + TypeScript + MUI |
+| Backend | .NET 8.0 |
+| Database | SQL Server |
+
+## Modern Stack (Target)
+| Layer | Technology |
+|-------|------------|
+| Frontend | Vue.js 3 + TypeScript + Vite + Pinia |
+| Backend | Node.js + Express (Phase 2) |
+| Database | SQL Server (same - no migration) |
+
+## Frontend First Strategy
+- Vue.js frontend connects to EXISTING .NET backend
+- All API contracts documented from .NET controllers
+- Backend migration happens AFTER frontend is complete
+
+## Frontend Decisions
+STATE_MANAGEMENT: Pinia
+FORM_HANDLING: VeeValidate + Zod
+UI_FRAMEWORK: {user_choice}
+```
+
+## Phase 7: Scaffold Vue.js Frontend Project
 
 ```bash
-# Backend
-mkdir -p modern/backend && cd modern/backend
-npx @nestjs/cli new . --skip-git --package-manager npm
+# Create frontend with Vite + Vue + TypeScript
+cd modern
+npm create vite@latest frontend -- --template vue-ts
+cd frontend
+npm install
 
-# Frontend
-mkdir -p modern/frontend && cd modern/frontend
-npm create vite@latest . -- --template react-ts && npm install
+# Install core dependencies
+npm install vue-router@4 pinia axios
+npm install vee-validate @vee-validate/zod zod
 
-# CSS framework (from discovery)
-CSS_VER=$(cat migration/discovery/ui-framework.json | jq -r '.cssFramework.version')
-npm install bootstrap@$CSS_VER
+# Install dev dependencies
+npm install -D eslint eslint-plugin-vue
+npm install -D @typescript-eslint/eslint-plugin @typescript-eslint/parser
+npm install -D prettier
+
+# CSS framework (based on discovery)
+# Option 1: Vuetify (MUI equivalent for Vue)
+npm install vuetify@next @mdi/font
+
+# Option 2: If copying MUI CSS directly, no additional install needed
 ```
 
-## Phase 7: Create Manifest
+## Phase 8: Frontend Foundation Setup (CRITICAL)
 
-Write `/migration/manifest.md` with stats from discovery.
+**CRITICAL**: Frontend foundation must be complete before ANY feature migration.
 
-## Phase 8: Setup Backend and Frontend Properly.
-- **Critical** Make sure to use Sub Agents to do this work and make sure Sub Agent use appropriate skills - (nestjs-expert for backend and react-expert)
-
-### 8.1 Backend: Use nestjs-expert skill
-
-#### Setup Logger, Create NestJS DB Module and Import in App.module.ts.
-- Path: `modern/backend/**`
-- Required NPM Packages: @nestjs/swagger, "@nestjs/sequelize", "pg", sequelize, sequelize-typescript, pg-hstore and related @types dev dependencies.
-```typescript
-// modern/backend/src/main.ts
-import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { AppModule } from './app.module';
-
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-
-   const config = new DocumentBuilder()
-    .setTitle('Cats example')
-    .setDescription('The Project_Name API description')
-    .setVersion('1.0')
-    .addTag('cats')
-    .build();
-  const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
-
-  app.enableCors({
-    origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
-    credentials: true,
-  });
-
-  app.useGlobalPipes(
-    new ValidationPipe({
-      whitelist: true,
-      forbidNonWhitelisted: true,
-      transform: true,
-    }),
-  );
-
-  await app.listen(process.env.PORT ?? 3000);
-}
-void bootstrap();
-```
-```typescript
-// src/database/database.module.ts
-import { Module } from '@nestjs/common';
-import { SequelizeModule } from '@nestjs/sequelize';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-
-@Module({
-  imports: [
-    SequelizeModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        dialect: 'postgres',
-        host: configService.get('DB_HOST'),
-        port: configService.get('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_DATABASE'),
-        autoLoadModels: true,
-        synchronize: true, // Don't auto-sync schema in production, use migration in PROD
-        logging: false,
-      }),
-      inject: [ConfigService],
-    }),
-  ],
-})
-export class DatabaseModule {}
-
-// src/App.module.ts
-@Module({
-  imports: [
-    // Must imported before any module to make sure it is available globally
-    ConfigModule.forRoot({
-      isGlobal: true,
-      envFilePath: '.env',
-    }),
-    DatabaseModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
-})
-export class AppModule {}
-``` 
-#### Create Health Check API Endpoint (CRITICAL)
-
-**Backend MUST have `/api/health` endpoint before frontend setup.**
-
-```typescript
-// src/health/health.controller.ts
-import { Controller, Get } from '@nestjs/common';
-import { HealthService } from './health.service';
-
-@Controller('health')
-export class HealthController {
-  constructor(private readonly healthService: HealthService) {}
-
-  @Get()
-  async check() {
-    return this.healthService.check();
-  }
-}
-
-// src/health/health.service.ts
-import { Injectable } from '@nestjs/common';
-import { Sequelize } from 'sequelize-typescript';
-
-@Injectable()
-export class HealthService {
-  constructor(private sequelize: Sequelize) {}
-
-  async check() {
-    let dbStatus = 'disconnected';
-    try {
-      await this.sequelize.authenticate();
-      dbStatus = 'connected';
-    } catch (error) {
-      dbStatus = 'error';
-    }
-
-    return {
-      status: 'ok',
-      timestamp: new Date().toISOString(),
-      database: {
-        status: dbStatus,
-      },
-    };
-  }
-}
-
-// src/health/health.module.ts
-import { Module } from '@nestjs/common';
-import { HealthController } from './health.controller';
-import { HealthService } from './health.service';
-
-@Module({
-  controllers: [HealthController],
-  providers: [HealthService],
-})
-export class HealthModule {}
-
-// Add to app.module.ts imports: HealthModule
-```
-
-**Verify backend health:**
-```bash
-curl http://localhost:3000/api/health
-# Expected: { "status": "ok", "timestamp": "...", "database": { "status": "connected" } }
-```
-
-#### Create Health API Contract (CRITICAL)
-
-**Backend MUST create API contract for health endpoint so frontend knows the response shape.**
-
-Write to `migration/api-contracts/core/health.api.md`: check `migration/api-contracts/readme.md` to know contract standard.
-
-### TypeScript Types (Frontend)
-```typescript
-interface HealthResponse {
-  status: string;
-  timestamp: string;
-  database: {
-    status: 'connected' | 'disconnected' | 'error';
-  };
-}
-```
-
-### Usage Example
-```typescript
-const response = await apiService.get<HealthResponse>('/health');
-console.log(response.database.status); // "connected"
-```
-
-### 8.2 Frontend Foundation Setup (use react-migration-expert skill)
-
-**CRITICAL**: Frontend foundation must be complete before ANY feature frontend work begins.
-
-Use Sub-Agent with react-migration-expert skill:
+Use Sub-Agent with vuejs-migration-expert skill:
 
 ```
-Task (react-migration-expert): "Setup frontend foundation for modern/frontend.
-Read and implement ALL requirements from .claude/templates/frontend-foundation-setup.md.
-Install linting and formatting tools.
-Configure package.json scripts for type-check, lint, and format.
-Verify health check works by starting both backend and frontend.
+Task (frontend-coder with vuejs-migration-expert skill): "Setup frontend foundation for modern/frontend.
+
+CRITICAL: This Vue.js app will connect to the EXISTING .NET backend at {LEGACY_API_URL}.
+
+1. Read and implement ALL requirements from .claude/templates/frontend-foundation-setup.md
+2. Configure axios/http-client to point to EXISTING .NET backend
+3. Setup auth integration (use same JWT tokens from .NET backend)
+4. Install linting and formatting tools
+5. Create layout components matching legacy React app
+6. Verify connection to .NET backend works
+
 Return ONLY: paths created + verification result."
 ```
 
-**Sub-agent MUST:**
-1. Read `.claude/templates/frontend-foundation-setup.md` completely
-2. Follow ALL implementation steps in the template
-3. Install dependencies listed in template (including ESLint, Prettier)
-4. **Install linting/formatting tools:**
-   ```bash
-   npm install -D eslint prettier
-   npm install -D @typescript-eslint/eslint-plugin @typescript-eslint/parser
-   npm install -D eslint-plugin-react-hooks eslint-plugin-react-refresh
-   ```
-5. **Configure package.json scripts:**
-   ```json
-   {
-     "scripts": {
-       "dev": "vite",
-       "build": "tsc && vite build",
-       "preview": "vite preview",
-       "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-       "lint:fix": "eslint . --ext ts,tsx --fix",
-       "format": "prettier --write \"src/**/*.{ts,tsx,json,css,scss,md}\"",
-       "format:check": "prettier --check \"src/**/*.{ts,tsx,json,css,scss,md}\"",
-       "type-check": "tsc --noEmit",
-       "test": "vitest",
-       "test:coverage": "vitest run --coverage"
-     }
-   }
-   ```
-6. **Create .eslintrc.cjs:**
-   ```javascript
-   module.exports = {
-     root: true,
-     env: { browser: true, es2020: true },
-     extends: [
-       'eslint:recommended',
-       'plugin:@typescript-eslint/recommended',
-       'plugin:react-hooks/recommended',
-     ],
-     ignorePatterns: ['dist', '.eslintrc.cjs'],
-     parser: '@typescript-eslint/parser',
-     plugins: ['react-refresh'],
-     rules: {
-       'react-refresh/only-export-components': [
-         'warn',
-         { allowConstantExport: true },
-       ],
-       '@typescript-eslint/no-unused-vars': [
-         'error',
-         { argsIgnorePattern: '^_' },
-       ],
-     },
-   };
-   ```
-7. **Create .prettierrc:**
-   ```json
-   {
-     "semi": true,
-     "singleQuote": true,
-     "tabWidth": 2,
-     "trailingComma": "es5",
-     "printWidth": 100,
-     "arrowParens": "always"
-   }
-   ```
-8. Create all files/folders specified in foundation template
-9. **Verify linting works:**
-   ```bash
-   cd modern/frontend
-   npm run type-check  # Should pass with no errors
-   npm run lint        # Should pass with no errors
-   ```
-10. Verify acceptance criteria from template
-11. Return confirmation with file paths created
+### 8.1 Configure HTTP Client for .NET Backend
 
-## Phase 9: Update Manifest with Foundation Status
+```typescript
+// modern/frontend/src/services/api/http-client.ts
+import axios from 'axios';
 
-```markdown
-# In migration/manifest.md
-BACKEND_FOUNDATION_COMPLETE: true
-FRONTEND_FOUNDATION_COMPLETE: true
+// CRITICAL: Point to EXISTING .NET backend during frontend migration
+const httpClient = axios.create({
+  baseURL: import.meta.env.VITE_API_URL || 'https://localhost:7001/api',
+  timeout: 30000,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+// Add JWT token to requests (same token format as .NET backend expects)
+httpClient.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Handle 401 responses
+httpClient.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    if (error.response?.status === 401) {
+      // Redirect to login
+      window.location.href = '/login';
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default httpClient;
 ```
 
-**Foundation is complete when:**
-- Backend: Health endpoint returns `{ status: "ok", database: "connected" }`
-- Frontend: /health page shows "connected" to backend
-
-## Phase 10: Commit
+### 8.2 Environment Configuration
 
 ```bash
-git add migration/ modern/ docker-compose.yml
-git commit -m "chore: initialize migration framework"
+# modern/frontend/.env.development
+# Point to EXISTING .NET backend
+VITE_API_URL=https://localhost:7001/api
+
+# modern/frontend/.env.production
+# Will point to new Node.js backend AFTER Phase 2
+VITE_API_URL=https://api.production.com
+```
+
+### 8.3 Frontend Package.json Scripts
+
+```json
+{
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc && vite build",
+    "preview": "vite preview",
+    "lint": "eslint . --ext .vue,.ts,.tsx --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint . --ext .vue,.ts,.tsx --fix",
+    "format": "prettier --write \"src/**/*.{vue,ts,tsx,json,css,scss,md}\"",
+    "format:check": "prettier --check \"src/**/*.{vue,ts,tsx,json,css,scss,md}\"",
+    "type-check": "vue-tsc --noEmit"
+  }
+}
+```
+
+### 8.4 ESLint Configuration
+
+```javascript
+// modern/frontend/.eslintrc.cjs
+module.exports = {
+  root: true,
+  env: { browser: true, es2020: true, node: true },
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:vue/vue3-recommended',
+  ],
+  parser: 'vue-eslint-parser',
+  parserOptions: {
+    parser: '@typescript-eslint/parser',
+    ecmaVersion: 2020,
+    sourceType: 'module',
+  },
+  plugins: ['@typescript-eslint'],
+  rules: {
+    'vue/multi-word-component-names': 'off',
+    '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+  },
+};
+```
+
+### 8.5 Prettier Configuration
+
+```json
+// modern/frontend/.prettierrc
+{
+  "semi": true,
+  "singleQuote": true,
+  "tabWidth": 2,
+  "trailingComma": "es5",
+  "printWidth": 100,
+  "arrowParens": "always"
+}
+```
+
+## Phase 9: Verify Frontend Foundation
+
+**Frontend foundation is complete when:**
+
+1. Vue.js app loads without errors
+2. Can authenticate against .NET backend (login works)
+3. Layout matches legacy React app (header, sidebar, footer)
+4. Protected routes redirect to login
+5. API calls to .NET backend work with JWT token
+6. At least one page fetches data from .NET backend successfully
+
+```bash
+# Verify
+cd modern/frontend
+npm run dev
+# Open http://localhost:5173
+# Login should work against .NET backend
+# Verify API calls work
+```
+
+## Phase 10: Create Manifest
+
+Write `/migration/manifest.md`:
+
+```markdown
+# Migration Manifest
+
+## State
+STATUS: initialized
+PHASE: frontend-migration
+APPROACH: frontend-first
+CREATED: {date}
+
+## Paths
+LEGACY_FRONTEND: /legacy/Frontend
+LEGACY_BACKEND: /legacy/Backend
+LEGACY_API_URL: {configured_url}
+MODERN_FRONTEND: /modern/frontend
+MODERN_BACKEND: /modern/backend (Phase 2)
+WORKTREES_DIR: /worktrees
+
+## Progress - Frontend Migration (Phase 1)
+TOTAL_FRONTEND_FEATURES: {count}
+FRONTEND_COMPLETED: 0
+FRONTEND_IN_PROGRESS: 0
+FRONTEND_READY_FOR_QA: 0
+FRONTEND_PERCENT: 0%
+
+## Progress - Backend Migration (Phase 2)
+TOTAL_BACKEND_FEATURES: 0 (not started)
+BACKEND_COMPLETED: 0
+BACKEND_PERCENT: 0%
+
+## Foundation Gate
+FRONTEND_FOUNDATION_COMPLETE: false
+BACKEND_FOUNDATION_COMPLETE: false (Phase 2)
+
+## Active Worktrees
+ACTIVE_WORKTREES: none
+```
+
+## Phase 11: Prepare Backend Structure (For Phase 2)
+
+**Note**: Backend is NOT implemented yet, just create placeholder structure.
+
+```bash
+mkdir -p modern/backend
+echo "# Node.js Backend (Phase 2)" > modern/backend/README.md
+echo "This backend will be implemented AFTER frontend migration is complete." >> modern/backend/README.md
+echo "Currently, the Vue.js frontend connects to the existing .NET backend." >> modern/backend/README.md
+```
+
+## Phase 12: Commit
+
+```bash
+git add migration/ modern/
+git commit -m "chore: initialize frontend-first migration framework"
 ```
 
 ## Output
 
 ```
-MIGRATION INITIALIZED
-Modules: N | Features: N
-Next: /migrate-status or /migrate-next
+MIGRATION INITIALIZED (Frontend First Approach)
+
+Phase 1: Frontend Migration
+  - Legacy Frontend: React 18 + MUI
+  - Target Frontend: Vue.js 3 + TypeScript + Pinia
+  - API Backend: Existing .NET (unchanged)
+  - Modules: N | Features: N
+
+Phase 2: Backend Migration (Later)
+  - Target Backend: Node.js + Express
+  - Database: SQL Server (same)
+
+Frontend Foundation: {COMPLETE|INCOMPLETE}
+
+Next Steps:
+  1. Verify .NET backend is running at {LEGACY_API_URL}
+  2. Run /migrate-status to see feature queue
+  3. Run /migrate-next to start frontend migration
 ```

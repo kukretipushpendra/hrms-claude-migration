@@ -1,358 +1,331 @@
 # Tech Stack Mappings Reference
 
-This file contains concept mappings for various framework combinations used by `/migrate-adapt`.
+This file contains concept mappings for the current migration (React.js + .NET → Vue.js + Node.js) and other framework combinations used by `/migrate-adapt`.
 
 ---
 
-## Backend Framework Mappings
+## Current Migration: React.js → Vue.js
 
-### Laravel (PHP) → NestJS
+### Component Patterns
 
-| Laravel | NestJS |
-|---------|--------|
-| Controller | Controller |
-| Model (Eloquent) | Entity (Sequelize) |
-| Form Request | DTO + ValidationPipe |
-| Middleware | Guard/Interceptor |
-| Service Provider | Module |
-| Facade | Injectable Service |
-| Route::get() | @Get() |
-| Route::post() | @Post() |
-| $request->validate() | class-validator decorators |
-| Auth::user() | @CurrentUser() decorator |
-| Policy | Guard |
-| Event/Listener | EventEmitter2 |
-| Queue Job | Bull Queue |
-| Artisan Command | NestJS CLI Command |
+| React.js | Vue.js 3 |
+|----------|----------|
+| Function Component | `<script setup>` SFC |
+| `useState(initial)` | `ref(initial)` |
+| `setState(newValue)` | `value.value = newValue` |
+| `useMemo(() => ..., [deps])` | `computed(() => ...)` |
+| `useCallback(fn, [deps])` | Regular function (auto-optimized) |
+| `useEffect(() => {}, [])` | `onMounted(() => {})` |
+| `useEffect(() => {}, [dep])` | `watch(dep, () => {})` |
+| `useEffect cleanup` | `onUnmounted(() => {})` |
+| `useRef(null)` | `ref(null)` for DOM |
+| `useContext` | `inject()` / Pinia store |
+| Custom Hook | Composable (`use{Name}.ts`) |
 
-### Django (Python) → NestJS
+### Props & Events
 
-| Django | NestJS |
-|--------|--------|
-| View/ViewSet | Controller |
-| Model | Entity |
-| Serializer | DTO |
-| URLConf | Route decorators |
-| Middleware | Middleware/Interceptor |
-| @login_required | @UseGuards(AuthGuard) |
-| Form | DTO + class-validator |
-| Manager | Repository |
-| Signal | Event |
-| Celery Task | Bull Queue |
-| management command | CLI Command |
+| React.js | Vue.js 3 |
+|----------|----------|
+| `interface Props { ... }` | `defineProps<{ ... }>()` |
+| `props.children` | `<slot />` |
+| `onClick={handler}` | `@click="handler"` |
+| `onChange={handler}` | `@change="handler"` or `v-model` |
+| Callback prop pattern | `defineEmits(['event'])` |
+| `props.onSubmit(data)` | `emit('submit', data)` |
 
-### Rails (Ruby) → NestJS
+### Conditional & Lists
 
-| Rails | NestJS |
-|-------|--------|
-| Controller | Controller |
-| Model (ActiveRecord) | Entity |
-| Strong Parameters | DTO + ValidationPipe |
-| before_action | Guard/Interceptor |
-| Concerns | Mixin/Trait |
-| Service Object | Service |
-| ActiveJob | Bull Queue |
-| ActionCable | WebSocket Gateway |
-| Rake Task | CLI Command |
+| React.js | Vue.js 3 |
+|----------|----------|
+| `{condition && <div>}` | `<div v-if="condition">` |
+| `{condition ? <A/> : <B/>}` | `<A v-if /> <B v-else />` |
+| `{items.map(i => <Item key={i.id} />)}` | `<Item v-for="i in items" :key="i.id" />` |
+| `className={styles}` | `:class="styles"` |
+| `style={{ color: 'red' }}` | `:style="{ color: 'red' }"` |
 
-### Spring (Java) → NestJS
+### State Management
 
-| Spring | NestJS |
-|--------|--------|
-| @RestController | @Controller |
-| @Service | @Injectable |
-| @Repository | Repository Pattern |
-| @Entity | @Entity (Sequelize) |
-| @RequestBody | @Body() |
-| @PathVariable | @Param() |
-| @RequestParam | @Query() |
-| @Autowired | Constructor Injection |
-| @PreAuthorize | @UseGuards() |
-| @Transactional | Sequelize transactions |
+| React (Zustand) | Vue (Pinia) |
+|-----------------|-------------|
+| `create((set) => ...)` | `defineStore('id', { ... })` |
+| `set((state) => ...)` | Direct mutation `this.property = value` |
+| `useStore()` | `useStore()` |
+| Selector `useStore(s => s.value)` | Direct access `store.value` |
+| `persist` middleware | `pinia-plugin-persistedstate` |
 
-### .NET MVC → NestJS
+### Form Handling
 
-| .NET MVC | NestJS |
-|----------|--------|
-| Controller | Controller |
-| Action | Route Handler |
-| Model | Entity |
-| ViewModel | DTO |
-| Data Annotations | class-validator |
-| [Authorize] | @UseGuards() |
-| [HttpGet] | @Get() |
-| DbContext | Repository |
-| Middleware | Middleware |
-| Dependency Injection | NestJS DI |
+| React Hook Form | VeeValidate |
+|-----------------|-------------|
+| `useForm()` | `useForm()` |
+| `register('field')` | `useField('field')` or `defineField('field')` |
+| `handleSubmit(onSubmit)` | `handleSubmit(onSubmit)` |
+| `formState.errors` | `errors` |
+| `zodResolver(schema)` | `toTypedSchema(schema)` |
+| `watch('field')` | `watch(field, callback)` |
 
----
+### Routing
 
-## Frontend Framework Mappings
+| React Router | Vue Router |
+|--------------|------------|
+| `<BrowserRouter>` | `createRouter()` |
+| `<Routes>` | `<RouterView />` |
+| `<Route path="/" element={<Home />} />` | `{ path: '/', component: Home }` |
+| `<Link to="/about">` | `<RouterLink to="/about">` |
+| `useNavigate()` | `useRouter()` |
+| `useParams()` | `useRoute().params` |
+| `useSearchParams()` | `useRoute().query` |
+| `useLocation()` | `useRoute()` |
+| `<Outlet />` | `<RouterView />` (nested) |
 
-### Vue.js → React
+### Data Fetching
 
-| Vue.js | React |
-|--------|-------|
-| `<template>` | JSX return |
-| `data()` | useState |
-| `computed` | useMemo |
-| `watch` | useEffect |
-| `methods` | Functions |
-| `props` | Props |
-| `$emit` | Callback props |
-| `v-if` | `{condition && ...}` |
-| `v-for` | `.map()` |
-| `v-model` | value + onChange |
-| `v-bind:class` | className={...} |
-| `<slot>` | children prop |
-| `provide/inject` | Context API |
-| Vuex | Zustand/Redux |
-| Vue Router | React Router |
-| `@click` | onClick |
-| `ref()` | useRef |
-| `onMounted` | useEffect(..., []) |
-| `onUnmounted` | useEffect cleanup |
-
-### Angular → React
-
-| Angular | React |
-|---------|-------|
-| Component | Function Component |
-| @Input() | Props |
-| @Output() | Callback props |
-| *ngIf | Conditional render |
-| *ngFor | .map() |
-| [(ngModel)] | Controlled input |
-| Service | Custom hook / Context |
-| NgModule | Just imports |
-| Pipe | Utility function |
-| Directive | Custom hook |
-| RxJS Observable | TanStack Query / useState |
-| HttpClient | fetch / axios |
-| Router | React Router |
-| Guards | Route protection HOC |
-| Resolvers | Loader pattern |
-
-### Blade (Laravel) → React
-
-| Blade | React |
-|-------|-------|
-| `{{ $var }}` | `{var}` |
-| `@if/@else` | Ternary / && |
-| `@foreach` | `.map()` |
-| `@include` | Component import |
-| `@extends/@section` | Layout component |
-| `@component` | React component |
-| `@slot` | children / named slots |
-| `@auth/@guest` | Auth context check |
-| `@csrf` | Not needed (API) |
-| `@method` | Not needed (API) |
-
-### Razor (.NET) → React
-
-| Razor | React |
-|-------|-------|
-| `@Model.Property` | `{props.property}` |
-| `@if` | Conditional render |
-| `@foreach` | `.map()` |
-| `@Html.Partial` | Component import |
-| `@section` | Layout slots |
-| `@Html.ActionLink` | `<Link>` |
-| `@Html.BeginForm` | `<form>` with handlers |
-| `ViewBag/ViewData` | Props / Context |
-| `@Html.DisplayFor` | Direct render |
-| `@Html.EditorFor` | Form input component |
-
-### Django Templates → React
-
-| Django | React |
-|--------|-------|
-| `{{ var }}` | `{var}` |
-| `{% if %}` | Conditional render |
-| `{% for %}` | `.map()` |
-| `{% include %}` | Component import |
-| `{% extends %}` | Layout component |
-| `{% block %}` | children / slots |
-| `{{ var\|filter }}` | Utility function |
-| `{% url %}` | React Router Link |
-| `{% csrf_token %}` | Not needed (API) |
-
-### ERB (Rails) → React
-
-| ERB | React |
-|-----|-------|
-| `<%= var %>` | `{var}` |
-| `<% if %>` | Conditional render |
-| `<% @items.each %>` | `.map()` |
-| `<%= render partial %>` | Component import |
-| `<%= yield %>` | children |
-| `<%= link_to %>` | `<Link>` |
-| `<%= form_with %>` | `<form>` |
-| `helper methods` | Utility functions |
+| React (SWR/TanStack) | Vue (VueQuery/Composable) |
+|----------------------|---------------------------|
+| `useSWR(key, fetcher)` | `useQuery({ queryKey, queryFn })` |
+| `mutate()` | `invalidateQueries()` |
+| Custom `useAsync` hook | Custom composable |
 
 ---
 
-## Database Type Mappings
+## Current Migration: .NET WebAPI → Node.js/Express
 
-### SQL Server → PostgreSQL
+### Architecture
 
-| SQL Server | PostgreSQL |
+| .NET WebAPI | Node.js/Express |
+|-------------|-----------------|
+| Controller | Controller class + Router |
+| Action method | Route handler function |
+| Service | Service class |
+| Repository + DbContext | Service with mssql |
+| Entity | TypeScript interface |
+| DTO | Zod schema + TypeScript interface |
+| Data Annotations | Zod validators |
+| AutoMapper | Manual mapping / spread |
+
+### HTTP & Routing
+
+| .NET WebAPI | Node.js/Express |
+|-------------|-----------------|
+| `[Route("api/[controller]")]` | `router = Router()` |
+| `[HttpGet]` | `router.get('/', handler)` |
+| `[HttpPost]` | `router.post('/', handler)` |
+| `[HttpPut("{id}")]` | `router.put('/:id', handler)` |
+| `[HttpDelete("{id}")]` | `router.delete('/:id', handler)` |
+| `[FromBody]` | `req.body` |
+| `[FromQuery]` | `req.query` |
+| `[FromRoute]` | `req.params` |
+| `IActionResult` | `res.json()` / `res.status()` |
+
+### Middleware & Auth
+
+| .NET WebAPI | Node.js/Express |
+|-------------|-----------------|
+| Middleware class | `(req, res, next) => {}` |
+| `[Authorize]` | `authMiddleware` |
+| `[AllowAnonymous]` | No middleware on route |
+| JWT Bearer | `jsonwebtoken` + passport-jwt |
+| `User.Claims` | `req.user` (from middleware) |
+| `HasPermission` attribute | Custom permission middleware |
+
+### Validation
+
+| .NET Data Annotations | Zod |
+|-----------------------|-----|
+| `[Required]` | `z.string().min(1)` |
+| `[MaxLength(100)]` | `z.string().max(100)` |
+| `[EmailAddress]` | `z.string().email()` |
+| `[Range(1, 100)]` | `z.number().min(1).max(100)` |
+| `[RegularExpression]` | `z.string().regex()` |
+| ModelState validation | Zod parse in middleware |
+
+### Database (Dapper → mssql)
+
+| Dapper/.NET | mssql (node-mssql) |
+|-------------|-----------|
+| Raw SQL queries | `pool.request().query()` |
+| `connection.Query<T>()` | `pool.request().query<T>()` |
+| `connection.QueryFirst<T>()` | `result.recordset[0]` |
+| `connection.Execute()` | `pool.request().query()` for INSERT/UPDATE |
+| Stored procedures | `pool.request().execute('sp_name')` |
+| `@param` | `.input('param', sql.Int, value)` |
+
+### Response Pattern
+
+```csharp
+// .NET ApiResponseModel
+{
+  "statusCode": 200,
+  "message": "Success",
+  "result": { ... }
+}
+```
+
+```typescript
+// Express equivalent - MUST MATCH EXACTLY
+res.json({
+  statusCode: 200,
+  message: 'Success',
+  result: data,
+});
+```
+
+---
+
+## Database Type Mappings (SQL Server → mssql driver)
+
+### SQL Server Types in Node.js (mssql)
+
+| SQL Server | mssql Type |
 |------------|------------|
-| NVARCHAR(n) | VARCHAR(n) |
-| NVARCHAR(MAX) | TEXT |
-| DATETIME2 | TIMESTAMP |
-| BIT | BOOLEAN |
-| UNIQUEIDENTIFIER | UUID |
-| IDENTITY | SERIAL |
-| MONEY | DECIMAL(19,4) |
-| VARBINARY(MAX) | BYTEA |
-| GETDATE() | NOW() |
-| TOP n | LIMIT n |
-| ISNULL() | COALESCE() |
+| NVARCHAR(n) | `sql.NVarChar(n)` |
+| NVARCHAR(MAX) | `sql.NVarChar(sql.MAX)` |
+| VARCHAR(n) | `sql.VarChar(n)` |
+| INT | `sql.Int` |
+| BIGINT | `sql.BigInt` |
+| BIT | `sql.Bit` |
+| DATETIME | `sql.DateTime` |
+| DATETIME2 | `sql.DateTime2` |
+| DATE | `sql.Date` |
+| DECIMAL(p,s) | `sql.Decimal(p,s)` |
+| MONEY | `sql.Money` |
+| UNIQUEIDENTIFIER | `sql.UniqueIdentifier` |
+| VARBINARY(MAX) | `sql.VarBinary(sql.MAX)` |
 
-### MySQL → PostgreSQL
+### Common mssql Patterns
+```typescript
+// Parameterized queries (prevent SQL injection)
+const result = await pool.request()
+  .input('id', sql.Int, userId)
+  .input('name', sql.NVarChar(100), userName)
+  .query('SELECT * FROM Users WHERE Id = @id AND Name = @name');
 
-| MySQL | PostgreSQL |
-|-------|------------|
-| TINYINT(1) | BOOLEAN |
-| INT AUTO_INCREMENT | SERIAL |
-| DATETIME | TIMESTAMP |
-| TEXT | TEXT |
-| ENUM('a','b') | VARCHAR + CHECK |
-| JSON | JSONB |
-| UNSIGNED | CHECK >= 0 |
-| ON UPDATE CURRENT_TIMESTAMP | Trigger |
-
-### MongoDB → PostgreSQL
-
-| MongoDB | PostgreSQL |
-|---------|------------|
-| _id (ObjectId) | id (UUID/SERIAL) |
-| Embedded document | JSONB or related table |
-| Array field | ARRAY or junction table |
-| $lookup | JOIN |
-| find() | SELECT |
-| insertOne() | INSERT |
-| updateOne() | UPDATE |
-| deleteOne() | DELETE |
-
----
-
-## ORM Mappings
-
-### Eloquent (Laravel) → Sequelize
-
-| Eloquent | Sequelize |
-|----------|-----------|
-| Model | @Table class |
-| $fillable | allowNull config |
-| $casts | DataTypes |
-| hasMany() | @HasMany |
-| belongsTo() | @BelongsTo |
-| belongsToMany() | @BelongsToMany |
-| scope | Static method |
-| $timestamps | timestamps: true |
-| softDeletes | paranoid: true |
-| with() | include: [] |
-
-### Django ORM → Sequelize
-
-| Django ORM | Sequelize |
-|------------|-----------|
-| Model | @Table class |
-| CharField | DataTypes.STRING |
-| IntegerField | DataTypes.INTEGER |
-| ForeignKey | @ForeignKey |
-| ManyToManyField | @BelongsToMany |
-| objects.filter() | findAll({ where }) |
-| objects.get() | findOne() |
-| objects.create() | create() |
-| select_related() | include: [] |
-| prefetch_related() | include: [] |
-
-### ActiveRecord (Rails) → Sequelize
-
-| ActiveRecord | Sequelize |
-|--------------|-----------|
-| Model | @Table class |
-| has_many | @HasMany |
-| belongs_to | @BelongsTo |
-| has_and_belongs_to_many | @BelongsToMany |
-| validates | class-validator |
-| scope | Static method |
-| where() | findAll({ where }) |
-| find() | findByPk() |
-| includes() | include: [] |
-
-### Entity Framework → Sequelize
-
-| Entity Framework | Sequelize |
-|------------------|-----------|
-| DbSet<T> | Model |
-| DbContext | Sequelize instance |
-| [Key] | primaryKey: true |
-| [Required] | allowNull: false |
-| [MaxLength] | DataTypes.STRING(n) |
-| Navigation property | Association |
-| Include() | include: [] |
-| FirstOrDefault() | findOne() |
-| ToList() | findAll() |
-| Add() | create() |
-| SaveChanges() | save() |
+// Stored procedures
+const result = await pool.request()
+  .input('userId', sql.Int, userId)
+  .output('totalCount', sql.Int)
+  .execute('sp_GetUserOrders');
+```
 
 ---
 
 ## Directory Structure Templates
 
-### NestJS Backend Structure
+### Node.js/Express Backend Structure
 ```
 src/
+├── app.ts                    # Express app setup
+├── server.ts                 # Entry point
+├── config/
+│   ├── database.ts           # mssql connection pool
+│   └── env.ts                # Environment
+├── middleware/
+│   ├── auth.middleware.ts
+│   ├── validation.middleware.ts
+│   └── error.middleware.ts
 ├── modules/
 │   └── {module}/
-│       ├── {module}.module.ts
+│       ├── {module}.routes.ts
 │       ├── {module}.controller.ts
-│       ├── {module}.service.ts
+│       ├── {module}.service.ts    # Uses mssql queries
 │       ├── dto/
-│       └── entities/
-├── common/
-│   ├── guards/
-│   ├── interceptors/
-│   └── filters/
-└── database/
-    └── database.module.ts
+│       │   ├── create-{entity}.dto.ts
+│       │   └── update-{entity}.dto.ts
+│       └── types/
+│           └── {entity}.types.ts
+├── types/
+│   └── express.d.ts
+└── utils/
+    ├── errors.ts
+    └── helpers.ts
 ```
 
-### React Frontend Structure
+### Vue.js Frontend Structure
 ```
 src/
-├── pages/
-├── components/
-├── hooks/
-├── services/
-├── types/
-├── utils/
-└── context/
+├── views/                    # Page components
+│   └── {module}/
+│       └── {Feature}View.vue
+├── components/               # Reusable components
+│   └── {module}/
+│       └── {Component}.vue
+├── composables/              # Reusable logic (like hooks)
+│   └── use{Feature}.ts
+├── services/                 # API calls
+│   └── api/
+│       ├── axios-client.ts
+│       └── {module}.service.ts
+├── stores/                   # Pinia stores
+│   └── {module}.store.ts
+├── types/                    # TypeScript types
+│   └── {module}.types.ts
+├── router/
+│   └── index.ts
+├── assets/
+├── styles/
+├── App.vue
+└── main.ts
 ```
 
-### Vue Frontend Structure
-```
-src/
-├── views/
-├── components/
-├── composables/
-├── services/
-├── types/
-├── utils/
-└── stores/
-```
+---
 
-### Angular Frontend Structure
-```
-src/app/
-├── pages/
-├── components/
-├── services/
-├── models/
-├── guards/
-└── modules/
-```
+## Other Framework Mappings (for /migrate-adapt)
+
+### Laravel (PHP) → Node.js/Express
+
+| Laravel | Node.js/Express |
+|---------|-----------------|
+| Controller | Controller + Router |
+| Model (Eloquent) | Service with mssql |
+| Form Request | Zod schema + middleware |
+| Middleware | Express middleware |
+| Service Provider | Module pattern |
+| Facade | Imported service |
+| Route::get() | router.get() |
+| $request->validate() | Zod validation |
+| Auth::user() | req.user |
+
+### Angular → Vue.js
+
+| Angular | Vue.js 3 |
+|---------|----------|
+| Component | SFC with `<script setup>` |
+| @Input() | `defineProps<{}>()` |
+| @Output() | `defineEmits([])` |
+| *ngIf | v-if |
+| *ngFor | v-for |
+| [(ngModel)] | v-model |
+| Service | Composable or Pinia store |
+| NgModule | Just imports |
+| Pipe | Utility function |
+| RxJS Observable | ref() + watch() |
+| HttpClient | Axios |
+
+### Django (Python) → Node.js/Express
+
+| Django | Node.js/Express |
+|--------|-----------------|
+| View/ViewSet | Controller |
+| Model | Service with mssql |
+| Serializer | Zod DTO |
+| URLConf | Express Router |
+| Middleware | Express middleware |
+| @login_required | authMiddleware |
+| Form | Zod schema |
+| Manager | Service methods |
+| Celery Task | Bull Queue / node-cron |
+
+### Spring (Java) → Node.js/Express
+
+| Spring | Node.js/Express |
+|--------|-----------------|
+| @RestController | Controller + Router |
+| @Service | Service class |
+| @Repository | Service with mssql |
+| @Entity | TypeScript interface |
+| @RequestBody | req.body |
+| @PathVariable | req.params |
+| @RequestParam | req.query |
+| @Autowired | Constructor / import |
+| @PreAuthorize | authMiddleware |
+| @Transactional | mssql transactions |

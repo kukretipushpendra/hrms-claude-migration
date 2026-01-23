@@ -2,7 +2,7 @@
 
 A comprehensive guide to the tech-agnostic migration framework using Claude Code CLI.
 
-**Default stack:** .NET → React + NestJS + PostgreSQL
+**Current stack:** React.js + .NET → Vue.js + Node.js/Express + SQL Server (same database)
 **Adaptable to:** Any source/target combination via `/migrate-adapt`
 
 ## Table of Contents
@@ -23,7 +23,7 @@ A comprehensive guide to the tech-agnostic migration framework using Claude Code
 
 ## Adapting to Your Tech Stack
 
-The framework defaults to .NET → React + NestJS + PostgreSQL. If your legacy stack is different, run `/migrate-adapt` **before** `/migrate-init`.
+The framework is currently configured for React.js + .NET → Vue.js + Node.js/Express + SQL Server. If your stack is different, run `/migrate-adapt` **before** `/migrate-init`.
 
 ### When to Use `/migrate-adapt`
 
@@ -73,10 +73,10 @@ The framework defaults to .NET → React + NestJS + PostgreSQL. If your legacy s
 ### Supported Stack Combinations
 
 **Legacy Backends:** .NET MVC, Laravel, Django, Rails, Spring, Express
-**Legacy Frontends:** Razor, Blade, Django Templates, ERB, Vue.js, Angular
-**Target Backends:** NestJS, Express, FastAPI, Laravel, Django
-**Target Frontends:** React, Vue, Svelte, Angular
-**Target Databases:** PostgreSQL (default), MySQL, MongoDB
+**Legacy Frontends:** Razor, Blade, Django Templates, ERB, React.js, Vue.js, Angular
+**Target Backends:** Node.js/Express, NestJS, FastAPI, Laravel, Django
+**Target Frontends:** Vue.js, React, Svelte, Angular
+**Target Databases:** SQL Server (same DB), PostgreSQL, MySQL, MongoDB
 
 ### After Adaptation
 
@@ -197,18 +197,18 @@ The framework uses specialized sub-agents that work in isolated git worktrees.
 
 ### Backend Coder
 
-- **Purpose**: Implements NestJS backend in isolated worktrees
-- **Expertise**: NestJS, TypeScript, PostgreSQL + Sequelize, REST APIs, JWT + Passport
+- **Purpose**: Implements Node.js/Express backend in isolated worktrees
+- **Expertise**: Express, TypeScript, SQL Server + mssql driver, REST APIs, JWT authentication
 - **Outputs**:
-  - Module, controller, service, DTOs, entities
+  - Routes, controllers, services, DTOs, types
   - API contract at `/migration/api-contracts/{module}/{feature}.api.md`
 
 ### Frontend Coder
 
-- **Purpose**: Implements React frontend in isolated worktrees
+- **Purpose**: Implements Vue.js frontend in isolated worktrees
 - **Prerequisites**: Backend complete, API contract exists
-- **Expertise**: React 19, TypeScript, React Hook Form + Zod, Vite, React Router
-- **Outputs**: Components, pages, hooks, services, types
+- **Expertise**: Vue.js 3, TypeScript, Pinia, Vite, Vue Router
+- **Outputs**: Components, views, composables, services, types
 
 ### QA Agent
 
@@ -222,8 +222,8 @@ The framework uses specialized sub-agents that work in isolated git worktrees.
 
 ### DB Schema Migrator
 
-- **Purpose**: Converts MSSQL/LocalDB schemas to PostgreSQL with Sequelize
-- **Handles**: Type mappings, relationships, migrations, seeders
+- **Purpose**: Connects to existing SQL Server database using mssql driver
+- **Handles**: Connection pooling, Dapper → mssql query conversion, stored procedures
 
 ---
 

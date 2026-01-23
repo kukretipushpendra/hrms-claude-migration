@@ -1,23 +1,22 @@
 ---
 name: frontend-coder
-description: Implement React frontend in git worktrees.
+description: Implement Vue.js frontend in git worktrees.
 tools: Read, Glob, Grep, Write, Edit, Bash
 skills:
-  - react-migration-expert
+  - vuejs-migration-expert
 model: sonnet
 color: green
 ---
 
 # Frontend Coder
 
-React 19 implementation in isolated worktrees. See `/.claude/refs/patterns.md` for core patterns.
+Vue.js 3 implementation in isolated worktrees. See `/.claude/refs/patterns.md` for core patterns.
 
-**Uses `react-migration-expert` skill for:**
-- React 19 patterns and component architecture
+**Uses `vuejs-migration-expert` skill for:**
+- Vue 3 Composition API patterns and component architecture
 - TypeScript best practices and type safety
-- State management decisions (Context, Zustand, TanStack Query)
-- Performance optimization strategies
-- Form handling with React Hook Form + Zod
+- State management with Pinia (equivalent to Zustand in React)
+- Form handling with VeeValidate + Zod
 - Project structure and organization guidance
 
 ## Input
@@ -52,7 +51,7 @@ fi
 
 1. `cd {WORKTREE_PATH}`
 2. Verify backend complete (unless foundation feature)
-3. Read feature spec and legacy View files
+3. Read feature spec and **legacy React files** (the source of truth)
 4. Read feature API contract at `migration/api-contracts/{module}/{feature}.api.md` for endpoints/types
 5. Implement in `{WORKTREE_PATH}/modern/frontend/src/`
 6. **Run quality checks before committing:**
@@ -71,22 +70,44 @@ fi
 
 ```
 modern/frontend/src/
-├── components/{module}/{Feature}Component.tsx
-├── pages/{module}/{Feature}Page.tsx
-├── hooks/use{Feature}.ts
-├── services/{module}.service.ts
-└── types/{module}.types.ts
+├── views/{module}/{Feature}View.vue       # Page components
+├── components/{module}/{Feature}Component.vue
+├── composables/use{Feature}.ts            # Reusable logic (like React hooks)
+├── services/{module}.service.ts           # API calls
+├── stores/{module}.store.ts               # Pinia store (like Zustand)
+├── types/{module}.types.ts
+└── utils/
 ```
+
+## React → Vue.js Mapping Reference
+
+| React Pattern | Vue 3 Equivalent |
+|---------------|------------------|
+| `useState` | `ref()` or `reactive()` |
+| `useEffect` | `onMounted`, `watch`, `watchEffect` |
+| `useMemo` | `computed()` |
+| `useCallback` | Regular function (Vue auto-optimizes) |
+| `useContext` | `provide/inject` or Pinia store |
+| `useRef` | `ref()` for DOM, `shallowRef` for values |
+| Custom Hook | Composable (use{Name}.ts) |
+| Props | `defineProps<{}>()` |
+| Event emit | `defineEmits<{}>()` |
+| `{condition && <div>}` | `v-if="condition"` |
+| `.map()` | `v-for` |
+| `className={styles}` | `:class="styles"` |
+| `onClick` | `@click` |
+| React Hook Form | VeeValidate |
+| Zustand store | Pinia store |
+| React Router | Vue Router |
 
 ## 100% Parity Rules
 
-- Same CSS framework and version as legacy
-- Same layout, spacing, colors
+- Match EXACT layout, spacing, colors from legacy React app
 - Same form fields in EXACT order
 - Same validation messages (exact text)
 - Same button labels
 - Copy legacy CSS files (site.css, etc.)
-- Use `<Link>` for navigation, never `<a>` for internal links
+- Use `<RouterLink>` for navigation, never `<a>` for internal links
 
 ## CSS Handling Rules (CRITICAL)
 
@@ -108,14 +129,19 @@ background-image: url('../images/logo.png');
 background-image: url('../assets/images/logo.png');
 ```
 
-### CSS Import Method (Match Legacy Pattern)
-Legacy pages use `<link>` tags to include external CSS files (`pagename.css`, `xyz.css`).
-**Adapt the same method in React** by importing CSS files in the TSX page file:
+### CSS Import Method
+In Vue SFC (Single File Component):
 
-```tsx
-// If legacy has: <link href="OrdersPage.css" />
-// In React TSX:
-import './OrdersPage.css';  // Import the copied CSS file
+```vue
+<style>
+/* Global import in App.vue */
+@import './styles/site.css';
+</style>
+
+<!-- OR scoped component styles -->
+<style scoped>
+@import './FeaturePage.css';
+</style>
 ```
 
 ### CSS File Placement
@@ -128,27 +154,162 @@ modern/frontend/src/
 ├── styles/
 │   ├── site.css     # Global styles (copied)
 │   └── {page}.css   # Page-specific (copied)
-└── pages/{module}/
-    ├── {Feature}Page.tsx # Page CSS imported in TSX
+└── views/{module}/
+    └── {Feature}View.vue
 ```
 
-## CSS Import Order
+## Vue Component Pattern
 
-```tsx
-import 'bootstrap/dist/css/bootstrap.css';  // Framework FIRST
-import '../../styles/site.css';              // Global custom styles
-// Follow legacy how it imports, if legacy import in the page itself then import in the page only and not in layout or App.tsx files 
-import './{Feature}Page.css';                // Page-specific styles
+```vue
+<!-- src/views/{module}/{Feature}View.vue -->
+<script setup lang="ts">
+import { ref, computed, onMounted } from 'vue';
+import { use{Feature} } from '@/composables/use{Feature}';
+import type { {Feature}Data } from '@/types/{module}.types';
+
+// Props
+const props = defineProps<{
+  id?: string;
+}>();
+
+// Emits
+const emit = defineEmits<{
+  (e: 'submit', data: {Feature}Data): void;
+}>();
+
+// Composable (like React custom hook)
+const { data, loading, error, fetchData } = use{Feature}();
+
+// Local state
+const localValue = ref('');
+
+// Computed (like useMemo)
+const computedValue = computed(() => localValue.value.toUpperCase());
+
+// Lifecycle (like useEffect with [])
+onMounted(() => {
+  fetchData();
+});
+</script>
+
+<template>
+  <div class="feature-container">
+    <div v-if="loading">Loading...</div>
+    <div v-else-if="error">{{ error }}</div>
+    <div v-else>
+      <!-- Content -->
+    </div>
+  </div>
+</template>
+
+<style scoped>
+/* Component-specific styles or import CSS */
+</style>
 ```
 
-## Form Pattern
+## Composable Pattern (Like React Hooks)
 
-```tsx
-import { useForm } from 'react-hook-form';
+```typescript
+// src/composables/use{Feature}.ts
+import { ref, onMounted } from 'vue';
+import { {module}Service } from '@/services/{module}.service';
+import type { {Feature}Data } from '@/types/{module}.types';
+
+export function use{Feature}() {
+  const data = ref<{Feature}Data | null>(null);
+  const loading = ref(true);
+  const error = ref<string | null>(null);
+
+  const fetchData = async () => {
+    try {
+      loading.value = true;
+      data.value = await {module}Service.getAll();
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Failed to fetch';
+    } finally {
+      loading.value = false;
+    }
+  };
+
+  onMounted(() => {
+    fetchData();
+  });
+
+  return { data, loading, error, fetchData };
+}
+```
+
+## Pinia Store Pattern (Like Zustand)
+
+```typescript
+// src/stores/{module}.store.ts
+import { defineStore } from 'pinia';
+import type { {Module}State } from '@/types/{module}.types';
+
+export const use{Module}Store = defineStore('{module}', {
+  state: (): {Module}State => ({
+    items: [],
+    loading: false,
+    error: null,
+  }),
+
+  getters: {
+    itemCount: (state) => state.items.length,
+  },
+
+  actions: {
+    async fetchItems() {
+      this.loading = true;
+      try {
+        // API call
+      } catch (error) {
+        this.error = 'Failed to fetch';
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
+});
+```
+
+## Form Pattern with VeeValidate + Zod
+
+```vue
+<script setup lang="ts">
+import { useForm } from 'vee-validate';
+import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
-import { zodResolver } from '@hookform/resolvers/zod';
 
-const schema = z.object({ /* match legacy validation */ });
+const schema = toTypedSchema(
+  z.object({
+    email: z.string().email('Invalid email'),
+    password: z.string().min(6, 'Password must be at least 6 characters'),
+  })
+);
+
+const { handleSubmit, errors, defineField } = useForm({
+  validationSchema: schema,
+});
+
+const [email, emailAttrs] = defineField('email');
+const [password, passwordAttrs] = defineField('password');
+
+const onSubmit = handleSubmit((values) => {
+  console.log(values);
+});
+</script>
+
+<template>
+  <form @submit="onSubmit">
+    <input v-model="email" v-bind="emailAttrs" type="email" />
+    <span v-if="errors.email">{{ errors.email }}</span>
+
+    <input v-model="password" v-bind="passwordAttrs" type="password" />
+    <span v-if="errors.password">{{ errors.password }}</span>
+
+    <button type="submit">Submit</button>
+  </form>
+</template>
 ```
 
 ## Quality Gates (MANDATORY)
@@ -177,33 +338,9 @@ npm run lint:fix
 - `lint` reports any errors (after running `lint:fix`)
 - Code doesn't match legacy functionality exactly
 
-### Common Issues and Fixes
-
-**Type Error: "Property 'xyz' does not exist"**
-```typescript
-// Add proper interface
-interface MyData {
-  xyz: string;
-}
-```
-
-**Lint Error: "React Hook useEffect has missing dependencies"**
-```typescript
-// Add dependency or use useCallback
-useEffect(() => {
-  // ...
-}, [dependency]); // Add all used variables
-```
-
-**Lint Error: "Unexpected any"**
-```typescript
-// Replace 'any' with proper type
-const data: User[] = await fetchUsers();
-```
-
 ## Expertise
 
-React 19, TypeScript, React Hook Form + Zod, Vite, React Router, Bootstrap, ESLint, Prettier
+Vue.js 3, TypeScript, Composition API, Pinia, VeeValidate + Zod, Vite, Vue Router, ESLint, Prettier
 
 ## Foundation Features (Special Handling)
 
@@ -219,7 +356,7 @@ When `TYPE: foundation`:
 After all foundation features done:
 ```bash
 # Start both servers
-cd modern/backend && npm run start:dev &
+cd modern/backend && npm run dev &
 cd modern/frontend && npm run dev &
 
 # Verify:

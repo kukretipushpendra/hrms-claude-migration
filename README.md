@@ -2,7 +2,7 @@
 
 A reusable framework for migrating legacy applications to modern tech stacks using Claude Code CLI with **parallel execution via git worktrees**.
 
-**Default stack:** .NET → React + NestJS + PostgreSQL
+**Current stack:** React.js + .NET → Vue.js + Node.js/Express + SQL Server (same database)
 **Adaptable to:** Any source/target combination via `/migrate-adapt`
 
 ## Philosophy
@@ -24,7 +24,7 @@ A reusable framework for migrating legacy applications to modern tech stacks usi
 - Claude CLI configured in WSL2
 
 **All users:**
-- Basic Docker familiarity (not required but helpful)
+- Access to SQL Server (existing database)
 
 ### 1. Clone the Framework
 
@@ -49,13 +49,13 @@ This creates all required folder structures.
 cp -r /path/to/your/dotnet-project/* ./legacy/
 ```
 
-### 4. Configure Docker (Optional)
+### 4. Configure Database Connection (Required)
 
-Update `docker-compose.yml` in the project root as needed:
-- Set project-specific container names
-- Configure database names
-- Adjust ports if conflicts exist with other containers
-- Update .env.example file for the same changes
+Update `.env` file with your SQL Server connection details:
+- Set DB_HOST (server name)
+- Set DB_INSTANCE (e.g., SQLEXPRESS for SQL Server Express)
+- Configure DB_NAME, DB_USER, DB_PASSWORD
+- See `.env.example` for all available options
 
 ### 5. Initialize Git
 
@@ -91,18 +91,21 @@ During `/migrate-init`, you'll be asked how to set up the modern projects:
 
 ### Option 1: Default Commands (Recommended)
 
-**NestJS Backend:**
+**Node.js/Express Backend:**
 ```bash
-npm i -g @nestjs/cli
 cd modern/backend
-nest new . --skip-git --package-manager npm
+npm init -y
+npm install express cors dotenv mssql
+npm install -D typescript @types/node @types/express @types/mssql ts-node nodemon
+npx tsc --init
 ```
 
-**React + Vite Frontend:**
+**Vue.js + Vite Frontend:**
 ```bash
 cd modern/frontend
-npm create vite@latest . -- --template react-ts
+npm create vite@latest . -- --template vue-ts
 npm install
+npm install vue-router@4 pinia axios
 ```
 
 ### Option 2: Custom Commands
@@ -129,8 +132,8 @@ project-root/
 ├── legacy/                      # Your .NET source code (read-only)
 │
 ├── modern/
-│   ├── backend/                 # NestJS project
-│   └── frontend/                # React + Vite project
+│   ├── backend/                 # Node.js/Express project
+│   └── frontend/                # Vue.js + Vite project
 │
 ├── worktrees/                   # Git worktrees (auto-created)
 │
@@ -177,11 +180,11 @@ For detailed command usage and workflows, see [HOW-TO-USE.md](HOW-TO-USE.md).
 
 ## Adapting to Different Tech Stacks
 
-The framework defaults to .NET → React + NestJS + PostgreSQL, but can be adapted to any stack combination.
+The framework is currently configured for React.js + .NET → Vue.js + Node.js/Express + SQL Server, but can be adapted to any stack combination.
 
 ### When to Use `/migrate-adapt`
 
-Run `/migrate-adapt` **before** `/migrate-init` when your legacy stack is NOT .NET MVC, or when you want a different target stack.
+Run `/migrate-adapt` **before** `/migrate-init` when your legacy/target stack is different from the current configuration.
 
 ### Example Commands
 
@@ -224,34 +227,37 @@ See [.claude/refs/tech-stack-mappings.md](.claude/refs/tech-stack-mappings.md) f
 
 ## Tech Stack
 
-### Permanent (Non-negotiable)
+### Current Configuration
 
 | Layer | Technology |
 |-------|------------|
-| Frontend | React 19, TypeScript, React Hook Form, Zod, Vite |
-| Backend | NestJS, PostgreSQL, Sequelize |
+| Frontend | Vue.js 3, TypeScript, Vite, Vue Router, Pinia |
+| Backend | Node.js, Express, TypeScript |
+| Database | SQL Server (existing - no migration) |
+| DB Driver | mssql (node-mssql) |
 | Parallelization | Git worktrees |
 
 ### Decided During /migrate-init
 
-- State management (TanStack Query/Zustand/Redux)
+- Form handling (VeeValidate/FormKit)
 - UI framework (must match legacy: Bootstrap/Foundation/Tailwind/etc.)
 - Additional libraries as needed
 
 ## Database
 
+This migration uses the **existing SQL Server database** - no database migration required.
+
 ```bash
-# Start PostgreSQL + pgAdmin
-docker compose up -d
-
-# Stop services
-docker compose down
-
-# Connection info
-# PostgreSQL: localhost:5432
-# pgAdmin: localhost:5050
+# Connection info (configure in .env)
+# Server: localhost or localhost\SQLEXPRESS
+# Port: 1433 (default)
 # Credentials in .env.example
+
+# Test connection
+npm run db:test
 ```
+
+The backend uses the `mssql` (node-mssql) package to connect to SQL Server with connection pooling.
 
 ## Documentation
 

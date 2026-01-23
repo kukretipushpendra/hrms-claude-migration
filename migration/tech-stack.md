@@ -1,16 +1,16 @@
 # Tech Stack
 
-## Permanent (Non-negotiable)
-- React 19 + TypeScript
-- React Hook Form + Zod (forms & validation)
+## Current Configuration
+- Vue.js 3 + TypeScript
+- Vue Router + Pinia (routing & state)
 - Vite (build tool)
-- NestJS
-- PostgreSQL
-- Sequelize ORM
+- Node.js + Express
+- SQL Server (existing database - no migration)
+- mssql driver (node-mssql)
 
 ## Frontend Decisions
-STATE_MANAGEMENT: (pending)
-DATA_FETCHING: (pending)
+STATE_MANAGEMENT: Pinia
+DATA_FETCHING: Axios
 UI_FRAMEWORK: (pending - must match legacy)
 STYLING: (pending)
 
@@ -20,5 +20,12 @@ EMAIL_PROVIDER: (pending)
 STORAGE_PROVIDER: (pending)
 PAYMENT_PROVIDER: (pending)
 
-## Legacy Analysis
-(Populated during discovery)
+## Legacy Stack (Source)
+- Frontend: React.js
+- Backend: .NET Core
+- Database: SQL Server
+
+## Modern Stack (Target)
+- Frontend: Vue.js 3 + TypeScript + Vite
+- Backend: Node.js + Express + TypeScript
+- Database: SQL Server (same, using mssql driver)

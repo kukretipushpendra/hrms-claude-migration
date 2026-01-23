@@ -1,0 +1,134 @@
+{
+  "$schema": "./migration.config.schema.json",
+  "version": "1.0.0",
+  "project": {
+    "name": "HRMS Migration",
+    "description": "React.js + .NET WebAPI to Vue.js + Node.js migration"
+  },
+  "legacy": {
+    "frontend": {
+      "framework": "React.js",
+      "version": "18.x",
+      "path": "legacy/Frontend"
+    },
+    "backend": {
+      "framework": ".NET WebAPI",
+      "version": "8.0",
+      "path": "legacy/Backend"
+    }
+  },
+  "modern": {
+    "frontend": {
+      "framework": "Vue.js",
+      "version": "3.x",
+      "path": "modern/frontend"
+    },
+    "backend": {
+      "framework": "Node.js/Express",
+      "version": "18.x",
+      "path": "modern/backend"
+    }
+  },
+  "database": {
+    "type": "mssql",
+    "dialect": "SQL Server",
+    "strategy": "same-database",
+    "connection": {
+      "host": "${DB_HOST}",
+      "port": "${DB_PORT:1433}",
+      "instance": "${DB_INSTANCE}",
+      "database": "${DB_NAME}",
+      "user": "${DB_USER}",
+      "password": "${DB_PASSWORD}"
+    },
+    "options": {
+      "encrypt": "${DB_ENCRYPT:true}",
+      "trustServerCertificate": "${DB_TRUST_SERVER_CERT:false}",
+      "enableArithAbort": true,
+      "multipleActiveResultSets": true
+    },
+    "pool": {
+      "min": "${DB_POOL_MIN:0}",
+      "max": "${DB_POOL_MAX:10}",
+      "idleTimeoutMillis": "${DB_POOL_IDLE:30000}"
+    },
+    "timeouts": {
+      "connection": 15000,
+      "request": 30000
+    },
+    "driver": {
+      "package": "mssql",
+      "version": "^10.0.0"
+    },
+    "documentation": {
+      "inventory": "migration/db/01-db-inventory.md",
+      "connectionMapping": "migration/db/02-connection-mapping.md",
+      "featureCompat": "migration/db/03-sqlserver-feature-compat.md",
+      "dataContracts": "migration/db/04-data-access-contracts.md",
+      "readinessChecks": "migration/db/05-readiness-checks.md"
+    }
+  },
+  "adr": {
+    "directory": "migration/adr",
+    "records": [
+      {
+        "id": "001",
+        "title": "Database Connection Strategy",
+        "status": "proposed"
+      },
+      {
+        "id": "002",
+        "title": "Database Authentication and Secrets",
+        "status": "proposed"
+      },
+      {
+        "id": "003",
+        "title": "Database Error Handling and Retries",
+        "status": "proposed"
+      }
+    ]
+  },
+  "patterns": {
+    "orm": "none (raw SQL via mssql)",
+    "queryBuilder": "custom (porting QueryHelper pattern)",
+    "authentication": "JWT (matching legacy)",
+    "validation": "Zod",
+    "stateManagement": {
+      "frontend": "Pinia",
+      "backend": "stateless"
+    }
+  },
+  "featureFlags": {
+    "useSequelizeForNewFeatures": false,
+    "enableQueryLogging": true,
+    "enableConnectionPoolMonitoring": true
+  },
+  "environments": {
+    "development": {
+      "database": {
+        "trustServerCertificate": true,
+        "encrypt": false
+      }
+    },
+    "staging": {
+      "database": {
+        "trustServerCertificate": false,
+        "encrypt": true
+      }
+    },
+    "production": {
+      "database": {
+        "trustServerCertificate": false,
+        "encrypt": true,
+        "pool": {
+          "max": 25
+        }
+      }
+    }
+  },
+  "notes": {
+    "scope": "DOCUMENTATION ONLY - This config is for planning reference",
+    "implementation": "Actual connection code will be created during migration phases",
+    "secrets": "Database credentials must NEVER be stored in this file"
+  }
+}

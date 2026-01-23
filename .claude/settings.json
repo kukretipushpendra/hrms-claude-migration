@@ -32,6 +32,16 @@
           }
         ]
       }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -ExecutionPolicy Bypass -File ./.claude/hooks/log-prompt.ps1"
+          }
+        ]
+      }
     ]
   }
 }

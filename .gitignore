@@ -21,5 +21,3 @@ obj/
 
 # Sensitive files
 .mcp.json
-legacy/Backend/HRMSWebApi/HRMS.API/appsettings.json
-legacy/Backend/HRMSWebApi/HRMS.API/appsettings.Development.json

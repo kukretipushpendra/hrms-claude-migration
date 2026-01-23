@@ -77,7 +77,7 @@ git worktree add worktrees/{module}-{feature} -b feature/{module}-{feature}
 
 ### 2. Backend Development
 - Backend-coder agent works in `worktrees/{module}-{feature}/`
-- Implements in `modern/backend/src/modules/{module}/`
+- Implements in `modern/backend/src/` (Express routes, controllers, services)
 - Commits to feature branch
 - Updates status: `BACKEND: complete`
 

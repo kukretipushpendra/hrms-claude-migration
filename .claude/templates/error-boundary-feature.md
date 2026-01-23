@@ -68,13 +68,13 @@ Sub-agent MUST read these files and extract:
    - Note RequestId display logic
    - Note development vs production differences
 
-2. **Create React ErrorBoundary**
-   - Class component with componentDidCatch
+2. **Create Vue.js Error Handling**
+   - Use `onErrorCaptured` composition API hook
    - Generate request ID (UUID)
    - Log errors appropriately
 
 3. **Match Legacy Error UI**
-   - Same HTML structure (converted to JSX)
+   - Same HTML structure (converted to Vue template)
    - Same CSS classes
    - Same conditional logic
 
@@ -82,12 +82,9 @@ Sub-agent MUST read these files and extract:
 ```
 modern/frontend/src/
 ├── components/
-│   └── ErrorBoundary/
-│       ├── ErrorBoundary.tsx     # Class component
-│       └── ErrorFallback.tsx     # Error UI (matches Error.cshtml)
-└── pages/
-    └── Error/
-        └── ErrorPage.tsx         # /error route
+│   └── ErrorBoundary.vue      # Error boundary component with onErrorCaptured
+└── views/
+    └── ErrorView.vue          # /error route page
 ```
 
 ### Environment Detection
@@ -96,26 +93,93 @@ const isDevelopment = import.meta.env.DEV;
 // Show stack trace only in development
 ```
 
+## Vue.js Error Handling Pattern
+
+```vue
+<!-- src/components/ErrorBoundary.vue -->
+<script setup lang="ts">
+import { ref, onErrorCaptured } from 'vue';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
+const hasError = ref(false);
+const errorMessage = ref('');
+const errorStack = ref('');
+const requestId = ref('');
+
+const generateRequestId = () => {
+  return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+};
+
+onErrorCaptured((err: Error, instance, info) => {
+  hasError.value = true;
+  errorMessage.value = err.message;
+  errorStack.value = err.stack || '';
+  requestId.value = generateRequestId();
+
+  console.error('ErrorBoundary caught an error:', err);
+  return false; // Prevent propagation
+});
+
+const handleRetry = () => {
+  hasError.value = false;
+  errorMessage.value = '';
+  errorStack.value = '';
+};
+
+const goHome = () => {
+  hasError.value = false;
+  router.push('/');
+};
+</script>
+
+<template>
+  <div v-if="hasError" class="error-container">
+    <!-- Error UI matching legacy -->
+  </div>
+  <slot v-else />
+</template>
+```
+
+### Global Error Handler (main.ts)
+
+```typescript
+// src/main.ts
+app.config.errorHandler = (err, instance, info) => {
+  console.error('Global error:', err);
+  // Send to error tracking in production
+};
+```
+
 ## Acceptance Criteria
 
 ### ErrorBoundary Component
-- [ ] Class-based component with componentDidCatch
-- [ ] Wraps entire app in App.tsx
+- [ ] Uses `onErrorCaptured` composition API
+- [ ] Wraps entire app in App.vue using `<slot />`
 - [ ] Generates unique request ID
 
 ### Error Display
 - [ ] Fallback UI matches legacy Error.cshtml structure
-- [ ] Development mode shows technical details
+- [ ] Development mode shows technical details (via `import.meta.env.DEV`)
 - [ ] Production mode shows user-friendly message
 - [ ] Request ID displayed when applicable
 
 ### Navigation
-- [ ] "Go Home" link works (uses React Router)
+- [ ] "Go Home" link works (uses Vue Router)
 - [ ] Error route accessible at /error
 
 ### Logging
 - [ ] Errors logged to console in development
-- [ ] Error boundary catches component errors
+- [ ] Global error handler configured in main.ts
+
+## Key Differences from React
+
+| React | Vue.js |
+|-------|--------|
+| Class component with `componentDidCatch` | `onErrorCaptured` composition API |
+| `this.props.children` | `<slot />` |
+| `static getDerivedStateFromError` | Reactive `ref()` state |
+| Wraps in JSX | Wraps in template |
 
 ## Attempts
 ATTEMPT_COUNT: 0

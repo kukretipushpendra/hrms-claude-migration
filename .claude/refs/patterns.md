@@ -67,10 +67,73 @@ TYPE: crud | static-page | foundation
 ```
 worktrees/{module}-{feature}/
 ├── legacy/           # Read-only source
+│   ├── Frontend/     # React.js app
+│   └── Backend/      # .NET WebAPI
 ├── modern/
-│   ├── backend/      # NestJS (backend-coder)
-│   └── frontend/     # React (frontend-coder)
+│   ├── backend/      # Node.js/Express (backend-coder)
+│   └── frontend/     # Vue.js (frontend-coder)
 └── migration/        # Status files
+```
+
+## Modern Backend Structure (Node.js/Express)
+
+```
+modern/backend/
+├── src/
+│   ├── app.ts                    # Express app setup
+│   ├── server.ts                 # Entry point
+│   ├── config/
+│   │   ├── database.ts           # mssql connection pool
+│   │   └── env.ts                # Environment variables
+│   ├── middleware/
+│   │   ├── auth.middleware.ts    # JWT verification
+│   │   ├── validation.middleware.ts
+│   │   └── error.middleware.ts
+│   ├── modules/
+│   │   └── {module}/
+│   │       ├── {module}.routes.ts
+│   │       ├── {module}.controller.ts
+│   │       ├── {module}.service.ts  # Uses mssql queries
+│   │       ├── dto/
+│   │       └── types/
+│   ├── types/
+│   │   └── express.d.ts
+│   └── utils/
+│       └── errors.ts
+├── package.json
+├── tsconfig.json
+└── .env
+```
+
+## Modern Frontend Structure (Vue.js)
+
+```
+modern/frontend/
+├── src/
+│   ├── views/                    # Page components
+│   │   └── {module}/
+│   │       └── {Feature}View.vue
+│   ├── components/               # Reusable components
+│   │   └── {module}/
+│   ├── composables/              # Reusable logic (like React hooks)
+│   │   └── use{Feature}.ts
+│   ├── services/
+│   │   └── api/
+│   │       ├── axios-client.ts
+│   │       └── {module}.service.ts
+│   ├── stores/                   # Pinia stores
+│   │   └── {module}.store.ts
+│   ├── types/
+│   │   └── {module}.types.ts
+│   ├── router/
+│   │   └── index.ts
+│   ├── assets/
+│   ├── styles/
+│   ├── App.vue
+│   └── main.ts
+├── package.json
+├── vite.config.ts
+└── tsconfig.json
 ```
 
 ## Foundation Gates (Two-Phase)
@@ -111,7 +174,7 @@ If `false`:
 
 ### Foundation Complete Criteria
 
-**Backend**: Health endpoint returns `{ status: "ok", database: "connected" }`
+**Backend**: Health endpoint returns `{ status: "ok", database: { status: "connected" } }`
 
 **Frontend**:
 - App loads in browser without errors
@@ -215,3 +278,32 @@ When escalating (3 failures), auto-generate `/migration/logs/escalations.md` ent
 - Detected pattern (e.g., "API version mismatch")
 - Suspected root cause
 - Suggested action for human
+
+## React → Vue.js Conversion Quick Reference
+
+| React | Vue 3 |
+|-------|-------|
+| `useState` | `ref()` |
+| `useEffect(() => {}, [])` | `onMounted(() => {})` |
+| `useEffect(() => {}, [dep])` | `watch(dep, () => {})` |
+| `useMemo` | `computed()` |
+| Custom Hook | Composable (`use{Name}.ts`) |
+| `props.children` | `<slot />` |
+| `onClick={fn}` | `@click="fn"` |
+| `{condition && <div>}` | `<div v-if="condition">` |
+| `.map(item => <X />)` | `<X v-for="item in items" />` |
+| Zustand | Pinia |
+| React Router | Vue Router |
+
+## .NET → Node.js Conversion Quick Reference
+
+| .NET | Node.js/Express |
+|------|-----------------|
+| Controller | Controller + Router |
+| Service | Service class |
+| Repository/Dapper | Service with mssql |
+| [HttpGet] | `router.get()` |
+| [Authorize] | `authMiddleware` |
+| Data Annotations | Zod validators |
+| `IActionResult` | `res.json()` |
+| `@param` | `.input('param', sql.Type, value)` |

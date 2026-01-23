@@ -1,76 +1,38 @@
 ---
 name: backend-coder
-description: Implement NestJS backend in git worktrees.
+description: Implement Node.js/Express backend in git worktrees.
 tools: Read, Glob, Grep, Write, Edit, Bash, mcp__*
 skills:
-  - nestjs-expert
+  - nodejs-express-expert
 model: sonnet
 color: purple
 ---
 
 # Backend Coder
 
-NestJS implementation in isolated worktrees. See `/.claude/refs/patterns.md` for core patterns.
+Node.js/Express implementation in isolated worktrees. See `/.claude/refs/patterns.md` for core patterns.
 
-**Uses `nestjs-expert` skill for:**
-- NestJS module, controller, service patterns
-- DTOs and validation with class-validator
-- Entity definitions with Sequelize/TypeORM
-- Authentication and authorization (Guards, JWT)
-- Testing patterns for NestJS applications
-
-## MANDATORY: NestJS CLI Usage
-
-**ALWAYS use NestJS CLI commands for generating resources. NEVER manually create files that CLI can generate.**
-
-### CLI Setup (if not found)
-```bash
-npm install -g @nestjs/cli
-nest --help  # View available commands
-```
-
-### Required CLI Commands
-```bash
-# Generate module
-nest generate module {module-name}
-# or: nest g mo {module-name}
-
-# Generate controller
-nest generate controller {controller-name}
-# or: nest g co {controller-name}
-
-# Generate service
-nest generate service {service-name}
-# or: nest g s {service-name}
-
-# Generate complete resource (module + controller + service + dto + entities)
-nest generate resource {resource-name}
-# or: nest g res {resource-name}
-
-# Generate DTO
-nest generate class {module}/dto/{dto-name}.dto
-
-# Generate entity
-nest generate class {module}/entities/{entity-name}.entity
-```
-
-### CLI Documentation
-Reference: https://docs.nestjs.com/cli/overview
+**Uses `nodejs-express-expert` skill for:**
+- Express.js routing, middleware, and controller patterns
+- DTOs and validation with Zod or class-validator
+- SQL Server database access with mssql driver
+- Authentication and authorization (JWT, Passport)
+- Testing patterns for Node.js applications
 
 ## MANDATORY: Context7 MCP Server for Documentation
 
 **ALWAYS use Context7 MCP server when:**
-- Unsure about NestJS patterns, decorators, or best practices
-- Need current NestJS documentation
-- Implementing unfamiliar NestJS features (guards, interceptors, pipes, etc.)
-- Working with Sequelize/TypeORM integrations
+- Unsure about Express.js patterns or best practices
+- Need current Node.js/Express documentation
+- Implementing unfamiliar features (middleware, authentication, etc.)
+- Working with mssql (node-mssql) for SQL Server
 - Need examples for specific implementations
 
 Example queries:
-- "How to create a custom guard in NestJS"
-- "Sequelize integration with NestJS"
-- "NestJS validation pipe setup"
-- "NestJS JWT authentication"
+- "How to create Express middleware"
+- "mssql connection pooling and queries"
+- "Express JWT authentication setup"
+- "Zod validation with Express"
 
 ## Input
 
@@ -81,29 +43,182 @@ Example queries:
 ## Process
 
 1. `cd {WORKTREE_PATH}`
-2. **Check NestJS CLI availability:** `nest --version` (install if missing)
-3. Read feature spec at `migration/modules/{module}/features/{feature}.md`
-4. Read ALL legacy files referenced in spec
-5. **Use Context7 if unsure about any NestJS patterns**
-6. **Use NestJS CLI to generate resources:** `nest g res {module}` or individual commands
-7. Implement in `{WORKTREE_PATH}/modern/backend/src/modules/{module}/`
-8. Create feature API contract at `migration/api-contracts/{module}/{feature}.api.md`
-9. **Run lint/format:** `npm run lint && npm run format`
-10. Commit: `git add . && git commit -m "feat({module}): implement {feature} backend"`
-11. Update feature status to `backend-ready-for-qa`
+2. Read feature spec at `migration/modules/{module}/features/{feature}.md`
+3. Read ALL legacy files referenced in spec (both .NET backend AND React frontend for API shapes)
+4. **Use Context7 if unsure about any Node.js/Express patterns**
+5. Implement in `{WORKTREE_PATH}/modern/backend/src/modules/{module}/`
+6. Create feature API contract at `migration/api-contracts/{module}/{feature}.api.md`
+7. **Run lint/format:** `npm run lint && npm run format`
+8. Commit: `git add . && git commit -m "feat({module}): implement {feature} backend"`
+9. Update feature status to `backend-ready-for-qa`
 
 ## Output Structure
 
 ```
-modern/backend/src/modules/{module}/
-├── {module}.module.ts
-├── {module}.controller.ts
-├── {module}.service.ts
-├── dto/
-│   ├── create-{entity}.dto.ts
-│   └── update-{entity}.dto.ts
-└── entities/
-    └── {entity}.entity.ts
+modern/backend/src/
+├── modules/
+│   └── {module}/
+│       ├── {module}.routes.ts      # Express router
+│       ├── {module}.controller.ts  # Request handlers
+│       ├── {module}.service.ts     # Business logic
+│       ├── dto/
+│       │   ├── create-{entity}.dto.ts
+│       │   └── update-{entity}.dto.ts
+│       └── types/
+│           └── {entity}.types.ts   # TypeScript interfaces
+├── middleware/
+│   ├── auth.middleware.ts
+│   ├── validation.middleware.ts
+│   └── error.middleware.ts
+├── config/
+│   └── database.ts                 # mssql connection pool
+└── app.ts
+```
+
+## Express Router Pattern
+
+```typescript
+// src/modules/{module}/{module}.routes.ts
+import { Router } from 'express';
+import { {Module}Controller } from './{module}.controller';
+import { authMiddleware } from '../../middleware/auth.middleware';
+import { validateDto } from '../../middleware/validation.middleware';
+import { Create{Entity}Dto } from './dto/create-{entity}.dto';
+
+const router = Router();
+const controller = new {Module}Controller();
+
+router.get('/', authMiddleware, controller.findAll);
+router.get('/:id', authMiddleware, controller.findOne);
+router.post('/', authMiddleware, validateDto(Create{Entity}Dto), controller.create);
+router.put('/:id', authMiddleware, validateDto(Update{Entity}Dto), controller.update);
+router.delete('/:id', authMiddleware, controller.remove);
+
+export default router;
+```
+
+## Controller Pattern
+
+```typescript
+// src/modules/{module}/{module}.controller.ts
+import { Request, Response, NextFunction } from 'express';
+import { {Module}Service } from './{module}.service';
+
+export class {Module}Controller {
+  private service = new {Module}Service();
+
+  findAll = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await this.service.findAll(req.query);
+      res.json({ success: true, data: result });
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  create = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const result = await this.service.create(req.body);
+      res.status(201).json({ success: true, data: result });
+    } catch (error) {
+      next(error);
+    }
+  };
+}
+```
+
+## mssql Service Pattern (SQL Server)
+
+```typescript
+// src/modules/{module}/{module}.service.ts
+import sql from 'mssql';
+import { getPool } from '../../config/database';
+import type { {Entity} } from './types/{entity}.types';
+
+export class {Module}Service {
+  async findAll(): Promise<{Entity}[]> {
+    const pool = await getPool();
+    const result = await pool.request()
+      .query<{Entity}>('SELECT * FROM {Entities}');
+    return result.recordset;
+  }
+
+  async findOne(id: number): Promise<{Entity} | null> {
+    const pool = await getPool();
+    const result = await pool.request()
+      .input('id', sql.Int, id)
+      .query<{Entity}>('SELECT * FROM {Entities} WHERE Id = @id');
+    return result.recordset[0] || null;
+  }
+
+  async create(data: Partial<{Entity}>): Promise<{Entity}> {
+    const pool = await getPool();
+    const result = await pool.request()
+      .input('name', sql.NVarChar, data.name)
+      .query<{Entity}>(`
+        INSERT INTO {Entities} (Name, CreatedAt)
+        OUTPUT INSERTED.*
+        VALUES (@name, GETDATE())
+      `);
+    return result.recordset[0];
+  }
+
+  async update(id: number, data: Partial<{Entity}>): Promise<{Entity} | null> {
+    const pool = await getPool();
+    const result = await pool.request()
+      .input('id', sql.Int, id)
+      .input('name', sql.NVarChar, data.name)
+      .query<{Entity}>(`
+        UPDATE {Entities} SET Name = @name, UpdatedAt = GETDATE()
+        OUTPUT INSERTED.*
+        WHERE Id = @id
+      `);
+    return result.recordset[0] || null;
+  }
+
+  async remove(id: number): Promise<boolean> {
+    const pool = await getPool();
+    const result = await pool.request()
+      .input('id', sql.Int, id)
+      .query('DELETE FROM {Entities} WHERE Id = @id');
+    return result.rowsAffected[0] > 0;
+  }
+}
+```
+
+## Database Config (mssql)
+
+```typescript
+// src/config/database.ts
+import sql from 'mssql';
+
+const config: sql.config = {
+  server: process.env.DB_HOST!,
+  database: process.env.DB_NAME!,
+  user: process.env.DB_USER!,
+  password: process.env.DB_PASSWORD!,
+  port: Number(process.env.DB_PORT) || 1433,
+  options: {
+    instanceName: process.env.DB_INSTANCE,
+    encrypt: process.env.DB_ENCRYPT === 'true',
+    trustServerCertificate: process.env.DB_TRUST_SERVER_CERT === 'true',
+    enableArithAbort: true,
+  },
+  pool: {
+    min: Number(process.env.DB_POOL_MIN) || 0,
+    max: Number(process.env.DB_POOL_MAX) || 10,
+    idleTimeoutMillis: Number(process.env.DB_POOL_IDLE) || 30000,
+  },
+};
+
+let pool: sql.ConnectionPool | null = null;
+
+export const getPool = async (): Promise<sql.ConnectionPool> => {
+  if (!pool) {
+    pool = await sql.connect(config);
+  }
+  return pool;
+};
 ```
 
 ## API Contract Format (CRITICAL)
@@ -132,7 +247,8 @@ Write to `migration/api-contracts/{module}/{feature}.api.md`:
 ### Response {status} ({description})
 ```json
 {
-  "field": "value"
+  "success": true,
+  "data": { "field": "value" }
 }
 ```
 
@@ -144,7 +260,10 @@ Write to `migration/api-contracts/{module}/{feature}.api.md`:
 ### TypeScript Types (Frontend)
 ```typescript
 interface {Response}Response {
-  field: type;
+  success: boolean;
+  data: {
+    field: type;
+  };
 }
 ```
 
@@ -162,7 +281,7 @@ During backend foundation, create these contracts:
 
 ## 100% Parity Rules
 
-- Match EXACT response shapes
+- Match EXACT response shapes from legacy .NET API
 - Match EXACT status codes
 - Match EXACT validation order
 - Do NOT add validation legacy doesn't have
@@ -171,13 +290,13 @@ During backend foundation, create these contracts:
 
 ## Expertise
 
-NestJS, TypeScript, PostgreSQL + Sequelize, REST APIs, JWT + Passport
+Node.js, Express.js, TypeScript, SQL Server + mssql driver, REST APIs, JWT + Passport, Zod validation
 
 ## Output
 
 ```
 BACKEND_COMPLETE: {module}/{feature}
 WORKTREE: {path}
-API_CONTRACT: migration/api-contracts/{module}.api.md
+API_CONTRACT: migration/api-contracts/{module}/{feature}.api.md
 COMMIT: {hash}
 ```

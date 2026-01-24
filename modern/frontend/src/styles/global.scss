@@ -1,0 +1,408 @@
+/**
+ * Global Styles - Matches Legacy React HRMS
+ * Note: Variables are auto-injected via vite.config.ts additionalData
+ */
+
+// Import Roboto font
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap');
+
+// Reset and base styles
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: $font-family;
+  font-size: $font-size-body1;
+  line-height: $line-height-body;
+  color: $grey-700;
+  background-color: $background-default;
+}
+
+// Typography Classes (Legacy compatibility)
+.blueColor {
+  color: $primary-blue;
+  font-weight: $font-weight-bold;
+}
+
+.dark-color {
+  color: $dark-color;
+}
+
+.font-weight-700 {
+  font-weight: 700;
+}
+
+// Login Page Styles
+.login-center-icon-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.login-center-icon {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: $dark-color;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.2);
+}
+
+.login-button {
+  border: 1px solid $primary-blue !important;
+  color: $primary-blue !important;
+  padding: 10px 50px !important;
+
+  &:hover {
+    background-color: $primary-blue !important;
+    color: $grey-0 !important;
+  }
+}
+
+.login-sidebar-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+
+  img {
+    max-width: 228px;
+    height: auto;
+  }
+}
+
+.login-divider {
+  border-left: 2px solid $grey-200;
+  height: 100%;
+  min-height: 400px;
+}
+
+.login-main-container {
+  padding: 40px;
+}
+
+// Dashboard Styles
+.dashboard-heading {
+  color: $secondary-dark;
+  font-weight: $font-weight-bold;
+}
+
+.dashboard-upcoming {
+  .v-table {
+    font-size: $font-size-body2;
+
+    th {
+      padding: 6px 10px;
+      font-weight: $font-weight-medium;
+    }
+
+    td {
+      padding: 10px;
+    }
+  }
+}
+
+// Analytics Card Styles
+.analytics-card {
+  background: $gradient-analytics;
+  border-radius: 15px;
+  height: 100px;
+  position: relative;
+  overflow: hidden;
+  color: $grey-0;
+  box-shadow: $shadow-card;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  &::before {
+    width: 180px;
+    height: 180px;
+    right: -60px;
+    top: -60px;
+  }
+
+  &::after {
+    width: 120px;
+    height: 120px;
+    right: 20px;
+    bottom: -40px;
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+
+  .analytics-card-content {
+    position: relative;
+    z-index: 1;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 100%;
+  }
+
+  .analytics-card-icon {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .analytics-card-info {
+    flex: 1;
+  }
+
+  .analytics-card-title {
+    font-size: 20px;
+    font-weight: $font-weight-medium;
+    margin-bottom: 4px;
+  }
+
+  .analytics-card-count {
+    font-size: 32px;
+    font-weight: 700;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// Dashboard Tiles
+.dashboard-tile {
+  border-radius: 12px;
+  min-height: 300px;
+
+  &.background-0 { background-color: #fff5f5; }
+  &.background-1 { background-color: #f0f9ff; }
+  &.background-2 { background-color: #f0fdf4; }
+  &.background-3 { background-color: #fef3c7; }
+  &.background-4 { background-color: #faf5ff; }
+  &.background-5 { background-color: #ecfeff; }
+  &.background-6 { background-color: #fff1f2; }
+}
+
+// Navigation Drawer Styles
+.nav-drawer {
+  .nav-item {
+    border-radius: 8px;
+    margin: 4px 8px;
+
+    &.v-list-item--active {
+      background-color: rgba($primary-blue, 0.1);
+      color: $primary-blue;
+
+      .v-icon {
+        color: $primary-blue;
+      }
+    }
+
+    &:hover:not(.v-list-item--active) {
+      background-color: $grey-100;
+    }
+  }
+
+  .nav-group-title {
+    font-size: $font-size-caption;
+    font-weight: $font-weight-medium;
+    color: $grey-500;
+    padding: 8px 16px;
+    text-transform: uppercase;
+  }
+}
+
+// Mini drawer styles
+.mini-drawer {
+  .v-list-item-title {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
+// Page Header
+.page-header {
+  margin-bottom: 24px;
+
+  h1, h2 {
+    color: $secondary-dark;
+    font-weight: $font-weight-bold;
+  }
+}
+
+// Main Card Component
+.main-card {
+  border-radius: 8px;
+  border: 1px solid $grey-200;
+  background-color: $grey-0;
+
+  .v-card-title {
+    border-bottom: 1px solid $grey-200;
+    padding: 16px 24px;
+    font-size: $font-size-h5;
+    font-weight: $font-weight-bold;
+  }
+
+  .v-card-text {
+    padding: 24px;
+  }
+}
+
+// Data Table Styles
+.data-table {
+  .v-table {
+    min-width: 750px;
+
+    th {
+      background-color: $grey-50;
+      font-weight: $font-weight-medium;
+      color: $grey-700;
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 5px 10px;
+      white-space: nowrap;
+    }
+
+    tr:hover {
+      background-color: $grey-50;
+    }
+  }
+}
+
+// Form Styles
+.form-field {
+  margin-bottom: 16px;
+}
+
+// Profile Menu Styles
+.profile-menu {
+  min-width: 240px;
+  max-width: 290px;
+
+  .profile-menu-header {
+    padding: 16px;
+    border-bottom: 1px solid $grey-200;
+  }
+
+  .profile-name {
+    font-weight: $font-weight-medium;
+    color: $grey-700;
+    text-transform: capitalize;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .profile-role {
+    font-size: $font-size-caption;
+    color: $grey-500;
+  }
+}
+
+// Truncated Text
+.truncated-text {
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Loading State
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(255, 255, 255, 0.8);
+  z-index: 9999;
+}
+
+// Empty State
+.no-data-found {
+  text-align: center;
+  padding: 48px 24px;
+  color: $grey-500;
+
+  .no-data-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    opacity: 0.5;
+  }
+
+  .no-data-text {
+    font-size: $font-size-h6;
+  }
+}
+
+// Scrollbar Styles (SimpleBar-like)
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: $grey-100;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $grey-400;
+  border-radius: 4px;
+
+  &:hover {
+    background: $grey-500;
+  }
+}
+
+// Utility Classes
+.text-primary {
+  color: $primary-blue !important;
+}
+
+.text-dark {
+  color: $dark-color !important;
+}
+
+.bg-primary {
+  background-color: $primary-blue !important;
+}
+
+.bg-dark {
+  background-color: $dark-color !important;
+}
+
+// Responsive utilities
+@media (max-width: $breakpoint-sm) {
+  .hide-on-mobile {
+    display: none !important;
+  }
+}
+
+@media (min-width: $breakpoint-sm) {
+  .hide-on-desktop {
+    display: none !important;
+  }
+}

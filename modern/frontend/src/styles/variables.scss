@@ -1,0 +1,97 @@
+/**
+ * SCSS Variables - Matches Legacy React HRMS Theme
+ */
+
+// Brand Colors
+$primary-blue: #1e75bb;
+$dark-color: #283a50;
+$secondary-dark: #273a50;
+
+// Grey Scale (Ant Design)
+$grey-0: #ffffff;
+$grey-50: #fafafa;
+$grey-100: #f5f5f5;
+$grey-200: #f0f0f0;
+$grey-300: #d9d9d9;
+$grey-400: #bfbfbf;
+$grey-500: #8c8c8c;
+$grey-600: #595959;
+$grey-700: #262626;
+$grey-800: #141414;
+$grey-900: #000000;
+
+// Status Colors
+$status-wip: #ff9800;
+$status-upcoming: #2196f3;
+$status-completed: #4caf50;
+
+// Semantic Colors
+$error: #ff4d4f;
+$warning: #faad14;
+$info: #13c2c2;
+$success: #52c41a;
+
+// Background Colors
+$background-default: #fafafb;
+$background-paper: #ffffff;
+$background-divider: #f0f0f0;
+
+// Layout Dimensions
+$drawer-width: 260px;
+$drawer-width-mini: 64px;
+$header-height: 60px;
+$footer-height: 48px;
+
+// Breakpoints (matches legacy MUI)
+$breakpoint-xs: 0;
+$breakpoint-sm: 768px;
+$breakpoint-md: 1024px;
+$breakpoint-lg: 1266px;
+$breakpoint-xl: 1440px;
+
+// Typography
+$font-family: 'Roboto', sans-serif;
+
+// Font Weights
+$font-weight-light: 300;
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-bold: 600;
+
+// Font Sizes
+$font-size-h1: 2.375rem; // 38px
+$font-size-h2: 1.75rem;  // 28px
+$font-size-h3: 1.5rem;   // 24px
+$font-size-h4: 1.25rem;  // 20px
+$font-size-h5: 1rem;     // 16px
+$font-size-h6: 0.875rem; // 14px
+$font-size-body1: 0.875rem; // 14px
+$font-size-body2: 0.75rem;  // 12px
+$font-size-caption: 0.75rem; // 12px
+
+// Line Heights
+$line-height-h1: 1.21;
+$line-height-h2: 1.27;
+$line-height-h3: 1.33;
+$line-height-h4: 1.4;
+$line-height-h5: 1.5;
+$line-height-h6: 1.57;
+$line-height-body: 1.57;
+
+// Shadows
+$shadow-1: 0px 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-2: 0px 4px 16px rgba(0, 0, 0, 0.08);
+$shadow-card: 2.939px 4.045px 5px rgba(0, 0, 0, 0.08);
+
+// Gradients (Dashboard Cards)
+$gradient-analytics: linear-gradient(149deg, #1e75bb 57%, #27a8e0 100%);
+
+// Transitions
+$transition-drawer: 225ms cubic-bezier(0, 0, 0.2, 1);
+$transition-standard: 200ms ease-in-out;
+
+// Z-index
+$z-drawer: 1200;
+$z-appbar: 1100;
+$z-modal: 1300;
+$z-tooltip: 1500;

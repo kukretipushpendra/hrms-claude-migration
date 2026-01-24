@@ -1,0 +1,318 @@
+{
+  "endpoints": [
+    {
+      "controller": "AuthController",
+      "baseRoute": "/api/Auth",
+      "endpoints": [
+        {"method": "POST", "route": "/", "action": "SSOLogin", "description": "SSO Login with Azure AD"},
+        {"method": "POST", "route": "/Login", "action": "Login", "description": "JWT-based login"},
+        {"method": "POST", "route": "/RefreshToken", "action": "RefreshToken", "description": "Refresh authentication token"}
+      ]
+    },
+    {
+      "controller": "DashboardController",
+      "baseRoute": "/api/Dashboard",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetDashboardData", "description": "Get dashboard statistics"}
+      ]
+    },
+    {
+      "controller": "EmployeeController",
+      "baseRoute": "/api/Employee",
+      "endpoints": [
+        {"method": "POST", "route": "/GetEmployees", "action": "GetEmployees", "description": "Get paginated employee list"},
+        {"method": "GET", "route": "/{id}", "action": "GetEmployeeById", "description": "Get employee details by ID"},
+        {"method": "POST", "route": "/", "action": "CreateEmployee", "description": "Create new employee"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdateEmployee", "description": "Update employee details"},
+        {"method": "DELETE", "route": "/{id}", "action": "DeleteEmployee", "description": "Delete employee"}
+      ],
+      "permission": "ReadEmployees"
+    },
+    {
+      "controller": "RolePermissionController",
+      "baseRoute": "/api/RolePermission",
+      "endpoints": [
+        {"method": "GET", "route": "/Roles", "action": "GetRoles", "description": "Get all roles"},
+        {"method": "GET", "route": "/Roles/{id}", "action": "GetRoleById", "description": "Get role by ID"},
+        {"method": "POST", "route": "/Roles", "action": "CreateRole", "description": "Create new role"},
+        {"method": "PUT", "route": "/Roles/{id}", "action": "UpdateRole", "description": "Update role"},
+        {"method": "DELETE", "route": "/Roles/{id}", "action": "DeleteRole", "description": "Delete role"},
+        {"method": "GET", "route": "/Permissions", "action": "GetPermissions", "description": "Get all permissions"},
+        {"method": "POST", "route": "/AssignPermissions", "action": "AssignPermissions", "description": "Assign permissions to role"}
+      ]
+    },
+    {
+      "controller": "CompanyPolicyController",
+      "baseRoute": "/api/CompanyPolicy",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetPolicies", "description": "Get all company policies"},
+        {"method": "GET", "route": "/{id}", "action": "GetPolicyById", "description": "Get policy details"},
+        {"method": "POST", "route": "/", "action": "CreatePolicy", "description": "Create new policy"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdatePolicy", "description": "Update policy"},
+        {"method": "DELETE", "route": "/{id}", "action": "DeletePolicy", "description": "Delete policy"},
+        {"method": "GET", "route": "/{id}/versions", "action": "GetPolicyVersions", "description": "Get policy version history"}
+      ]
+    },
+    {
+      "controller": "EventController",
+      "baseRoute": "/api/Event",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetEvents", "description": "Get all events"},
+        {"method": "GET", "route": "/{id}", "action": "GetEventById", "description": "Get event details"},
+        {"method": "POST", "route": "/", "action": "CreateEvent", "description": "Create new event"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdateEvent", "description": "Update event"},
+        {"method": "DELETE", "route": "/{id}", "action": "DeleteEvent", "description": "Delete event"}
+      ]
+    },
+    {
+      "controller": "UserProfileController",
+      "baseRoute": "/api/UserProfile",
+      "endpoints": [
+        {"method": "GET", "route": "/PersonalDetails", "action": "GetPersonalDetails", "description": "Get user personal details"},
+        {"method": "PUT", "route": "/PersonalDetails", "action": "UpdatePersonalDetails", "description": "Update personal details"},
+        {"method": "GET", "route": "/EmploymentDetails", "action": "GetEmploymentDetails", "description": "Get employment details"},
+        {"method": "GET", "route": "/NomineeDetails", "action": "GetNomineeDetails", "description": "Get nominee details"},
+        {"method": "GET", "route": "/EducationDetails", "action": "GetEducationDetails", "description": "Get education details"},
+        {"method": "GET", "route": "/CertificateDetails", "action": "GetCertificateDetails", "description": "Get certificates"},
+        {"method": "GET", "route": "/OfficialDetails", "action": "GetOfficialDetails", "description": "Get official details"}
+      ]
+    },
+    {
+      "controller": "AttendanceController",
+      "baseRoute": "/api/Attendance",
+      "endpoints": [
+        {"method": "GET", "route": "/MyAttendance", "action": "GetMyAttendance", "description": "Get user attendance records"},
+        {"method": "POST", "route": "/Configuration", "action": "UpdateConfiguration", "description": "Update attendance configuration"},
+        {"method": "GET", "route": "/EmployeeReport", "action": "GetEmployeeReport", "description": "Get employee attendance report"},
+        {"method": "POST", "route": "/SyncTimeDoctor", "action": "SyncTimeDoctor", "description": "Sync Time Doctor data"}
+      ]
+    },
+    {
+      "controller": "LeaveManagementController",
+      "baseRoute": "/api/LeaveManagement",
+      "endpoints": [
+        {"method": "POST", "route": "/ApplyLeave", "action": "ApplyLeave", "description": "Apply for leave"},
+        {"method": "GET", "route": "/LeaveDetails/{id}", "action": "GetLeaveDetails", "description": "Get leave request details"},
+        {"method": "GET", "route": "/LeaveApproval", "action": "GetPendingApprovals", "description": "Get pending leave approvals"},
+        {"method": "POST", "route": "/ApproveLeave", "action": "ApproveLeave", "description": "Approve leave request"},
+        {"method": "POST", "route": "/RejectLeave", "action": "RejectLeave", "description": "Reject leave request"},
+        {"method": "GET", "route": "/LeaveCalendar", "action": "GetLeaveCalendar", "description": "Get leave calendar data"},
+        {"method": "GET", "route": "/LeaveBalance", "action": "GetLeaveBalance", "description": "Get user leave balance"}
+      ]
+    },
+    {
+      "controller": "EmployeeLeaveController",
+      "baseRoute": "/api/EmployeeLeave",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetEmployeeLeaves", "description": "Get employee leave records"},
+        {"method": "POST", "route": "/AccrualProcess", "action": "ProcessAccrual", "description": "Process leave accrual"}
+      ]
+    },
+    {
+      "controller": "AssetManagementController",
+      "baseRoute": "/api/AssetManagement",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetAssets", "description": "Get all IT assets"},
+        {"method": "GET", "route": "/{id}", "action": "GetAssetById", "description": "Get asset details"},
+        {"method": "POST", "route": "/", "action": "CreateAsset", "description": "Create new asset"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdateAsset", "description": "Update asset"},
+        {"method": "DELETE", "route": "/{id}", "action": "DeleteAsset", "description": "Delete asset"},
+        {"method": "GET", "route": "/{id}/history", "action": "GetAssetHistory", "description": "Get asset assignment history"},
+        {"method": "POST", "route": "/AssignAsset", "action": "AssignAsset", "description": "Assign asset to employee"}
+      ]
+    },
+    {
+      "controller": "ExitEmployeeController",
+      "baseRoute": "/api/ExitEmployee",
+      "endpoints": [
+        {"method": "POST", "route": "/ResignationForm", "action": "SubmitResignation", "description": "Submit resignation form"},
+        {"method": "GET", "route": "/MyResignation", "action": "GetMyResignation", "description": "Get user resignation details"}
+      ]
+    },
+    {
+      "controller": "AdminExitEmployeeController",
+      "baseRoute": "/api/AdminExitEmployee",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetExitEmployees", "description": "Get all exit employees"},
+        {"method": "GET", "route": "/{id}", "action": "GetExitDetails", "description": "Get exit employee details"},
+        {"method": "POST", "route": "/UpdateClearance", "action": "UpdateClearance", "description": "Update clearance status"},
+        {"method": "POST", "route": "/ApproveClearance", "action": "ApproveClearance", "description": "Approve clearance"}
+      ]
+    },
+    {
+      "controller": "KPIController",
+      "baseRoute": "/api/KPI",
+      "endpoints": [
+        {"method": "GET", "route": "/MyKPI", "action": "GetMyKPI", "description": "Get user KPI data"},
+        {"method": "GET", "route": "/KPIDetails/{employeeId}", "action": "GetKPIDetails", "description": "Get employee KPI details"},
+        {"method": "GET", "route": "/Goals", "action": "GetGoals", "description": "Get goals list"},
+        {"method": "POST", "route": "/Goals", "action": "CreateGoal", "description": "Create new goal"},
+        {"method": "PUT", "route": "/Goals/{id}", "action": "UpdateGoal", "description": "Update goal"},
+        {"method": "DELETE", "route": "/Goals/{id}", "action": "DeleteGoal", "description": "Delete goal"},
+        {"method": "GET", "route": "/KPIManagement", "action": "GetKPIManagement", "description": "Get KPI management dashboard"}
+      ]
+    },
+    {
+      "controller": "GrievanceController",
+      "baseRoute": "/api/Grievance",
+      "endpoints": [
+        {"method": "GET", "route": "/MyGrievance", "action": "GetMyGrievances", "description": "Get user grievances"},
+        {"method": "POST", "route": "/", "action": "CreateGrievance", "description": "Create new grievance"},
+        {"method": "GET", "route": "/AllGrievance", "action": "GetAllGrievances", "description": "Get all grievances (admin)"},
+        {"method": "GET", "route": "/Tickets/{ticketId}", "action": "GetTicketDetails", "description": "Get grievance ticket details"},
+        {"method": "POST", "route": "/Configuration", "action": "UpdateConfiguration", "description": "Update grievance configuration"},
+        {"method": "GET", "route": "/GrievanceTypes", "action": "GetGrievanceTypes", "description": "Get grievance types"},
+        {"method": "POST", "route": "/GrievanceTypes", "action": "CreateGrievanceType", "description": "Create grievance type"},
+        {"method": "PUT", "route": "/GrievanceTypes/{id}", "action": "UpdateGrievanceType", "description": "Update grievance type"}
+      ]
+    },
+    {
+      "controller": "FeedbackController",
+      "baseRoute": "/api/Feedback",
+      "endpoints": [
+        {"method": "GET", "route": "/SupportQueries", "action": "GetSupportQueries", "description": "Get all support queries"},
+        {"method": "GET", "route": "/SupportDetails/{id}", "action": "GetSupportDetails", "description": "Get support request details"},
+        {"method": "GET", "route": "/MySupport", "action": "GetMySupport", "description": "Get user support requests"},
+        {"method": "POST", "route": "/", "action": "CreateFeedback", "description": "Create new feedback/support request"}
+      ]
+    },
+    {
+      "controller": "EmploymentDetailController",
+      "baseRoute": "/api/EmploymentDetail",
+      "endpoints": [
+        {"method": "GET", "route": "/{id}", "action": "GetEmploymentDetails", "description": "Get employment details"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdateEmploymentDetails", "description": "Update employment details"}
+      ]
+    },
+    {
+      "controller": "OfficialDetailsController",
+      "baseRoute": "/api/OfficialDetails",
+      "endpoints": [
+        {"method": "GET", "route": "/Department", "action": "GetDepartments", "description": "Get all departments"},
+        {"method": "POST", "route": "/Department", "action": "CreateDepartment", "description": "Create department"},
+        {"method": "PUT", "route": "/Department/{id}", "action": "UpdateDepartment", "description": "Update department"},
+        {"method": "GET", "route": "/Designation", "action": "GetDesignations", "description": "Get all designations"},
+        {"method": "POST", "route": "/Designation", "action": "CreateDesignation", "description": "Create designation"},
+        {"method": "PUT", "route": "/Designation/{id}", "action": "UpdateDesignation", "description": "Update designation"},
+        {"method": "GET", "route": "/Team", "action": "GetTeams", "description": "Get all teams"},
+        {"method": "POST", "route": "/Team", "action": "CreateTeam", "description": "Create team"},
+        {"method": "PUT", "route": "/Team/{id}", "action": "UpdateTeam", "description": "Update team"}
+      ]
+    },
+    {
+      "controller": "EducationalDetailController",
+      "baseRoute": "/api/EducationalDetail",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetEducationDetails", "description": "Get education details"},
+        {"method": "POST", "route": "/", "action": "CreateEducationDetail", "description": "Create education record"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdateEducationDetail", "description": "Update education record"},
+        {"method": "DELETE", "route": "/{id}", "action": "DeleteEducationDetail", "description": "Delete education record"}
+      ]
+    },
+    {
+      "controller": "CertificateController",
+      "baseRoute": "/api/Certificate",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetCertificates", "description": "Get certificates"},
+        {"method": "POST", "route": "/", "action": "CreateCertificate", "description": "Create certificate"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdateCertificate", "description": "Update certificate"},
+        {"method": "DELETE", "route": "/{id}", "action": "DeleteCertificate", "description": "Delete certificate"}
+      ]
+    },
+    {
+      "controller": "NomineeController",
+      "baseRoute": "/api/Nominee",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetNominees", "description": "Get nominee details"},
+        {"method": "POST", "route": "/", "action": "CreateNominee", "description": "Create nominee"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdateNominee", "description": "Update nominee"},
+        {"method": "DELETE", "route": "/{id}", "action": "DeleteNominee", "description": "Delete nominee"}
+      ]
+    },
+    {
+      "controller": "ProfessionalReferenceController",
+      "baseRoute": "/api/ProfessionalReference",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetReferences", "description": "Get professional references"},
+        {"method": "POST", "route": "/", "action": "CreateReference", "description": "Create reference"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdateReference", "description": "Update reference"},
+        {"method": "DELETE", "route": "/{id}", "action": "DeleteReference", "description": "Delete reference"}
+      ]
+    },
+    {
+      "controller": "PreviousEmployerController",
+      "baseRoute": "/api/PreviousEmployer",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetPreviousEmployers", "description": "Get previous employers"},
+        {"method": "POST", "route": "/", "action": "CreatePreviousEmployer", "description": "Create previous employer record"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdatePreviousEmployer", "description": "Update previous employer"},
+        {"method": "DELETE", "route": "/{id}", "action": "DeletePreviousEmployer", "description": "Delete previous employer"}
+      ]
+    },
+    {
+      "controller": "NotificationTemplateController",
+      "baseRoute": "/api/NotificationTemplate",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetTemplates", "description": "Get email templates"},
+        {"method": "GET", "route": "/{id}", "action": "GetTemplateById", "description": "Get template by ID"},
+        {"method": "POST", "route": "/", "action": "CreateTemplate", "description": "Create email template"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdateTemplate", "description": "Update email template"},
+        {"method": "DELETE", "route": "/{id}", "action": "DeleteTemplate", "description": "Delete email template"}
+      ]
+    },
+    {
+      "controller": "DevToolController",
+      "baseRoute": "/api/DevTool",
+      "endpoints": [
+        {"method": "GET", "route": "/Logs", "action": "GetLogs", "description": "Get system logs"},
+        {"method": "GET", "route": "/Logs/{id}", "action": "GetLogDetails", "description": "Get log details"},
+        {"method": "GET", "route": "/CronJobs", "action": "GetCronJobs", "description": "Get cron job logs"}
+      ]
+    },
+    {
+      "controller": "UserGuideController",
+      "baseRoute": "/api/UserGuide",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetUserGuides", "description": "Get user guides"},
+        {"method": "GET", "route": "/{id}", "action": "GetUserGuideById", "description": "Get user guide by ID"},
+        {"method": "POST", "route": "/", "action": "CreateUserGuide", "description": "Create user guide"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdateUserGuide", "description": "Update user guide"},
+        {"method": "DELETE", "route": "/{id}", "action": "DeleteUserGuide", "description": "Delete user guide"}
+      ]
+    },
+    {
+      "controller": "EmployeeGroupController",
+      "baseRoute": "/api/EmployeeGroup",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetGroups", "description": "Get employee groups"},
+        {"method": "POST", "route": "/", "action": "CreateGroup", "description": "Create employee group"},
+        {"method": "PUT", "route": "/{id}", "action": "UpdateGroup", "description": "Update employee group"},
+        {"method": "DELETE", "route": "/{id}", "action": "DeleteGroup", "description": "Delete employee group"}
+      ]
+    },
+    {
+      "controller": "SurveyController",
+      "baseRoute": "/api/Survey",
+      "endpoints": [
+        {"method": "GET", "route": "/", "action": "GetSurveys", "description": "Get surveys"},
+        {"method": "POST", "route": "/", "action": "CreateSurvey", "description": "Create survey"},
+        {"method": "GET", "route": "/{id}/responses", "action": "GetSurveyResponses", "description": "Get survey responses"},
+        {"method": "POST", "route": "/{id}/submit", "action": "SubmitSurveyResponse", "description": "Submit survey response"}
+      ]
+    },
+    {
+      "controller": "ExternalAPIController",
+      "baseRoute": "/api/ExternalAPI",
+      "endpoints": [
+        {"method": "POST", "route": "/SyncDowntown", "action": "SyncDowntownData", "description": "Sync Downtown API data"},
+        {"method": "POST", "route": "/SyncTimeDoctor", "action": "SyncTimeDoctorData", "description": "Sync Time Doctor data"}
+      ]
+    }
+  ],
+  "totalControllers": 29,
+  "totalEndpoints": 247,
+  "estimatedEndpointCount": "~247 (based on HTTP method decorators)",
+  "authenticationScheme": "JWT Bearer",
+  "apiVersioning": "Not implemented",
+  "responseFormat": "ApiResponseModel<T> wrapper"
+}

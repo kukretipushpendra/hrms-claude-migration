@@ -37,12 +37,24 @@ const routes: RouteRecordRaw[] = [
     component: ProfileView,
     meta: { requiresAuth: true, title: 'My Profile' },
   },
-  // Placeholder routes for navigation items (to be implemented)
+  // Roles routes
   {
     path: '/roles',
     name: 'roles',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
+    component: () => import('@/views/roles/RolesListView.vue'),
     meta: { requiresAuth: true, title: 'Roles' },
+  },
+  {
+    path: '/roles/add',
+    name: 'role-add',
+    component: () => import('@/views/roles/RolePermissionsView.vue'),
+    meta: { requiresAuth: true, title: 'Create Role' },
+  },
+  {
+    path: '/roles/edit/:id',
+    name: 'role-edit',
+    component: () => import('@/views/roles/RolePermissionsView.vue'),
+    meta: { requiresAuth: true, title: 'Edit Role' },
   },
   {
     path: '/company-policy',

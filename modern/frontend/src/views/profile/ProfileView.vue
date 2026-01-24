@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue';
 import httpClient from '@/services/api/http-client';
 
 // Profile data
-const profile = ref<any>(null);
+const profile = ref<Record<string, unknown> | null>(null);
 const loading = ref(true);
 const error = ref<string | null>(null);
 

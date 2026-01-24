@@ -329,3 +329,80 @@ Log this prompt to Prompts.md: [your prompt description]
 **Result:** [Pending - update after completion]
 
 ---
+
+### Prompt 20: User Prompt
+**Time:** 2026-01-25 00:10:19
+
+```
+{"session_id":"d64dbe98-c1d9-4dc2-b8ee-4820a7778a94","transcript_path":"C:\\Users\\PushpendraKukreti\\.claude\\projects\\D--projects-HRMS-MIGRATION-CLAUDE-hrms-claude-migration\\d64dbe98-c1d9-4dc2-b8ee-4820a7778a94.jsonl","cwd":"D:\\projects\\HRMS-MIGRATION-CLAUDE\\hrms-claude-migration","permission_mode":"default","hook_event_name":"UserPromptSubmit","prompt":"yes, mark them as complete"}
+```
+
+**Result:** [Pending - update after completion]
+
+---
+
+### Prompt 21: User Prompt
+**Time:** 2026-01-25 00:15:00
+
+```
+{"session_id":"d64dbe98-c1d9-4dc2-b8ee-4820a7778a94","transcript_path":"C:\\Users\\PushpendraKukreti\\.claude\\projects\\D--projects-HRMS-MIGRATION-CLAUDE-hrms-claude-migration\\d64dbe98-c1d9-4dc2-b8ee-4820a7778a94.jsonl","cwd":"D:\\projects\\HRMS-MIGRATION-CLAUDE\\hrms-claude-migration","permission_mode":"default","hook_event_name":"UserPromptSubmit","prompt":"/migrate-batch "}
+```
+
+**Result:** [Pending - update after completion]
+
+---
+
+### Prompt 22: User Prompt
+**Time:** 2026-01-25 00:15:15
+
+```
+{"session_id":"d64dbe98-c1d9-4dc2-b8ee-4820a7778a94","transcript_path":"C:\\Users\\PushpendraKukreti\\.claude\\projects\\D--projects-HRMS-MIGRATION-CLAUDE-hrms-claude-migration\\d64dbe98-c1d9-4dc2-b8ee-4820a7778a94.jsonl","cwd":"D:\\projects\\HRMS-MIGRATION-CLAUDE\\hrms-claude-migration","permission_mode":"default","hook_event_name":"UserPromptSubmit","prompt":"/migrate-batch 5 "}
+```
+
+**Result:** [Pending - update after completion]
+
+---
+
+### Prompt 23: User Prompt
+**Time:** 2026-01-25 00:17:38
+
+```
+{"session_id":"d64dbe98-c1d9-4dc2-b8ee-4820a7778a94","transcript_path":"C:\\Users\\PushpendraKukreti\\.claude\\projects\\D--projects-HRMS-MIGRATION-CLAUDE-hrms-claude-migration\\d64dbe98-c1d9-4dc2-b8ee-4820a7778a94.jsonl","cwd":"D:\\projects\\HRMS-MIGRATION-CLAUDE\\hrms-claude-migration","permission_mode":"default","hook_event_name":"UserPromptSubmit","prompt":"before continuing please not down below git commands to do commit for each feature implementation, for each migrate-next or migrate-batch step by step when each feature gets implemeted and qa done, it should move that each feature to git by using below commands format:\n\ngit add .\ngit commit -m"}
+```
+
+**Result:** [Pending - update after completion]
+
+---
+
+### Prompt 24: User Prompt
+**Time:** 2026-01-25 00:18:35
+
+```
+{"session_id":"d64dbe98-c1d9-4dc2-b8ee-4820a7778a94","transcript_path":"C:\\Users\\PushpendraKukreti\\.claude\\projects\\D--projects-HRMS-MIGRATION-CLAUDE-hrms-claude-migration\\d64dbe98-c1d9-4dc2-b8ee-4820a7778a94.jsonl","cwd":"D:\\projects\\HRMS-MIGRATION-CLAUDE\\hrms-claude-migration","permission_mode":"default","hook_event_name":"UserPromptSubmit","prompt":"before continuing please not down below git commands to do commit for each feature implementation, for each migrate-next or migrate-batch step by step when each feature gets implemeted and qa done, it should move that each feature to git by using below commands format:\n\ngit add .\ngit commit -m'<COMMIT_MESSAGE>' //where COMMIT_MESSAGE should be specific to that feature\ngit push"}
+```
+
+**Result:** [Pending - update after completion]
+
+---
+
+### Prompt 25: User Prompt
+**Time:** 2026-01-25 00:19:56
+
+```
+{"session_id":"d64dbe98-c1d9-4dc2-b8ee-4820a7778a94","transcript_path":"C:\\Users\\PushpendraKukreti\\.claude\\projects\\D--projects-HRMS-MIGRATION-CLAUDE-hrms-claude-migration\\d64dbe98-c1d9-4dc2-b8ee-4820a7778a94.jsonl","cwd":"D:\\projects\\HRMS-MIGRATION-CLAUDE\\hrms-claude-migration","permission_mode":"default","hook_event_name":"UserPromptSubmit","prompt":"yes"}
+```
+
+**Result:** [Pending - update after completion]
+
+---
+
+### Prompt 26: User Prompt
+**Time:** 2026-01-25 00:31:26
+
+```
+{"session_id":"d64dbe98-c1d9-4dc2-b8ee-4820a7778a94","transcript_path":"C:\\Users\\PushpendraKukreti\\.claude\\projects\\D--projects-HRMS-MIGRATION-CLAUDE-hrms-claude-migration\\d64dbe98-c1d9-4dc2-b8ee-4820a7778a94.jsonl","cwd":"D:\\projects\\HRMS-MIGRATION-CLAUDE\\hrms-claude-migration","permission_mode":"default","hook_event_name":"UserPromptSubmit","prompt":"please continue"}
+```
+
+**Result:** [Pending - update after completion]
+
+---

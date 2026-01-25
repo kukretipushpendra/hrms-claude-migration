@@ -25,11 +25,11 @@ TOTAL_COMPONENTS: 632
 
 ## Progress - Frontend Migration (Phase 1)
 TOTAL_FRONTEND_FEATURES: 100+
-FRONTEND_COMPLETED: 5
+FRONTEND_COMPLETED: 10
 FRONTEND_IN_PROGRESS: 0
 FRONTEND_HUMAN_REVIEW: 0
 FRONTEND_READY_FOR_QA: 0
-FRONTEND_PERCENT: 5%
+FRONTEND_PERCENT: 10%
 
 ## Progress - Backend Migration (Phase 2)
 TOTAL_BACKEND_FEATURES: 0 (not started)
@@ -71,14 +71,14 @@ BACKEND_FOUNDATION_COMPLETE: false (Phase 2)
 
 ### Wave 1: Core (Current)
 - [x] dashboard (APPROVED 2026-01-25)
-- [ ] roles-permissions
+- [x] roles-permissions (APPROVED 2026-01-25)
 - [x] profile (page created)
 
 ### Wave 2: Primary Features
-- [ ] employee-management
-- [ ] company-policy
-- [ ] events
-- [ ] employment-details
+- [x] employee-management (APPROVED 2026-01-25)
+- [x] company-policy (APPROVED 2026-01-25)
+- [x] events (APPROVED 2026-01-25)
+- [x] employment-details (APPROVED 2026-01-25)
 
 ### Wave 3: Secondary Features
 - [ ] education-certificates
@@ -165,6 +165,11 @@ CURRENT_PARALLEL: 0
 2026-01-24 | integration-qa | frontend-dashboard | PASSED - All 7 dashboard endpoints verified
 2026-01-25 | human-review | frontend-auth | APPROVED - Foundation complete
 2026-01-25 | human-review | frontend-dashboard | APPROVED - Foundation complete
+2026-01-25 | migrate-batch | roles-permissions | COMPLETE - Frontend migrated
+2026-01-25 | migrate-batch | company-policy | COMPLETE - Frontend migrated
+2026-01-25 | migrate-batch | events | COMPLETE - Frontend migrated
+2026-01-25 | migrate-batch | employee-management | COMPLETE - Frontend migrated
+2026-01-25 | migrate-batch | employment-details | COMPLETE - Frontend migrated
 ```
 
 LAST_UPDATE: 2026-01-25

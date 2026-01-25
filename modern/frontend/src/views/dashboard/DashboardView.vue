@@ -56,19 +56,13 @@ const isEmployee = computed(() => {
 });
 
 // Check permissions for tiles
-const hasAttendancePermission = computed(() =>
-  authStore.hasPermission('ATTENDANCE.READ')
-);
+const hasAttendancePermission = computed(() => authStore.hasPermission('ATTENDANCE.READ'));
 const hasLeavePermission = computed(() => authStore.hasPermission('LEAVE.READ'));
-const hasCompanyPolicyPermission = computed(() =>
-  authStore.hasPermission('COMPANY_POLICY.READ')
-);
+const hasCompanyPolicyPermission = computed(() => authStore.hasPermission('COMPANY_POLICY.READ'));
 const hasEventsPermission = computed(() => authStore.hasPermission('EVENTS.READ'));
 
 // Show "Apply New" tile if attendance OR leave enabled
-const showApplyNewTile = computed(
-  () => hasAttendancePermission.value || hasLeavePermission.value
-);
+const showApplyNewTile = computed(() => hasAttendancePermission.value || hasLeavePermission.value);
 
 // Fetch dashboard data using separate endpoints (matching legacy)
 async function fetchDashboardData() {
@@ -77,11 +71,7 @@ async function fetchDashboardData() {
 
   try {
     // Fetch all data in parallel (like legacy)
-    const [
-      birthdayRes,
-      workAnniversaryRes,
-      holidaysRes,
-    ] = await Promise.all([
+    const [birthdayRes, workAnniversaryRes, holidaysRes] = await Promise.all([
       getBirthdayList(),
       getWorkAnniversaryList(),
       getUpcomingHolidayList(),
@@ -224,9 +214,7 @@ onMounted(() => {
         <v-alert type="error" variant="tonal" class="mb-4">
           {{ error }}
           <template #append>
-            <v-btn variant="text" size="small" @click="fetchDashboardData">
-              Retry
-            </v-btn>
+            <v-btn variant="text" size="small" @click="fetchDashboardData"> Retry </v-btn>
           </template>
         </v-alert>
       </v-col>
@@ -304,9 +292,7 @@ onMounted(() => {
             icon="mdi-calendar-star"
           >
             <template #content>
-              <div v-if="upcomingHolidays.length === 0" class="no-data">
-                No upcoming holidays
-              </div>
+              <div v-if="upcomingHolidays.length === 0" class="no-data">No upcoming holidays</div>
               <v-list v-else density="compact" class="pa-0">
                 <v-list-item
                   v-for="(item, index) in upcomingHolidays.slice(0, 5)"
@@ -327,11 +313,7 @@ onMounted(() => {
 
         <!-- Apply New (if attendance OR leave enabled) -->
         <v-col v-if="showApplyNewTile" cols="12" md="4">
-          <DashboardTile
-            title="Apply New"
-            background-class="background-2"
-            icon="mdi-plus-circle"
-          >
+          <DashboardTile title="Apply New" background-class="background-2" icon="mdi-plus-circle">
             <template #content>
               <div class="d-flex flex-column gap-3">
                 <v-btn
@@ -361,21 +343,11 @@ onMounted(() => {
 
         <!-- Birthdays -->
         <v-col cols="12" md="4">
-          <DashboardTile
-            title="Birthdays"
-            background-class="background-3"
-            icon="mdi-cake"
-          >
+          <DashboardTile title="Birthdays" background-class="background-3" icon="mdi-cake">
             <template #content>
-              <div v-if="birthdays.length === 0" class="no-data">
-                No birthdays this week
-              </div>
+              <div v-if="birthdays.length === 0" class="no-data">No birthdays this week</div>
               <v-list v-else density="compact" class="pa-0">
-                <v-list-item
-                  v-for="item in birthdays.slice(0, 5)"
-                  :key="item.id"
-                  class="px-0"
-                >
+                <v-list-item v-for="item in birthdays.slice(0, 5)" :key="item.id" class="px-0">
                   <template #prepend>
                     <v-avatar size="32" color="warning" class="mr-3">
                       <v-img v-if="item.profileImagePath" :src="item.profileImagePath" />
@@ -412,9 +384,7 @@ onMounted(() => {
                   class="px-0"
                 >
                   <template #prepend>
-                    <v-icon size="20" color="primary" class="mr-2">
-                      mdi-file-pdf-box
-                    </v-icon>
+                    <v-icon size="20" color="primary" class="mr-2"> mdi-file-pdf-box </v-icon>
                   </template>
                   <v-list-item-title class="text-body-2">
                     {{ item.name }}
@@ -436,9 +406,7 @@ onMounted(() => {
             icon="mdi-calendar-text"
           >
             <template #content>
-              <div v-if="upcomingEventsList.length === 0" class="no-data">
-                No upcoming events
-              </div>
+              <div v-if="upcomingEventsList.length === 0" class="no-data">No upcoming events</div>
               <v-list v-else density="compact" class="pa-0">
                 <v-list-item
                   v-for="item in upcomingEventsList.slice(0, 5)"

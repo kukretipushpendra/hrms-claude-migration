@@ -34,7 +34,8 @@ async function handleSSOLogin() {
     // 4. Send token to .NET backend via authStore.loginWithSSO(msAuthToken)
 
     // For now, show configuration message
-    errorMessage.value = 'Microsoft SSO is being configured. Please use internal login at /internal-login';
+    errorMessage.value =
+      'Microsoft SSO is being configured. Please use internal login at /internal-login';
 
     // Once MSAL is integrated:
     // const msalInstance = await import('@azure/msal-browser');
@@ -59,17 +60,9 @@ const isLoading = computed(() => ssoLoading.value);
       <v-container fluid class="fill-height pa-0">
         <v-row class="fill-height ma-0">
           <!-- Left Column - Image (hidden on mobile) -->
-          <v-col
-            v-if="smAndUp"
-            cols="4"
-            class="login-sidebar d-flex align-center justify-center"
-          >
+          <v-col v-if="smAndUp" cols="4" class="login-sidebar d-flex align-center justify-center">
             <div class="login-sidebar-image">
-              <img
-                src="/login-left-img.jpg"
-                alt="HRMS"
-                class="login-image"
-              />
+              <img src="/login-left-img.jpg" alt="HRMS" class="login-image" />
             </div>
           </v-col>
 
@@ -123,12 +116,7 @@ const isLoading = computed(() => ssoLoading.value);
                   :disabled="isLoading"
                   @click="handleSSOLogin"
                 >
-                  <img
-                    src="/microsoft365.svg"
-                    alt="Microsoft"
-                    height="30"
-                    class="mr-3"
-                  />
+                  <img src="/microsoft365.svg" alt="Microsoft" height="30" class="mr-3" />
                   <span class="font-weight-bold">Sign In with Microsoft</span>
                 </v-btn>
               </div>

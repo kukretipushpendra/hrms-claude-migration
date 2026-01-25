@@ -150,13 +150,7 @@ watch(
 <template>
   <v-app>
     <!-- App Bar - 60px height matching legacy -->
-    <v-app-bar
-      :height="HEADER_HEIGHT"
-      flat
-      class="app-header"
-      color="white"
-      :border="true"
-    >
+    <v-app-bar :height="HEADER_HEIGHT" flat class="app-header" color="white" :border="true">
       <!-- Logo (shown when drawer is mini/closed) -->
       <div v-if="isRail" class="header-logo mx-2">
         <img src="/pio-logo-dark.svg" alt="Logo" height="36" width="36" />
@@ -197,12 +191,7 @@ watch(
         transition="slide-y-transition"
       >
         <template #activator="{ props }">
-          <v-btn
-            v-bind="props"
-            variant="text"
-            class="profile-btn text-none"
-            height="48"
-          >
+          <v-btn v-bind="props" variant="text" class="profile-btn text-none" height="48">
             <v-avatar color="primary" size="38" class="mr-2">
               <span class="text-subtitle-2 text-white">{{ userInitials }}</span>
             </v-avatar>
@@ -265,9 +254,7 @@ watch(
             :width="isRail ? 35 : 40"
             :height="isRail ? 35 : 40"
           />
-          <span v-if="!isRail" class="ml-3 text-h6 font-weight-bold text-dark">
-            HRMS
-          </span>
+          <span v-if="!isRail" class="ml-3 text-h6 font-weight-bold text-dark"> HRMS </span>
         </div>
       </div>
 
@@ -315,12 +302,7 @@ watch(
           </template>
 
           <!-- Simple item -->
-          <v-list-item
-            v-else
-            :to="item.url"
-            :active="route.path === item.url"
-            class="nav-item"
-          >
+          <v-list-item v-else :to="item.url" :active="route.path === item.url" class="nav-item">
             <template #prepend>
               <v-icon>{{ item.icon }}</v-icon>
             </template>

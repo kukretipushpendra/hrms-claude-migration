@@ -15,20 +15,12 @@ const page = ref(1);
 const itemsPerPage = ref(10);
 const searchTitle = ref('');
 const searchStatus = ref('');
-const sortBy = ref<{ key: string; order: 'asc' | 'desc' }[]>([
-  { key: 'createdOn', order: 'desc' },
-]);
+const sortBy = ref<{ key: string; order: 'asc' | 'desc' }[]>([{ key: 'createdOn', order: 'desc' }]);
 
 // Permission checks
-const hasReadPermission = computed(() =>
-  authStore.hasPermission('Read.CompanyPolicy')
-);
-const hasCreatePermission = computed(() =>
-  authStore.hasPermission('Create.CompanyPolicy')
-);
-const hasUpdatePermission = computed(() =>
-  authStore.hasPermission('Update.CompanyPolicy')
-);
+const hasReadPermission = computed(() => authStore.hasPermission('Read.CompanyPolicy'));
+const hasCreatePermission = computed(() => authStore.hasPermission('Create.CompanyPolicy'));
+const hasUpdatePermission = computed(() => authStore.hasPermission('Update.CompanyPolicy'));
 
 // Data table headers
 const headers = computed(() => {
@@ -234,20 +226,12 @@ onMounted(() => {
                 class="text-primary text-decoration-none"
                 @click.prevent="viewPolicy(item.id)"
               >
-                {{
-                  item.name.length > 30
-                    ? item.name.substring(0, 30) + '...'
-                    : item.name
-                }}
+                {{ item.name.length > 30 ? item.name.substring(0, 30) + '...' : item.name }}
               </a>
             </template>
           </v-tooltip>
           <span v-else>
-            {{
-              item.name.length > 30
-                ? item.name.substring(0, 30) + '...'
-                : item.name
-            }}
+            {{ item.name.length > 30 ? item.name.substring(0, 30) + '...' : item.name }}
           </span>
         </template>
 

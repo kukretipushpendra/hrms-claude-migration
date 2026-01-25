@@ -84,9 +84,7 @@ onMounted(() => {
       <!-- Details Card -->
       <v-col cols="12" md="8">
         <v-card class="main-card">
-          <v-card-title class="border-b">
-            Personal Information
-          </v-card-title>
+          <v-card-title class="border-b"> Personal Information </v-card-title>
           <v-card-text class="pa-6">
             <v-row>
               <v-col cols="12" sm="6">

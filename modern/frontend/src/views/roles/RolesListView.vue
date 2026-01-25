@@ -11,9 +11,7 @@ const authStore = useAuthStore();
 // State
 const data = ref<RoleType[]>([]);
 const searchQuery = ref('');
-const sortBy = ref<{ key: string; order: 'asc' | 'desc' }[]>([
-  { key: 'roleName', order: 'asc' },
-]);
+const sortBy = ref<{ key: string; order: 'asc' | 'desc' }[]>([{ key: 'roleName', order: 'asc' }]);
 const page = ref(1);
 const itemsPerPage = ref(10);
 const totalRecords = ref(0);

@@ -19,12 +19,8 @@ const loading = ref(false);
 const publishing = ref(false);
 
 // Permission checks
-const hasReadPermission = computed(() =>
-  authStore.hasPermission('Read.CompanyPolicy')
-);
-const hasUpdatePermission = computed(() =>
-  authStore.hasPermission('Update.CompanyPolicy')
-);
+const hasReadPermission = computed(() => authStore.hasPermission('Read.CompanyPolicy'));
+const hasUpdatePermission = computed(() => authStore.hasPermission('Update.CompanyPolicy'));
 
 // Document URL
 const documentUrl = computed(() => {

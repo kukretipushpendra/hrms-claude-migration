@@ -49,8 +49,7 @@ async function handleSubmit() {
     const redirect = (route.query.redirect as string) || '/dashboard';
     router.push(redirect);
   } catch (error) {
-    errorMessage.value =
-      error instanceof Error ? error.message : 'Login failed. Please try again.';
+    errorMessage.value = error instanceof Error ? error.message : 'Login failed. Please try again.';
   }
 }
 
@@ -64,17 +63,9 @@ const isLoading = computed(() => authStore.loading);
       <v-container fluid class="fill-height pa-0">
         <v-row class="fill-height ma-0">
           <!-- Left Column - Image (hidden on mobile) -->
-          <v-col
-            v-if="smAndUp"
-            cols="4"
-            class="login-sidebar d-flex align-center justify-center"
-          >
+          <v-col v-if="smAndUp" cols="4" class="login-sidebar d-flex align-center justify-center">
             <div class="login-sidebar-image">
-              <img
-                src="/login-left-img.jpg"
-                alt="HRMS"
-                class="login-image"
-              />
+              <img src="/login-left-img.jpg" alt="HRMS" class="login-image" />
             </div>
           </v-col>
 

@@ -114,14 +114,18 @@ export const useAuthStore = defineStore('auth', () => {
     try {
       // Include X-API_KEY header required by .NET backend for internal user login
       // CRITICAL: .NET expects capitalized field names (Email, Password)
-      const response = await httpClient.post<ApiResponse<UserData>>('/Auth/Login', {
-        Email: credentials.email,
-        Password: credentials.password,
-      }, {
-        headers: {
-          'X-API_KEY': API_KEY,
+      const response = await httpClient.post<ApiResponse<UserData>>(
+        '/Auth/Login',
+        {
+          Email: credentials.email,
+          Password: credentials.password,
         },
-      });
+        {
+          headers: {
+            'X-API_KEY': API_KEY,
+          },
+        }
+      );
 
       const userData = response.data.result;
 
@@ -200,7 +204,9 @@ export const useAuthStore = defineStore('auth', () => {
       }
 
       // If not in localStorage, fetch from API
-      const response = await httpClient.get<ApiResponse<UserData>>('/UserProfile/GetPersonalDetail');
+      const response = await httpClient.get<ApiResponse<UserData>>(
+        '/UserProfile/GetPersonalDetail'
+      );
       if (response.data.result) {
         user.value = mapUserDataToUser(response.data.result);
         localStorage.setItem('userData', JSON.stringify(user.value));

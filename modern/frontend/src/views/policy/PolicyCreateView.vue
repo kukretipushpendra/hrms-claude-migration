@@ -32,14 +32,10 @@ const emailConfirmed = ref(false);
 
 // Check if edit mode
 const isEditMode = computed(() => !!route.params.id);
-const policyId = computed(() =>
-  route.params.id ? Number(route.params.id) : null
-);
+const policyId = computed(() => (route.params.id ? Number(route.params.id) : null));
 
 // Permission checks
-const hasUpdatePermission = computed(() =>
-  authStore.hasPermission('Update.CompanyPolicy')
-);
+const hasUpdatePermission = computed(() => authStore.hasPermission('Update.CompanyPolicy'));
 
 // Validation schema
 const schema = toTypedSchema(
@@ -242,9 +238,7 @@ onMounted(async () => {
         <v-btn icon variant="text" @click="handleBack">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
-        <h2 class="text-h5">
-          {{ isEditMode ? 'Edit' : 'Add' }} Policy Documents
-        </h2>
+        <h2 class="text-h5">{{ isEditMode ? 'Edit' : 'Add' }} Policy Documents</h2>
       </v-card-title>
 
       <v-divider />
@@ -364,17 +358,10 @@ onMounted(async () => {
           <!-- Action Buttons -->
           <v-row class="mt-4">
             <v-col cols="12" class="d-flex justify-center gap-2">
-              <v-btn
-                type="submit"
-                color="primary"
-                :loading="saving"
-                min-width="120"
-              >
+              <v-btn type="submit" color="primary" :loading="saving" min-width="120">
                 {{ saving ? 'Saving...' : isEditMode ? 'Update' : 'Save' }}
               </v-btn>
-              <v-btn variant="outlined" @click="handleReset" min-width="120">
-                Reset
-              </v-btn>
+              <v-btn variant="outlined" @click="handleReset" min-width="120"> Reset </v-btn>
             </v-col>
           </v-row>
         </form>
@@ -393,9 +380,8 @@ onMounted(async () => {
       <v-card>
         <v-card-title>Send Email Notification?</v-card-title>
         <v-card-text>
-          You are about to send an email notification to affected users when you save
-          these changes. This may notify a large audience. Are you sure you want to
-          proceed?
+          You are about to send an email notification to affected users when you save these changes.
+          This may notify a large audience. Are you sure you want to proceed?
         </v-card-text>
         <v-card-actions>
           <v-spacer />

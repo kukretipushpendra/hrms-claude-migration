@@ -20,9 +20,7 @@ function goBack() {
           <v-col cols="12" sm="8" md="6" lg="4" class="text-center">
             <!-- Error Icon -->
             <div class="error-icon mb-6">
-              <v-icon size="120" color="grey-400">
-                mdi-alert-circle-outline
-              </v-icon>
+              <v-icon size="120" color="grey-400"> mdi-alert-circle-outline </v-icon>
             </div>
 
             <!-- Error Code -->
@@ -32,27 +30,18 @@ function goBack() {
             <h2 class="error-title mb-4">Page Not Found</h2>
 
             <p class="error-description mb-8">
-              The page you are looking for might have been removed, had its name
-              changed, or is temporarily unavailable.
+              The page you are looking for might have been removed, had its name changed, or is
+              temporarily unavailable.
             </p>
 
             <!-- Action Buttons -->
             <div class="d-flex justify-center gap-3">
-              <v-btn
-                color="primary"
-                size="large"
-                @click="goHome"
-              >
+              <v-btn color="primary" size="large" @click="goHome">
                 <v-icon start>mdi-home</v-icon>
                 Go to Dashboard
               </v-btn>
 
-              <v-btn
-                variant="outlined"
-                color="primary"
-                size="large"
-                @click="goBack"
-              >
+              <v-btn variant="outlined" color="primary" size="large" @click="goBack">
                 <v-icon start>mdi-arrow-left</v-icon>
                 Go Back
               </v-btn>

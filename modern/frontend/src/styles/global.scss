@@ -189,13 +189,27 @@ body {
   border-radius: 12px;
   min-height: 300px;
 
-  &.background-0 { background-color: #fff5f5; }
-  &.background-1 { background-color: #f0f9ff; }
-  &.background-2 { background-color: #f0fdf4; }
-  &.background-3 { background-color: #fef3c7; }
-  &.background-4 { background-color: #faf5ff; }
-  &.background-5 { background-color: #ecfeff; }
-  &.background-6 { background-color: #fff1f2; }
+  &.background-0 {
+    background-color: #fff5f5;
+  }
+  &.background-1 {
+    background-color: #f0f9ff;
+  }
+  &.background-2 {
+    background-color: #f0fdf4;
+  }
+  &.background-3 {
+    background-color: #fef3c7;
+  }
+  &.background-4 {
+    background-color: #faf5ff;
+  }
+  &.background-5 {
+    background-color: #ecfeff;
+  }
+  &.background-6 {
+    background-color: #fff1f2;
+  }
 }
 
 // Navigation Drawer Styles
@@ -240,7 +254,8 @@ body {
 .page-header {
   margin-bottom: 24px;
 
-  h1, h2 {
+  h1,
+  h2 {
     color: $secondary-dark;
     font-weight: $font-weight-bold;
   }

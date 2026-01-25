@@ -32,9 +32,7 @@ export async function getCompanyPolicies(
  * GET /CompanyPolicy/GetCompanyPolicyById?id={id}
  * Requires: Read.CompanyPolicy permission
  */
-export async function getCompanyPolicyById(
-  id: number
-): Promise<ApiResponse<CompanyPolicyDetail>> {
+export async function getCompanyPolicyById(id: number): Promise<ApiResponse<CompanyPolicyDetail>> {
   const response = await httpClient.get<ApiResponse<CompanyPolicyDetail>>(
     `${baseRoute}/GetCompanyPolicyById`,
     { params: { id } }
@@ -133,13 +131,10 @@ export async function updateCompanyPolicy(
  * PUT /CompanyPolicy/PublishCompanyPolicy
  * Requires: Update.CompanyPolicy permission
  */
-export async function publishCompanyPolicy(
-  companyPolicyId: number
-): Promise<ApiResponse<null>> {
-  const response = await httpClient.put<ApiResponse<null>>(
-    `${baseRoute}/PublishCompanyPolicy`,
-    { companyPolicyId }
-  );
+export async function publishCompanyPolicy(companyPolicyId: number): Promise<ApiResponse<null>> {
+  const response = await httpClient.put<ApiResponse<null>>(`${baseRoute}/PublishCompanyPolicy`, {
+    companyPolicyId,
+  });
   return response.data;
 }
 

@@ -20,9 +20,10 @@ const baseRoute = '/Dashboard';
  */
 export async function getEmployeesCount(params: GetEmployeeCountParams) {
   // .NET expects null (not empty string) for DateOnly? when using days filter
-  const requestBody = params.days && params.days > 0
-    ? { days: params.days, from: null, to: null }
-    : { days: 0, from: params.from || null, to: params.to || null };
+  const requestBody =
+    params.days && params.days > 0
+      ? { days: params.days, from: null, to: null }
+      : { days: 0, from: params.from || null, to: params.to || null };
 
   const response = await httpClient.post<ApiResponse<EmployeeCount>>(
     `${baseRoute}/GetEmployeesCount`,
@@ -61,9 +62,7 @@ export async function getWorkAnniversaryList() {
  * No permission required
  */
 export async function getHolidayList() {
-  const response = await httpClient.get<ApiResponse<HolidayResult>>(
-    `${baseRoute}/GetHolidayList`
-  );
+  const response = await httpClient.get<ApiResponse<HolidayResult>>(`${baseRoute}/GetHolidayList`);
   return response.data;
 }
 
@@ -96,17 +95,16 @@ export async function getUpcomingEvents() {
  * POST /Dashboard/GetPublishedCompanyPolicies
  * Requires: ReadCompanyPolicy permission
  */
-export async function getPublishedCompanyPolicies(
-  params: GetPublishedCompanyPoliciesParams
-) {
+export async function getPublishedCompanyPolicies(params: GetPublishedCompanyPoliciesParams) {
   // .NET expects null (not empty string) for DateOnly? when using days filter
   const requestParams =
     params.days && params.days > 0
       ? { days: params.days, from: null, to: null }
       : { days: 0, from: params.from || null, to: params.to || null };
 
-  const response = await httpClient.post<
-    ApiResponse<CompanyPolicyDocument[] | null>
-  >(`${baseRoute}/GetPublishedCompanyPolicies`, requestParams);
+  const response = await httpClient.post<ApiResponse<CompanyPolicyDocument[] | null>>(
+    `${baseRoute}/GetPublishedCompanyPolicies`,
+    requestParams
+  );
   return response.data;
 }

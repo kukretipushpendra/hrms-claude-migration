@@ -123,11 +123,30 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/placeholder/PlaceholderView.vue'),
     meta: { requiresAuth: true, title: 'Support' },
   },
+  // Events routes
   {
     path: '/events',
     name: 'events',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
+    component: () => import('@/views/events/EventsListView.vue'),
     meta: { requiresAuth: true, title: 'Events' },
+  },
+  {
+    path: '/events/create',
+    name: 'event-create',
+    component: () => import('@/views/events/EventCreateView.vue'),
+    meta: { requiresAuth: true, title: 'Create Event' },
+  },
+  {
+    path: '/events/view/:id',
+    name: 'event-detail',
+    component: () => import('@/views/events/EventDetailView.vue'),
+    meta: { requiresAuth: true, title: 'Event Details' },
+  },
+  {
+    path: '/events/edit/:id',
+    name: 'event-edit',
+    component: () => import('@/views/events/EventCreateView.vue'),
+    meta: { requiresAuth: true, title: 'Edit Event' },
   },
   {
     path: '/settings/:path(.*)?',

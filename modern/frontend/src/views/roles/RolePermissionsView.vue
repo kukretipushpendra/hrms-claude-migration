@@ -32,7 +32,9 @@ const originalData = ref<string>('');
 // Validation
 const roleNameRules = [
   (v: string) => !!v || 'Role name is required',
-  (v: string) => /^(?=.*[a-zA-Z].*[a-zA-Z])[a-zA-Z\s]+$/.test(v) || 'Role name must contain at least 2 alphabetic characters',
+  (v: string) =>
+    /^(?=.*[a-zA-Z].*[a-zA-Z])[a-zA-Z\s]+$/.test(v) ||
+    'Role name must contain at least 2 alphabetic characters',
   (v: string) => (v && v.length <= 50) || 'Role name must be 50 characters or less',
 ];
 
@@ -94,9 +96,7 @@ async function handleSubmit() {
 
   // Get active permissions
   const activePermissions = modules.value.reduce<number[]>((result, module) => {
-    const activePerms = module.permissions
-      .filter((p) => p.isActive)
-      .map((p) => p.permissionId);
+    const activePerms = module.permissions.filter((p) => p.isActive).map((p) => p.permissionId);
     return [...result, ...activePerms];
   }, []);
 
@@ -107,12 +107,15 @@ async function handleSubmit() {
 
   // Parse original data
   const original = JSON.parse(originalData.value);
-  const originalPermissions = original.modules.reduce<number[]>((result: number[], module: Module) => {
-    const activePerms = module.permissions
-      .filter((p: Permission) => p.isActive)
-      .map((p: Permission) => p.permissionId);
-    return [...result, ...activePerms];
-  }, []);
+  const originalPermissions = original.modules.reduce<number[]>(
+    (result: number[], module: Module) => {
+      const activePerms = module.permissions
+        .filter((p: Permission) => p.isActive)
+        .map((p: Permission) => p.permissionId);
+      return [...result, ...activePerms];
+    },
+    []
+  );
 
   // Check what changed
   const isRoleNameUpdate = roleName.value !== original.roleName;
@@ -237,7 +240,11 @@ onMounted(() => {
 
           <!-- Module Permission Cards -->
           <div class="modules-container">
-            <div v-for="(module, moduleIndex) in modules" :key="module.moduleId" class="module-card mb-4">
+            <div
+              v-for="(module, moduleIndex) in modules"
+              :key="module.moduleId"
+              class="module-card mb-4"
+            >
               <!-- Module Header -->
               <div class="module-header">
                 <h6 class="module-title">{{ module.moduleName }}</h6>
@@ -275,12 +282,7 @@ onMounted(() => {
     </v-card>
 
     <!-- Snackbar for notifications -->
-    <v-snackbar
-      v-model="snackbar"
-      :color="snackbarColor"
-      :timeout="3000"
-      location="top"
-    >
+    <v-snackbar v-model="snackbar" :color="snackbarColor" :timeout="3000" location="top">
       {{ snackbarMessage }}
       <template #actions>
         <v-btn variant="text" @click="snackbar = false"> Close </v-btn>

@@ -25,13 +25,9 @@ const currentPath = computed(() => {
     <!-- Placeholder Content -->
     <v-card class="placeholder-card">
       <v-card-text class="text-center pa-12">
-        <v-icon size="80" color="grey-400" class="mb-4">
-          mdi-hammer-wrench
-        </v-icon>
+        <v-icon size="80" color="grey-400" class="mb-4"> mdi-hammer-wrench </v-icon>
 
-        <h3 class="text-h5 font-weight-medium mb-2 text-grey-700">
-          Under Construction
-        </h3>
+        <h3 class="text-h5 font-weight-medium mb-2 text-grey-700">Under Construction</h3>
 
         <p class="text-body-2 text-grey-500 mb-4">
           This page is being migrated from the legacy application.

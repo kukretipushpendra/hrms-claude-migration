@@ -1,11 +1,12 @@
 # Events Management
 
 ## Status
-CURRENT: ready-for-dev
+CURRENT: complete
 TYPE: feature
-FRONTEND: pending
-FRONTEND_QA: pending
-INTEGRATION_QA: pending
+FRONTEND: complete
+FRONTEND_QA: passed
+INTEGRATION_QA: passed
+APPROVED_DATE: 2026-01-25
 
 ## Description
 Company events management:
@@ -20,7 +21,7 @@ DEPENDS_ON: [foundation/frontend-auth]
 
 ## Attempts
 FRONTEND_ATTEMPT_COUNT: 0
-INTEGRATION_ATTEMPT_COUNT: 0
+INTEGRATION_ATTEMPT_COUNT: 1
 
 ## API Contracts
 - migration/api-contracts/event/get-events.api.md

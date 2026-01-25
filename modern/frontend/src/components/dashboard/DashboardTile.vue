@@ -15,10 +15,7 @@ defineProps<Props>();
 </script>
 
 <template>
-  <v-card
-    flat
-    :class="['dashboard-tile', backgroundClass]"
-  >
+  <v-card flat :class="['dashboard-tile', backgroundClass]">
     <!-- Tile Header -->
     <div class="tile-header">
       <v-icon v-if="icon" size="20" color="grey-700" class="mr-2">

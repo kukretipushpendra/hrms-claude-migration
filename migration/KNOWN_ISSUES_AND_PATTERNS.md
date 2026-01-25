@@ -267,6 +267,35 @@ Some dropdowns use **hardcoded constants** instead of API calls:
 | 2026-01-25 | DateOnly validation error | Sent "" instead of null | Send null for empty dates |
 | 2026-01-25 | Export not working | Wrong endpoint path | Use /Employee/export |
 | 2026-01-25 | Role list 404 | Wrong controller | Use /RolePermission/GetRolesList |
+| 2026-01-26 | Login UI mismatch | Missing assets, wrong layout | Match legacy exactly (see pattern #8) |
+
+---
+
+### 8. Login Page UI Pattern
+
+**Issue:** Login pages don't match legacy UI.
+
+**Correct Implementation:**
+
+1. **Background**: `#eef4fb` with `header-cloud-light.png` at bottom center
+2. **Top Logo**: `programmers-io.svg` (30px height) at top-left
+3. **Card**: White, 726px max-width, 16px border-radius, shadow
+4. **Layout**: 3-column grid (4fr | 1fr | 7fr)
+   - Left: `login-left-img.jpg` (258x180px, opacity 0.8)
+   - Center: Vertical divider (2px)
+   - Right: Form content
+5. **Header**: Circular logo (70x70px, dark bg) + divider + "HRMS" text
+6. **Title**: Blue (#1e75bb), h3 variant
+7. **Button**: Outlined, blue border/text, blue bg on hover
+
+**Assets Required:**
+- `/public/header-cloud-light.png`
+- `/public/programmers-io.svg`
+- `/public/login-left-img.jpg`
+- `/public/pio-logo.svg`
+- `/public/microsoft365.svg`
+
+**Mobile**: Hide left sidebar and divider on screens < 600px
 
 ---
 

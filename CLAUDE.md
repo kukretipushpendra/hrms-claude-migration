@@ -58,20 +58,50 @@ This updates agents, skills, and mappings for your specific migration.
 ## Directory Layout
 
 ```
-/legacy             # Source of truth (read-only)
-  /Frontend         # React.js frontend (TypeScript, Vite, Zustand, MUI)
-  /Backend          # .NET 8 WebAPI (Dapper, SQL Server)
-/modern/frontend    # Vue.js + Vite (TypeScript) - connects to .NET backend
-/modern/backend     # Node.js/Express (Phase 2 - placeholder until frontend complete)
+/                           # Root - ONLY essential config files
+  CLAUDE.md                 # Claude Code instructions
+  README.md                 # Project readme
+  package.json              # NPM workspace config
+/legacy                     # Source of truth (read-only)
+  /Frontend                 # React.js frontend (TypeScript, Vite, Zustand, MUI)
+  /Backend                  # .NET 8 WebAPI (Dapper, SQL Server)
+/modern/frontend            # Vue.js + Vite (TypeScript) - connects to .NET backend
+/modern/backend             # Node.js/Express (Phase 2 - placeholder until frontend complete)
 /migration/
-  discovery/        # modules.json, overview.md, etc.
-  manifest.md       # Progress tracking + foundation gate
+  manifest.md               # Progress tracking + foundation gate
+  tech-stack.md             # Tech stack details/decisions
+  legacy-api-config.md      # .NET backend URL configuration
+  KNOWN_ISSUES_AND_PATTERNS.md  # Common issues and fixes (MUST READ)
+  discovery/                # modules.json, overview.md, etc.
   modules/{mod}/features/{feat}.md
   api-contracts/{mod}/{feat}.api.md    # .NET API contracts for Vue.js frontend
-  legacy-api-config.md                  # .NET backend URL configuration
-  logs/             # attempts.md, escalations.md
-  tech-stack.md     # Tech stack details/decisions
+  adr/                      # Architecture Decision Records
+  db/                       # Database analysis and scripts
+  docs/                     # Documentation (guides, implementation notes)
+  logs/                     # QA reports, attempts.md, escalations.md
+  scripts/                  # Utility scripts (shell, SQL)
+    tests/                  # Integration test scripts (JS)
 ```
+
+## File Organization Rules
+
+**IMPORTANT:** Keep project root clean. All generated files go to appropriate folders:
+
+| File Type | Location | Examples |
+|-----------|----------|----------|
+| QA Reports/Summaries | `migration/logs/` | `*-qa-report.md`, `*-QA-SUMMARY.md` |
+| Implementation Docs | `migration/docs/` | `*-IMPLEMENTATION.md`, guides |
+| Test Scripts (JS) | `migration/scripts/tests/` | `test-*.js` |
+| Utility Scripts | `migration/scripts/` | `*.sh`, `*.ps1`, `*.sql` |
+| Session Prompts | `migration/docs/` | `Prompts.md` |
+| API Contracts | `migration/api-contracts/{module}/` | `*.api.md` |
+| Feature Status | `migration/modules/{mod}/features/` | `{feat}.md` |
+
+**Root level ONLY:**
+- `CLAUDE.md` - Claude instructions
+- `README.md` - Project readme
+- `package.json` / `package-lock.json` - NPM config
+- `.gitignore`, `.env*` - Git/env config
 
 ## Core Principles
 

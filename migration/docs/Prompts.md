@@ -589,3 +589,58 @@ Note: Also make sure to keep all these issues in memory, so that it won't repeat
 **Commit:** `fix(ui): sidebar navigation, holiday calendar, and profile API`
 
 ---
+
+### Prompt 30: User Prompt
+**Time:** 2026-01-26 00:47:01
+
+```
+{"session_id":"d64dbe98-c1d9-4dc2-b8ee-4820a7778a94","transcript_path":"C:\\Users\\PushpendraKukreti\\.claude\\projects\\D--projects-HRMS-MIGRATION-CLAUDE-hrms-claude-migration\\d64dbe98-c1d9-4dc2-b8ee-4820a7778a94.jsonl","cwd":"D:\\projects\\HRMS-MIGRATION-CLAUDE\\hrms-claude-migration","permission_mode":"default","hook_event_name":"UserPromptSubmit","prompt":"Please fix both login page UI, currently new UI not matching with the legacy UI. Please match both /login and /internal-login UI, having identical height, width, icons, fields, buttons, position, etc."}
+```
+
+**Result:** [Pending - update after completion]
+
+---
+
+### Prompt 31: User Prompt
+**Time:** 2026-01-26 01:13:47
+
+```
+{"session_id":"d64dbe98-c1d9-4dc2-b8ee-4820a7778a94","transcript_path":"C:\\Users\\PushpendraKukreti\\.claude\\projects\\D--projects-HRMS-MIGRATION-CLAUDE-hrms-claude-migration\\d64dbe98-c1d9-4dc2-b8ee-4820a7778a94.jsonl","cwd":"D:\\projects\\HRMS-MIGRATION-CLAUDE\\hrms-claude-migration","permission_mode":"default","hook_event_name":"UserPromptSubmit","prompt":"HRMS logo missing in login screen."}
+```
+
+**Result:** [Pending - update after completion]
+
+---
+
+### Prompt 32: User Prompt
+**Time:** 2026-01-26 01:16:06
+
+```
+{"session_id":"d64dbe98-c1d9-4dc2-b8ee-4820a7778a94","transcript_path":"C:\\Users\\PushpendraKukreti\\.claude\\projects\\D--projects-HRMS-MIGRATION-CLAUDE-hrms-claude-migration\\d64dbe98-c1d9-4dc2-b8ee-4820a7778a94.jsonl","cwd":"D:\\projects\\HRMS-MIGRATION-CLAUDE\\hrms-claude-migration","permission_mode":"default","hook_event_name":"UserPromptSubmit","prompt":"No, the logo that is missing is inside login-grid, i.e., class='login-sidebar'"}
+```
+
+**Result:** [Pending - update after completion]
+
+---
+
+### Prompt 33: User Prompt
+**Time:** 2026-01-26 01:17:43
+
+```
+{"session_id":"d64dbe98-c1d9-4dc2-b8ee-4820a7778a94","transcript_path":"C:\\Users\\PushpendraKukreti\\.claude\\projects\\D--projects-HRMS-MIGRATION-CLAUDE-hrms-claude-migration\\d64dbe98-c1d9-4dc2-b8ee-4820a7778a94.jsonl","cwd":"D:\\projects\\HRMS-MIGRATION-CLAUDE\\hrms-claude-migration","permission_mode":"default","hook_event_name":"UserPromptSubmit","prompt":"Please provide migration summary till now."}
+```
+
+**Result:** [Pending - update after completion]
+
+---
+
+### Prompt 34: User Prompt
+**Time:** 2026-01-26 01:21:40
+
+```
+{"session_id":"d64dbe98-c1d9-4dc2-b8ee-4820a7778a94","transcript_path":"C:\\Users\\PushpendraKukreti\\.claude\\projects\\D--projects-HRMS-MIGRATION-CLAUDE-hrms-claude-migration\\d64dbe98-c1d9-4dc2-b8ee-4820a7778a94.jsonl","cwd":"D:\\projects\\HRMS-MIGRATION-CLAUDE\\hrms-claude-migration","permission_mode":"default","hook_event_name":"UserPromptSubmit","prompt":"Please check the whole project excluding @legacy\\ folder for files that are not inside any folder, place any new documents, .md files, js files inside respective folders to make the projec structure clean. Also, make sure to follow the same structure in next phases of migration."}
+```
+
+**Result:** [Pending - update after completion]
+
+---

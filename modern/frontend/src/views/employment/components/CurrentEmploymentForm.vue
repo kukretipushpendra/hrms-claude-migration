@@ -44,7 +44,9 @@ const route = useRoute();
 const authStore = useAuthStore();
 const { showSuccess, showError } = useSnackbar();
 
-const employeeId = ref(route.query.employeeId as string || authStore.user?.userId.toString() || '');
+const employeeId = ref(
+  (route.query.employeeId as string) || authStore.user?.userId.toString() || ''
+);
 const currentEmploymentDetails = ref<EmployeeDetailsType | null>(null);
 const loading = ref(false);
 const isUpdating = ref(false);
@@ -69,8 +71,7 @@ const hasEmployeePermission = computed(() => {
 const hasReadPermission = authStore.hasPermission('Read.EmploymentDetails');
 
 // LinkedIn profile regex
-const linkedInProfileRegex =
-  /(https?:\/\/)?(www\.)?linkedin\.([a-z]+)\/in\/([A-Za-z0-9_-]+)\/?/;
+const linkedInProfileRegex = /(https?:\/\/)?(www\.)?linkedin\.([a-z]+)\/in\/([A-Za-z0-9_-]+)\/?/;
 
 // Validation schema
 const validationSchema = toTypedSchema(
@@ -88,9 +89,7 @@ const validationSchema = toTypedSchema(
     employmentStatus: z.string(),
     jobType: z.string(),
     branchId: z.string().min(1, 'Branch is required'),
-    roleId: hasRolePermission.value
-      ? z.string().min(1, 'Role is required')
-      : z.string(),
+    roleId: hasRolePermission.value ? z.string().min(1, 'Role is required') : z.string(),
     isReportingManager: z.boolean(),
     timeDoctorUserId: z
       .string()
@@ -135,10 +134,7 @@ const validationSchema = toTypedSchema(
     linkedInUrl: z
       .string()
       .max(250, 'LinkedIn URL cannot exceed 250 characters')
-      .refine(
-        (val) => !val || linkedInProfileRegex.test(val),
-        'Enter valid LinkedIn profile URL'
-      ),
+      .refine((val) => !val || linkedInProfileRegex.test(val), 'Enter valid LinkedIn profile URL'),
   })
 );
 
@@ -197,8 +193,8 @@ const fetchEmploymentDetail = async () => {
       response.result.criminalVerification === null
         ? ''
         : response.result.criminalVerification
-        ? CRIMINAL_VERIFICATION_STATUS.COMPLETED
-        : CRIMINAL_VERIFICATION_STATUS.PENDING;
+          ? CRIMINAL_VERIFICATION_STATUS.COMPLETED
+          : CRIMINAL_VERIFICATION_STATUS.PENDING;
 
     setValues({
       employeeId: response.result.employeeId?.toString(),
@@ -315,9 +311,7 @@ const onSubmit = handleSubmit(async (formValues) => {
       : Number(formValues.reportingManagerId),
     employmentStatus: convertFormStrToApiValue(formValues.employmentStatus),
     linkedInUrl: formValues.linkedInUrl,
-    backgroundVerificationstatus: convertFormStrToApiValue(
-      formValues.backgroundVerificationstatus
-    ),
+    backgroundVerificationstatus: convertFormStrToApiValue(formValues.backgroundVerificationstatus),
     criminalVerification,
     departmentId: +formValues.departmentId,
     totalExperienceYear: formValues.totalExperienceYears,
@@ -751,7 +745,10 @@ onMounted(() => {
     </v-container>
 
     <!-- Global Loader -->
-    <v-overlay v-model="isUpdating || isFetchingNewEmployeeCode" class="align-center justify-center">
+    <v-overlay
+      v-model="isUpdating || isFetchingNewEmployeeCode"
+      class="align-center justify-center"
+    >
       <v-progress-circular indeterminate color="primary" size="64"></v-progress-circular>
     </v-overlay>
   </form>

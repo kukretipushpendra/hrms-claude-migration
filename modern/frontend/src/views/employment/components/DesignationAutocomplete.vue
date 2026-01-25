@@ -36,13 +36,17 @@ const fetchDesignations = async () => {
 const selectedId = ref<number | null>(null);
 
 // Watch value changes and sync with selectedId
-watch(value, (newValue) => {
-  if (newValue) {
-    selectedId.value = Number(newValue);
-  } else {
-    selectedId.value = null;
-  }
-}, { immediate: true });
+watch(
+  value,
+  (newValue) => {
+    if (newValue) {
+      selectedId.value = Number(newValue);
+    } else {
+      selectedId.value = null;
+    }
+  },
+  { immediate: true }
+);
 
 const handleChange = (id: number | null) => {
   setValue(id ? id.toString() : '');

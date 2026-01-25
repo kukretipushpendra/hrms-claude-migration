@@ -14,11 +14,7 @@ const enableLeave = ref(false); // Feature flag
 
 <template>
   <v-container fluid>
-    <v-breadcrumbs
-      :items="breadcrumbs"
-      divider=">"
-      class="px-0"
-    ></v-breadcrumbs>
+    <v-breadcrumbs :items="breadcrumbs" divider=">" class="px-0"></v-breadcrumbs>
 
     <v-card elevation="3">
       <v-card-title class="pa-4">

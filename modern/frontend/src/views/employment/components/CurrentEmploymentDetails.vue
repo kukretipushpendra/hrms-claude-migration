@@ -25,10 +25,7 @@ const handleAccordionChange = (isExpanded: boolean) => {
 </script>
 
 <template>
-  <v-expansion-panels
-    v-model:model-value="expanded"
-    @update:model-value="handleAccordionChange"
-  >
+  <v-expansion-panels v-model:model-value="expanded" @update:model-value="handleAccordionChange">
     <v-expansion-panel value="currentEmployment" elevation="1">
       <v-expansion-panel-title class="bg-grey-lighten-4">
         <v-row no-gutters align="center">

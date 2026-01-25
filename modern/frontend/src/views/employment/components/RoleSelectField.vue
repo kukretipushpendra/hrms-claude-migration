@@ -38,15 +38,19 @@ const selectedId = ref<number | null>(null);
 const selectedRole = ref<RoleType | null>(null);
 
 // Watch value changes and sync with selectedId
-watch(value, (newValue) => {
-  if (newValue) {
-    selectedId.value = Number(newValue);
-    selectedRole.value = roleList.value.find(r => r.id === Number(newValue)) || null;
-  } else {
-    selectedId.value = null;
-    selectedRole.value = null;
-  }
-}, { immediate: true });
+watch(
+  value,
+  (newValue) => {
+    if (newValue) {
+      selectedId.value = Number(newValue);
+      selectedRole.value = roleList.value.find((r) => r.id === Number(newValue)) || null;
+    } else {
+      selectedId.value = null;
+      selectedRole.value = null;
+    }
+  },
+  { immediate: true }
+);
 
 const handleChange = (id: number | null) => {
   setValue(id ? id.toString() : '');

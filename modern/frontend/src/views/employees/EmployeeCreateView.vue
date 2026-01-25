@@ -1,20 +1,10 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs
-      :items="breadcrumbs"
-      divider=">"
-      class="px-0"
-    ></v-breadcrumbs>
+    <v-breadcrumbs :items="breadcrumbs" divider=">" class="px-0"></v-breadcrumbs>
 
     <v-card elevation="3">
       <v-card-title class="d-flex align-center pa-4 border-b">
-        <v-btn
-          icon
-          variant="text"
-          size="small"
-          @click="router.back()"
-          class="mr-2"
-        >
+        <v-btn icon variant="text" size="small" @click="router.back()" class="mr-2">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
         <h2 class="text-h5">{{ isEditMode ? 'Edit Employee' : 'Add Employee' }}</h2>

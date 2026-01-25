@@ -128,7 +128,11 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import moment from 'moment';
-import { getDepartmentList, getDesignationList, type EmployeeSearchFilter } from '@/services/employees';
+import {
+  getDepartmentList,
+  getDesignationList,
+  type EmployeeSearchFilter,
+} from '@/services/employees';
 import { useSnackbar } from '@/composables/useSnackbar';
 
 interface Props {

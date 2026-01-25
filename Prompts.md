@@ -489,3 +489,45 @@ To manually log a prompt, just say:
 ```
 Log this prompt to Prompts.md: [your prompt description]
 ```
+
+### Prompt 28: Fix UI Issues - Navigation, Login, Dashboard
+**Time:** 2026-01-25 23:59:06
+
+```
+Wave 0 and 2 are not completed properly please fix below issues:
+1. Not able to see relative sidebar navigation menus, please add for whatever functionalies implemented so far by taking reference to legacy UI.
+2. Please check new /internal-login and /login UI, it is not exactly matching with the legacy UI please correct it too.
+3. Some Dashboard components are missing which were there in legacy, example: India & US holidays calendar. Please follow same popup ui reference from legacy UI and update the new UI. Also, check whatever things are missing in new UI please update it similar to legacy.
+```
+
+**Result:** Fixed all three UI issues to match legacy React UI:
+
+1. **Sidebar Navigation Fixed:**
+   - Updated permission format from `ROLES.READ` to `Read.Role` (matching backend)
+   - Navigation items now show correctly based on user's actual permissions
+   - Dashboard always visible (no permission required)
+
+2. **Login UI Fixed:**
+   - SSO login title changed to "Sign in to start Your Session"
+   - Internal login title remains "User Login"
+   - Both match legacy exactly
+
+3. **Dashboard Holidays Calendar Added:**
+   - Created `HolidayCalendarTile.vue` component with:
+     - India 🇮🇳 & USA 🇺🇸 flag toggle selector
+     - Selected flag: opacity 1, unselected: opacity 0.4
+     - Filters holidays by location
+     - "View More" button opens modal dialog
+   - Modal shows full calendar table with SNO, DATE, DAY, REMARKS, LOCATION columns
+
+**Files Modified:**
+- `modern/frontend/src/config/navigation.ts` - Fixed all permission formats
+- `modern/frontend/src/views/auth/LoginView.vue` - Updated title
+- `modern/frontend/src/views/dashboard/DashboardView.vue` - Integrated HolidayCalendarTile
+- `modern/frontend/src/components/dashboard/HolidayCalendarTile.vue` - NEW
+
+**Commits:**
+- `fix(ui): correct sidebar navigation, login UI, and dashboard holidays`
+- `style: format employee and employment components`
+
+---

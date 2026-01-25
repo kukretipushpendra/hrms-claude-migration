@@ -40,7 +40,9 @@ const employeeCount = ref<EmployeeCount>({
 });
 const birthdays = ref<EmployeeBirthday[]>([]);
 const workAnniversaries = ref<WorkAnniversary[]>([]);
-const upcomingHolidays = ref<Holiday[]>([]);
+// Separate India and USA holidays (matching legacy)
+const indiaHolidays = ref<Holiday[]>([]);
+const usaHolidays = ref<Holiday[]>([]);
 const upcomingEventsList = ref<UpcomingEvent[]>([]);
 const companyPolicies = ref<CompanyPolicyDocument[]>([]);
 
@@ -82,19 +84,10 @@ async function fetchDashboardData() {
     birthdays.value = birthdayRes.result || [];
     workAnniversaries.value = workAnniversaryRes.result || [];
 
-    // Merge India + USA holidays into single list with location labels
+    // Store India and USA holidays separately (matching legacy)
     if (holidaysRes.result) {
-      const indiaHolidays = (holidaysRes.result.india || []).map((h) => ({
-        ...h,
-        location: 'India',
-      }));
-      const usaHolidays = (holidaysRes.result.usa || []).map((h) => ({
-        ...h,
-        location: 'USA',
-      }));
-      upcomingHolidays.value = [...indiaHolidays, ...usaHolidays].sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
-      );
+      indiaHolidays.value = holidaysRes.result.india || [];
+      usaHolidays.value = holidaysRes.result.usa || [];
     }
 
     // Fetch permission-gated data
@@ -294,7 +287,7 @@ onMounted(() => {
 
         <!-- Upcoming Holidays -->
         <v-col cols="12" md="4">
-          <HolidayCalendarTile :holidays="upcomingHolidays" />
+          <HolidayCalendarTile :india-holidays="indiaHolidays" :usa-holidays="usaHolidays" />
         </v-col>
 
         <!-- Apply New (if attendance OR leave enabled) -->

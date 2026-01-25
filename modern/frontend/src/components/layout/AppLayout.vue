@@ -41,11 +41,11 @@ const isRail = computed(() => {
   return lgAndUp.value && drawerMini.value && !drawerHover.value;
 });
 
-// Filtered navigation based on user permissions
+// Filtered navigation based on user's permitted menus (matching legacy)
 const filteredNavigation = computed(() => {
-  const permissions = authStore.user?.permissions || [];
+  const menus = authStore.user?.menus || [];
   const role = authStore.user?.roleName || '';
-  return filterNavigation(navigationItems, permissions, role);
+  return filterNavigation(navigationItems, menus, role);
 });
 
 // User initials for avatar

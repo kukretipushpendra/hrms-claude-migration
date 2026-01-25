@@ -1,9 +1,18 @@
 <script setup lang="ts">
+/**
+ * Holiday Calendar Tile - Matches Legacy React DashboardTile Exactly
+ * Features:
+ * - SVG flag icons for India/USA (not emoji)
+ * - Flag selector in tile header with opacity toggle
+ * - View More arrow icon to open modal
+ * - Modal with full calendar table
+ */
 import { ref, computed } from 'vue';
 import type { Holiday } from '@/services/dashboard';
 
 interface Props {
-  holidays: Holiday[];
+  indiaHolidays: Holiday[];
+  usaHolidays: Holiday[];
 }
 
 const props = defineProps<Props>();
@@ -12,18 +21,14 @@ const props = defineProps<Props>();
 const selectedLocation = ref<'india' | 'usa'>('india');
 const showDialog = ref(false);
 
-// Filter holidays by selected location
+// Get holidays based on selected location
 const filteredHolidays = computed(() => {
-  return props.holidays
-    .filter((h) => h.location.toLowerCase() === selectedLocation.value)
-    .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+  const holidays = selectedLocation.value === 'india' ? props.indiaHolidays : props.usaHolidays;
+  return [...holidays].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 });
 
 // Preview holidays (first 5)
 const previewHolidays = computed(() => filteredHolidays.value.slice(0, 5));
-
-// All holidays for dialog
-const allHolidays = computed(() => filteredHolidays.value);
 
 // Format date for display
 function formatDate(dateStr: string): string {
@@ -61,36 +66,68 @@ function openDialog() {
 </script>
 
 <template>
-  <v-card class="holiday-tile" elevation="2">
-    <!-- Header -->
-    <v-card-title class="tile-header d-flex align-center justify-space-between">
-      <div class="d-flex align-center gap-2">
-        <v-icon color="white">mdi-calendar-star</v-icon>
-        <span>Upcoming Holidays</span>
+  <v-card flat class="dashboard-tile background-1">
+    <!-- Tile Header - matching legacy exactly -->
+    <div class="tile-header">
+      <div class="d-flex align-center">
+        <v-icon size="20" color="primary" class="mr-2">mdi-calendar-star</v-icon>
+        <span class="tile-title">Upcoming Holidays</span>
       </div>
-      <!-- Flag Selector -->
-      <div class="flag-selector d-flex gap-2">
-        <button
-          class="flag-btn"
-          :class="{ 'flag-selected': selectedLocation === 'india' }"
-          @click="selectLocation('india')"
-        >
-          🇮🇳
-        </button>
-        <button
-          class="flag-btn"
-          :class="{ 'flag-selected': selectedLocation === 'usa' }"
-          @click="selectLocation('usa')"
-        >
-          🇺🇸
-        </button>
-      </div>
-    </v-card-title>
 
-    <!-- Content -->
-    <v-card-text class="tile-content">
+      <!-- Flag Selector & View More (right side) -->
+      <div class="flag-container">
+        <!-- India Flag -->
+        <v-tooltip location="top">
+          <template #activator="{ props: tooltipProps }">
+            <div
+              v-bind="tooltipProps"
+              class="flag-wrapper"
+              :class="{ selected: selectedLocation === 'india' }"
+              @click="selectLocation('india')"
+            >
+              <img src="/icons/india.svg" alt="India" class="flag-icon" />
+            </div>
+          </template>
+          <span>India</span>
+        </v-tooltip>
+
+        <!-- USA Flag -->
+        <v-tooltip location="top">
+          <template #activator="{ props: tooltipProps }">
+            <div
+              v-bind="tooltipProps"
+              class="flag-wrapper"
+              :class="{ selected: selectedLocation === 'usa' }"
+              @click="selectLocation('usa')"
+            >
+              <img src="/icons/american.svg" alt="USA" class="flag-icon" />
+            </div>
+          </template>
+          <span>USA</span>
+        </v-tooltip>
+
+        <!-- View More Arrow -->
+        <v-tooltip location="top">
+          <template #activator="{ props: tooltipProps }">
+            <v-icon
+              v-bind="tooltipProps"
+              class="view-more-icon"
+              size="20"
+              color="primary"
+              @click="openDialog"
+            >
+              mdi-arrow-top-right
+            </v-icon>
+          </template>
+          <span>View More</span>
+        </v-tooltip>
+      </div>
+    </div>
+
+    <!-- Tile Content -->
+    <div class="tile-content">
       <div v-if="previewHolidays.length === 0" class="no-data">No upcoming holidays</div>
-      <v-list v-else density="compact" class="pa-0">
+      <v-list v-else density="compact" class="pa-0 bg-transparent">
         <v-list-item
           v-for="(item, index) in previewHolidays"
           :key="index"
@@ -100,50 +137,51 @@ function openDialog() {
             {{ item.title }}
           </v-list-item-title>
           <v-list-item-subtitle class="text-caption">
-            {{ formatDate(item.date) }} ({{ item.location }})
+            {{ formatDate(item.date) }}
           </v-list-item-subtitle>
         </v-list-item>
       </v-list>
-
-      <!-- View More Button -->
-      <v-btn
-        v-if="filteredHolidays.length > 5"
-        variant="text"
-        color="primary"
-        size="small"
-        class="mt-2 view-more-btn"
-        @click="openDialog"
-      >
-        View More
-        <v-icon end>mdi-arrow-right</v-icon>
-      </v-btn>
-    </v-card-text>
+    </div>
 
     <!-- Dialog for Full Calendar -->
-    <v-dialog v-model="showDialog" max-width="800px">
+    <v-dialog v-model="showDialog" max-width="800" scrollable>
       <v-card>
         <!-- Dialog Header -->
         <v-card-title class="dialog-header d-flex align-center justify-space-between">
           <span class="text-h6">Holiday Calendar</span>
           <div class="d-flex align-center gap-3">
             <!-- Flag Selector in Dialog -->
-            <div class="flag-selector d-flex gap-2">
-              <button
-                class="flag-btn"
-                :class="{ 'flag-selected': selectedLocation === 'india' }"
-                @click="selectLocation('india')"
-              >
-                🇮🇳
-              </button>
-              <button
-                class="flag-btn"
-                :class="{ 'flag-selected': selectedLocation === 'usa' }"
-                @click="selectLocation('usa')"
-              >
-                🇺🇸
-              </button>
+            <div class="flag-container">
+              <v-tooltip location="top">
+                <template #activator="{ props: tooltipProps }">
+                  <div
+                    v-bind="tooltipProps"
+                    class="flag-wrapper"
+                    :class="{ selected: selectedLocation === 'india' }"
+                    @click="selectLocation('india')"
+                  >
+                    <img src="/icons/india.svg" alt="India" class="flag-icon" />
+                  </div>
+                </template>
+                <span>India</span>
+              </v-tooltip>
+
+              <v-tooltip location="top">
+                <template #activator="{ props: tooltipProps }">
+                  <div
+                    v-bind="tooltipProps"
+                    class="flag-wrapper"
+                    :class="{ selected: selectedLocation === 'usa' }"
+                    @click="selectLocation('usa')"
+                  >
+                    <img src="/icons/american.svg" alt="USA" class="flag-icon" />
+                  </div>
+                </template>
+                <span>USA</span>
+              </v-tooltip>
             </div>
-            <v-btn icon variant="text" @click="showDialog = false">
+
+            <v-btn icon variant="text" size="small" @click="showDialog = false">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </div>
@@ -152,29 +190,29 @@ function openDialog() {
         <v-divider />
 
         <!-- Dialog Content - Table -->
-        <v-card-text class="pa-4">
-          <v-table>
+        <v-card-text class="pa-0">
+          <v-table class="holiday-table">
             <thead>
               <tr>
-                <th class="text-left">SNO</th>
-                <th class="text-left">DATE</th>
-                <th class="text-left">DAY</th>
-                <th class="text-left">REMARKS</th>
-                <th class="text-left">LOCATION</th>
+                <th class="text-left table-header-cell" style="width: 50px">SNO</th>
+                <th class="text-left table-header-cell" style="width: 120px">DATE</th>
+                <th class="text-left table-header-cell" style="width: 100px">DAY</th>
+                <th class="text-left table-header-cell">REMARKS</th>
+                <th class="text-left table-header-cell" style="width: 80px">LOCATION</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(item, index) in allHolidays" :key="index">
-                <td>{{ index + 1 }}</td>
-                <td>{{ formatDateWithYear(item.date) }}</td>
-                <td>{{ getDayOfWeek(item.date) }}</td>
-                <td>{{ item.title }}</td>
-                <td>{{ item.location }}</td>
+              <tr v-for="(item, index) in filteredHolidays" :key="index" class="table-row">
+                <td class="table-cell">{{ index + 1 }}</td>
+                <td class="table-cell">{{ formatDateWithYear(item.date) }}</td>
+                <td class="table-cell">{{ getDayOfWeek(item.date) }}</td>
+                <td class="table-cell">{{ item.title }}</td>
+                <td class="table-cell">{{ selectedLocation === 'india' ? 'India' : 'USA' }}</td>
               </tr>
             </tbody>
           </v-table>
 
-          <div v-if="allHolidays.length === 0" class="text-center py-8 text-grey-600">
+          <div v-if="filteredHolidays.length === 0" class="text-center py-8 text-grey-600">
             No holidays for {{ selectedLocation === 'india' ? 'India' : 'USA' }}
           </div>
         </v-card-text>
@@ -184,50 +222,93 @@ function openDialog() {
 </template>
 
 <style scoped lang="scss">
-.holiday-tile {
-  height: 100%;
+.dashboard-tile {
+  border-radius: 15px;
+  min-height: 250px;
+  height: 250px;
+  border: 1px solid #c7d9eb;
+  background: #f4fafd;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+
+  &.background-1 {
+    background-color: #f0f9ff;
+  }
 }
 
 .tile-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
-  padding: 16px;
-  font-weight: 600;
-}
-
-.flag-selector {
   display: flex;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 15px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
-.flag-btn {
-  background: transparent;
-  border: none;
+.tile-title {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1e75bb;
+}
+
+.flag-container {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.flag-wrapper {
   cursor: pointer;
-  font-size: 24px;
-  line-height: 1;
-  padding: 4px;
   opacity: 0.4;
-  transition: opacity 0.2s ease;
+  transition: opacity 0.3s ease;
+  padding: 2px;
 
   &:hover {
     opacity: 0.7;
   }
 
-  &.flag-selected {
+  &.selected {
     opacity: 1;
+  }
+}
+
+.flag-icon {
+  width: 30px;
+  height: auto;
+  display: block;
+}
+
+.view-more-icon {
+  cursor: pointer;
+  margin-left: 8px;
+
+  &:hover {
+    opacity: 0.7;
   }
 }
 
 .tile-content {
   flex: 1;
-  padding: 16px;
+  padding: 10px 15px;
+  overflow-y: auto;
+
+  // Custom scrollbar
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #d9d9d9;
+    border-radius: 2px;
+  }
 }
 
 .holiday-item {
-  margin-bottom: 8px;
+  margin-bottom: 4px;
 }
 
 .no-data {
@@ -237,19 +318,34 @@ function openDialog() {
   padding: 24px 16px;
 }
 
-.view-more-btn {
-  width: 100%;
-}
-
 .dialog-header {
   padding: 16px 24px;
 }
 
-.gap-2 {
-  gap: 8px;
-}
-
 .gap-3 {
   gap: 12px;
+}
+
+.holiday-table {
+  .table-row:hover {
+    background-color: #f1f1f1;
+    transition: background-color 0.3s;
+  }
+
+  .table-cell {
+    font-size: 11px;
+    padding: 8px 16px;
+  }
+
+  .table-header-cell {
+    font-weight: bold;
+    font-size: 10.5px;
+    padding: 12px 16px;
+    background: #fafafa;
+  }
+}
+
+.bg-transparent {
+  background: transparent !important;
 }
 </style>

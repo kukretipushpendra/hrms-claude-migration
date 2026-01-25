@@ -1,22 +1,49 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import httpClient from '@/services/api/http-client';
+import { useAuthStore } from '@/stores/auth.store';
+
+const authStore = useAuthStore();
 
 // Profile data
 const profile = ref<Record<string, unknown> | null>(null);
 const loading = ref(true);
 const error = ref<string | null>(null);
 
-// Fetch profile data
+// Get employee ID from user data (stored during login)
+const employeeId = computed(() => authStore.user?.id);
+
+// Fetch profile data using correct endpoint with employee ID
 async function fetchProfile() {
   loading.value = true;
   error.value = null;
 
+  // If no employee ID, show user data from store as fallback
+  if (!employeeId.value) {
+    profile.value = {
+      fullName: authStore.userFullName,
+      email: authStore.user?.email,
+      roleName: authStore.user?.roleName,
+    };
+    loading.value = false;
+    return;
+  }
+
   try {
-    const response = await httpClient.get('/UserProfile/GetPersonalDetail');
+    // Correct endpoint: /UserProfile/GetPersonalDetailsById/{id}
+    const response = await httpClient.get(
+      `/UserProfile/GetPersonalDetailsById/${employeeId.value}`
+    );
     profile.value = response.data.result;
   } catch (e) {
-    error.value = e instanceof Error ? e.message : 'Failed to load profile';
+    // If API fails, use basic user data from auth store
+    console.error('Profile fetch error:', e);
+    profile.value = {
+      fullName: authStore.userFullName,
+      email: authStore.user?.email,
+      roleName: authStore.user?.roleName,
+    };
+    error.value = null; // Don't show error, we have fallback data
   } finally {
     loading.value = false;
   }

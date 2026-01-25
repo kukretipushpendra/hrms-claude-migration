@@ -25,11 +25,11 @@ TOTAL_COMPONENTS: 632
 
 ## Progress - Frontend Migration (Phase 1)
 TOTAL_FRONTEND_FEATURES: 100+
-FRONTEND_COMPLETED: 10
+FRONTEND_COMPLETED: 14
 FRONTEND_IN_PROGRESS: 0
 FRONTEND_HUMAN_REVIEW: 0
 FRONTEND_READY_FOR_QA: 0
-FRONTEND_PERCENT: 10%
+FRONTEND_PERCENT: 14%
 
 ## Progress - Backend Migration (Phase 2)
 TOTAL_BACKEND_FEATURES: 0 (not started)
@@ -80,11 +80,11 @@ BACKEND_FOUNDATION_COMPLETE: false (Phase 2)
 - [x] events (APPROVED 2026-01-25)
 - [x] employment-details (APPROVED 2026-01-25)
 
-### Wave 3: Secondary Features
-- [ ] education-certificates
-- [ ] nominee-references
-- [ ] attendance
-- [ ] leave-management
+### Wave 3: Secondary Features ✅ COMPLETE
+- [x] education-certificates (MIGRATED 2026-01-26)
+- [x] nominee-references (MIGRATED 2026-01-26)
+- [x] attendance (MIGRATED 2026-01-26)
+- [x] leave-management (MIGRATED 2026-01-26)
 
 ### Wave 4: Complex Features
 - [ ] asset-management
@@ -136,9 +136,9 @@ CONTRACT_LOCATION: /migration/api-contracts/
 - [x] UI analysis documented
 - [x] Theme configuration complete
 - [x] Frontend foundation complete (APPROVED 2026-01-25)
-- [ ] Wave 1: Core modules
-- [ ] Wave 2: Primary features
-- [ ] Wave 3: Secondary features
+- [x] Wave 1: Core modules
+- [x] Wave 2: Primary features
+- [x] Wave 3: Secondary features
 - [ ] Wave 4: Complex features
 - [ ] Wave 5: Additional features
 - [ ] Final integration
@@ -170,9 +170,13 @@ CURRENT_PARALLEL: 0
 2026-01-25 | migrate-batch | events | COMPLETE - Frontend migrated
 2026-01-25 | migrate-batch | employee-management | COMPLETE - Frontend migrated
 2026-01-25 | migrate-batch | employment-details | COMPLETE - Frontend migrated
+2026-01-26 | migrate-batch | education-certificates | COMPLETE - Frontend migrated (29 files)
+2026-01-26 | migrate-batch | nominee-references | COMPLETE - Frontend migrated
+2026-01-26 | migrate-batch | attendance | COMPLETE - Frontend migrated
+2026-01-26 | migrate-batch | leave-management | COMPLETE - Frontend migrated
 ```
 
-LAST_UPDATE: 2026-01-25
+LAST_UPDATE: 2026-01-26
 
 ## Merge Log
 ```
@@ -185,9 +189,9 @@ LAST_UPDATE: 2026-01-25
 CHECKPOINT: false
 CHECKPOINT_REASON: foundation-complete
 CHECKPOINT_AT: wave-1-core
-LAST_COMPLETED: frontend-dashboard
-LAST_PHASE: frontend-foundation
-NEXT_FEATURE: roles-permissions
+LAST_COMPLETED: leave-management
+LAST_PHASE: wave-3-secondary
+NEXT_FEATURE: asset-management
 CHECKPOINT_TIME: 2026-01-25
 RESUMED_AT: 2026-01-25
 
@@ -212,4 +216,26 @@ src/router/index.ts - Updated with all navigation routes
 src/main.ts - Updated with new theme
 src/App.vue - Updated routing logic
 public/*.svg - Logo placeholders
+
+# Wave 3 Files (2026-01-26)
+src/views/certificates/CertificatesListView.vue - Education/Certificates list
+src/components/certificates/AddCertificateDialog.vue - Add certificate dialog
+src/services/certificates/certificate.service.ts - Certificate API service
+src/views/nominees/NomineeListView.vue - Nominee list view
+src/views/nominees/components/NomineeDialog.vue - Add/edit nominee dialog
+src/views/nominees/components/NomineeFilterForm.vue - Nominee filter form
+src/services/nominee/nominee.service.ts - Nominee API service
+src/views/attendance/MyAttendanceView.vue - My attendance view
+src/views/attendance/AttendanceConfigurationView.vue - Attendance config
+src/views/attendance/EmployeeReportView.vue - Employee attendance report
+src/services/attendance/attendance.service.ts - Attendance API service
+src/views/leave/ApplyLeaveView.vue - Apply leave form
+src/views/leave/LeaveApprovalView.vue - Leave approval list
+src/views/leave/LeaveCalendarView.vue - Leave calendar view
+src/views/leave/LeaveApplicationFormView.vue - Leave application form
+src/components/leave/LeaveHistoryTable.vue - Leave history table
+src/components/leave/LeaveRequestsTable.vue - Leave requests table
+src/services/leave/leave.service.ts - Leave API service
+src/composables/useLeaveBalance.ts - Leave balance composable
+src/components/ui/ConfirmDialog.vue - Reusable confirm dialog
 ```

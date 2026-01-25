@@ -1,0 +1,328 @@
+/**
+ * Navigation Configuration - Matches Legacy React Navigation Exactly
+ * From: /layout/Dashboard/Drawer/DrawerContent/Navigation/menu-items/dashboard.tsx
+ */
+
+import type { NavItem } from '@/types/navigation';
+
+// Main navigation items matching legacy menu structure
+export const navigationItems: NavItem[] = [
+  {
+    id: 'dashboard',
+    title: 'Dashboard',
+    type: 'item',
+    url: '/dashboard',
+    icon: 'mdi-view-dashboard',
+  },
+  {
+    id: 'roles',
+    title: 'Roles',
+    type: 'item',
+    url: '/roles',
+    icon: 'mdi-shield-account',
+    permission: 'ROLES.READ',
+  },
+  {
+    id: 'company-policy',
+    title: 'Company Policy',
+    type: 'item',
+    url: '/company-policy',
+    icon: 'mdi-file-document',
+    permission: 'COMPANY_POLICY.READ',
+  },
+  {
+    id: 'employees',
+    title: 'Employees',
+    type: 'collapse',
+    url: '/employees',
+    icon: 'mdi-account-group',
+    permission: 'EMPLOYEE.READ',
+    children: [
+      {
+        id: 'employees-list',
+        title: 'Employees List',
+        type: 'item',
+        url: '/employees/employee-list',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'employee-exit',
+        title: 'Employee Exit',
+        type: 'item',
+        url: '/employees/employee-exit',
+        icon: 'mdi-chevron-right',
+        roles: ['SUPER_ADMIN'],
+      },
+    ],
+  },
+  {
+    id: 'attendance',
+    title: 'Attendance',
+    type: 'collapse',
+    url: '/attendance',
+    icon: 'mdi-calendar-month',
+    permission: 'ATTENDANCE.READ',
+    children: [
+      {
+        id: 'my-attendance',
+        title: 'My Attendance',
+        type: 'item',
+        url: '/attendance/my-attendance',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'attendance-configuration',
+        title: 'Attendance Configuration',
+        type: 'item',
+        url: '/attendance/attendance-configuration',
+        icon: 'mdi-chevron-right',
+        roles: ['SUPER_ADMIN'],
+      },
+      {
+        id: 'employee-report',
+        title: 'Employee Report',
+        type: 'item',
+        url: '/attendance/employee-report',
+        icon: 'mdi-chevron-right',
+      },
+    ],
+  },
+  {
+    id: 'it-assets',
+    title: 'IT Assets',
+    type: 'item',
+    url: '/IT-Assets',
+    icon: 'mdi-devices',
+    permission: 'IT_ASSETS.READ',
+  },
+  {
+    id: 'leave',
+    title: 'Leave',
+    type: 'collapse',
+    url: '/leave',
+    icon: 'mdi-calendar-check',
+    permission: 'LEAVE.READ',
+    children: [
+      {
+        id: 'apply-leave',
+        title: 'Apply Leave',
+        type: 'item',
+        url: '/leave/apply-leave',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'leave-approval',
+        title: 'Leave Approval',
+        type: 'item',
+        url: '/leave/leave-approval',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'leave-calendar',
+        title: 'Leave Calendar',
+        type: 'item',
+        url: '/leave/leave-calendar',
+        icon: 'mdi-chevron-right',
+      },
+    ],
+  },
+  {
+    id: 'kpi',
+    title: 'KPI',
+    type: 'collapse',
+    url: '/Kpi',
+    icon: 'mdi-chart-box',
+    permission: 'KPI.READ',
+    children: [
+      {
+        id: 'my-kpi',
+        title: 'My KPI',
+        type: 'item',
+        url: '/KPI/My-KPI',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'kpi-management',
+        title: 'KPI Management',
+        type: 'item',
+        url: '/KPI/KPI-Management',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'goals',
+        title: 'Goals',
+        type: 'item',
+        url: '/KPI/Goals',
+        icon: 'mdi-chevron-right',
+      },
+    ],
+  },
+  {
+    id: 'grievance',
+    title: 'Grievance',
+    type: 'collapse',
+    url: '/Grievance',
+    icon: 'mdi-message-alert',
+    permission: 'GRIEVANCE.READ',
+    children: [
+      {
+        id: 'my-grievance',
+        title: 'My Grievance',
+        type: 'item',
+        url: '/Grievance/My-Grievance',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'all-grievance',
+        title: 'All Grievance',
+        type: 'item',
+        url: '/Grievance/All-Grievance',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'grievance-configuration',
+        title: 'Grievance Configuration',
+        type: 'item',
+        url: '/Grievance/Grievance-Configuration',
+        icon: 'mdi-chevron-right',
+        roles: ['SUPER_ADMIN'],
+      },
+    ],
+  },
+  {
+    id: 'support',
+    title: 'Support',
+    type: 'collapse',
+    url: '/Support',
+    icon: 'mdi-face-agent',
+    permission: 'SUPPORT.READ',
+    children: [
+      {
+        id: 'my-support',
+        title: 'My Support',
+        type: 'item',
+        url: '/Support/My-Support',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'support-queries',
+        title: 'Support Queries',
+        type: 'item',
+        url: '/Support/Support-Queries',
+        icon: 'mdi-chevron-right',
+      },
+    ],
+  },
+  {
+    id: 'events',
+    title: 'Events',
+    type: 'item',
+    url: '/events',
+    icon: 'mdi-calendar-star',
+    permission: 'EVENTS.READ',
+  },
+  {
+    id: 'settings',
+    title: 'Settings',
+    type: 'collapse',
+    url: '/settings',
+    icon: 'mdi-cog',
+    roles: ['SUPER_ADMIN'],
+    children: [
+      {
+        id: 'email-notification',
+        title: 'Email and Notification',
+        type: 'item',
+        url: '/settings/email-and-notification',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'department',
+        title: 'Department',
+        type: 'item',
+        url: '/settings/department',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'designation',
+        title: 'Designation',
+        type: 'item',
+        url: '/settings/designation',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'team',
+        title: 'Team',
+        type: 'item',
+        url: '/settings/team',
+        icon: 'mdi-chevron-right',
+      },
+    ],
+  },
+  {
+    id: 'developer',
+    title: 'Developer',
+    type: 'collapse',
+    url: '/developer',
+    icon: 'mdi-developer-board',
+    roles: ['SUPER_ADMIN'],
+    children: [
+      {
+        id: 'logs',
+        title: 'Logs',
+        type: 'item',
+        url: '/developer/logs',
+        icon: 'mdi-chevron-right',
+      },
+      {
+        id: 'cron-jobs',
+        title: 'Cron Jobs',
+        type: 'item',
+        url: '/developer/cron-jobs',
+        icon: 'mdi-chevron-right',
+      },
+    ],
+  },
+];
+
+/**
+ * Filter navigation items based on user permissions and roles
+ */
+export function filterNavigation(
+  items: NavItem[],
+  userPermissions: string[],
+  userRole: string
+): NavItem[] {
+  return items
+    .filter((item) => {
+      // Check permission
+      if (item.permission && !userPermissions.includes(item.permission)) {
+        return false;
+      }
+
+      // Check roles
+      if (item.roles && item.roles.length > 0 && !item.roles.includes(userRole)) {
+        return false;
+      }
+
+      return true;
+    })
+    .map((item) => {
+      // Filter children recursively
+      if (item.children && item.children.length > 0) {
+        const filteredChildren = filterNavigation(item.children, userPermissions, userRole);
+        return {
+          ...item,
+          children: filteredChildren,
+        };
+      }
+      return item;
+    })
+    .filter((item) => {
+      // Remove collapse items with no children
+      if (item.type === 'collapse' && (!item.children || item.children.length === 0)) {
+        return false;
+      }
+      return true;
+    });
+}

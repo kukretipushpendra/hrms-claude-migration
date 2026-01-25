@@ -56,11 +56,30 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/roles/RolePermissionsView.vue'),
     meta: { requiresAuth: true, title: 'Edit Role' },
   },
+  // Company Policy routes
   {
     path: '/company-policy',
     name: 'company-policy',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
+    component: () => import('@/views/policy/PolicyListView.vue'),
     meta: { requiresAuth: true, title: 'Company Policy' },
+  },
+  {
+    path: '/company-policy/create',
+    name: 'policy-create',
+    component: () => import('@/views/policy/PolicyCreateView.vue'),
+    meta: { requiresAuth: true, title: 'Create Policy' },
+  },
+  {
+    path: '/company-policy/view/:id',
+    name: 'policy-detail',
+    component: () => import('@/views/policy/PolicyDetailView.vue'),
+    meta: { requiresAuth: true, title: 'Policy Details' },
+  },
+  {
+    path: '/company-policy/edit/:id',
+    name: 'policy-edit',
+    component: () => import('@/views/policy/PolicyCreateView.vue'),
+    meta: { requiresAuth: true, title: 'Edit Policy' },
   },
   {
     path: '/employees/:path(.*)?',

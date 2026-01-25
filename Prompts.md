@@ -531,3 +531,61 @@ Wave 0 and 2 are not completed properly please fix below issues:
 - `style: format employee and employment components`
 
 ---
+
+### Prompt 29: Fix Remaining UI Issues and Create Known Issues File
+**Time:** 2026-01-26 00:21:19
+
+```
+Below features are still missing:
+1. For upcoming holidays there is no button to open popup modal to see holidays for IND/US, also no flag icon UI as it was in legacy please match the UI ditto same.
+2. Still not able to see sidebar navigation menus, please enable them.
+3. My Profile section is giving 404 error - /api/UserProfile/GetPersonalDetail
+4. Please go through legacy frontend and match if all the api calls included in new frontend for whatever the features are implemented so far or not, please add if any missing.
+
+Note: Also make sure to keep all these issues in memory, so that it won't repeat again. Put all such issues record in common file so that whenever any prompt run, or migration run it will go through the issues also to make sure they won't occur.
+```
+
+**Result:** Fixed all issues and created knowledge base file:
+
+1. **Holiday Calendar Tile** - Completely rewrote to match legacy:
+   - Added SVG flag icons (india.svg, american.svg) copied from legacy
+   - Flag selector with opacity toggle (0.4 unselected, 1.0 selected)
+   - View More arrow icon (mdi-arrow-top-right) in header
+   - Modal dialog with full calendar table (SNO, DATE, DAY, REMARKS, LOCATION)
+   - Separate indiaHolidays and usaHolidays props
+
+2. **Sidebar Navigation** - Root cause identified and fixed:
+   - Was using permission strings (Read.Role) but backend sends `menus` array
+   - Changed filterNavigation to use `menus` array from login response
+   - Compares menu titles case-insensitively
+   - Matches legacy React implementation exactly
+
+3. **Profile API** - Fixed 404 error:
+   - Changed endpoint from `/UserProfile/GetPersonalDetail` to `/UserProfile/GetPersonalDetailsById/{id}`
+   - Added fallback to auth store data when API fails
+
+4. **Known Issues File Created** - `migration/KNOWN_ISSUES_AND_PATTERNS.md`:
+   - Documents common issues and patterns
+   - Navigation filtering using menus array
+   - API endpoint naming conventions
+   - Request/Response property casing
+   - Date handling for .NET
+   - Checklist before implementing features
+   - Issue log with date, cause, and fix
+
+**Files Created:**
+- `migration/KNOWN_ISSUES_AND_PATTERNS.md` - Knowledge base for migration
+- `modern/frontend/public/icons/india.svg` - India flag icon
+- `modern/frontend/public/icons/american.svg` - USA flag icon
+
+**Files Modified:**
+- `navigation.ts` - Menu-based filtering
+- `AppLayout.vue` - Pass menus to filterNavigation
+- `HolidayCalendarTile.vue` - Complete rewrite with SVG flags
+- `DashboardView.vue` - Separate India/USA holiday arrays
+- `ProfileView.vue` - Correct API endpoint
+- `auth.store.ts` - Fixed loadUser function
+
+**Commit:** `fix(ui): sidebar navigation, holiday calendar, and profile API`
+
+---

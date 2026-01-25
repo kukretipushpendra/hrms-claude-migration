@@ -106,11 +106,24 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/employees/EmployeeCreateView.vue'),
     meta: { requiresAuth: true, title: 'Edit Employee' },
   },
+  // Attendance routes
   {
-    path: '/attendance/:path(.*)?',
-    name: 'attendance',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
-    meta: { requiresAuth: true, title: 'Attendance' },
+    path: '/attendance/my-attendance',
+    name: 'my-attendance',
+    component: () => import('@/views/attendance/MyAttendanceView.vue'),
+    meta: { requiresAuth: true, title: 'My Attendance' },
+  },
+  {
+    path: '/attendance/attendance-configuration',
+    name: 'attendance-configuration',
+    component: () => import('@/views/attendance/AttendanceConfigurationView.vue'),
+    meta: { requiresAuth: true, title: 'Attendance Configuration' },
+  },
+  {
+    path: '/attendance/employee-report',
+    name: 'attendance-employee-report',
+    component: () => import('@/views/attendance/EmployeeReportView.vue'),
+    meta: { requiresAuth: true, title: 'Employee Report' },
   },
   {
     path: '/IT-Assets',
@@ -118,11 +131,30 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/placeholder/PlaceholderView.vue'),
     meta: { requiresAuth: true, title: 'IT Assets' },
   },
+  // Leave routes
   {
-    path: '/leave/:path(.*)?',
-    name: 'leave',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
-    meta: { requiresAuth: true, title: 'Leave' },
+    path: '/leave/apply-leave',
+    name: 'apply-leave',
+    component: () => import('@/views/leave/ApplyLeaveView.vue'),
+    meta: { requiresAuth: true, title: 'Apply Leave' },
+  },
+  {
+    path: '/leave/apply-leave/add/:id',
+    name: 'leave-application-form',
+    component: () => import('@/views/leave/LeaveApplicationFormView.vue'),
+    meta: { requiresAuth: true, title: 'Apply for Leave' },
+  },
+  {
+    path: '/leave/leave-approval',
+    name: 'leave-approval',
+    component: () => import('@/views/leave/LeaveApprovalView.vue'),
+    meta: { requiresAuth: true, title: 'Leave Approval' },
+  },
+  {
+    path: '/leave/leave-calendar',
+    name: 'leave-calendar',
+    component: () => import('@/views/leave/LeaveCalendarView.vue'),
+    meta: { requiresAuth: true, title: 'Leave Calendar' },
   },
   {
     path: '/KPI/:path(.*)?',
@@ -179,6 +211,20 @@ const routes: RouteRecordRaw[] = [
     name: 'employment-edit',
     component: () => import('@/views/employment/EmploymentEditView.vue'),
     meta: { requiresAuth: true, title: 'Edit Employment Details' },
+  },
+  // Nominee routes
+  {
+    path: '/nominees',
+    name: 'nominees',
+    component: () => import('@/views/nominees/NomineeListView.vue'),
+    meta: { requiresAuth: true, title: 'Nominee Details' },
+  },
+  // Certificate routes
+  {
+    path: '/certificates',
+    name: 'certificates',
+    component: () => import('@/views/certificates/CertificatesListView.vue'),
+    meta: { requiresAuth: true, title: 'Certificate Details' },
   },
   {
     path: '/settings/:path(.*)?',

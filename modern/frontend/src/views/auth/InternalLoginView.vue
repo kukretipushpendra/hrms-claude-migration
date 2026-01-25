@@ -184,11 +184,7 @@ const isLoading = computed(() => authStore.loading);
               <!-- Submit Button -->
               <div class="login-button-container">
                 <div class="login-button-wrapper">
-                  <button
-                    type="submit"
-                    class="login-button"
-                    :disabled="isLoading"
-                  >
+                  <button type="submit" class="login-button" :disabled="isLoading">
                     <b>Sign In</b>
                   </button>
                   <v-progress-circular

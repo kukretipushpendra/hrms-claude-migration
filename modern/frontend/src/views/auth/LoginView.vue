@@ -1,4 +1,8 @@
 <script setup lang="ts">
+/**
+ * SSO Login Page - Matches Legacy React InternalUserLogin.tsx Exactly
+ * From: legacy/Frontend/HRMS-Frontend/source/src/pages/Login/
+ */
 import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useDisplay } from 'vuetify';
@@ -6,7 +10,7 @@ import { useAuthStore } from '@/stores/auth.store';
 
 const router = useRouter();
 const authStore = useAuthStore();
-const { smAndUp } = useDisplay();
+const { smAndDown } = useDisplay();
 
 // State
 const errorMessage = ref('');
@@ -20,8 +24,6 @@ onMounted(() => {
 });
 
 // SSO Login Handler (Microsoft)
-// Note: Full MSAL integration requires @azure/msal-browser package
-// For now, this shows a message that SSO is being configured
 async function handleSSOLogin() {
   errorMessage.value = '';
   ssoLoading.value = true;
@@ -41,7 +43,7 @@ async function handleSSOLogin() {
     // const msalInstance = await import('@azure/msal-browser');
     // const userData = await msalInstance.loginPopup(loginRequest);
     // await authStore.loginWithSSO(userData.accessToken);
-    // router.push(redirect);
+    // router.push('/dashboard');
   } catch (error) {
     errorMessage.value =
       error instanceof Error ? error.message : 'SSO login failed. Please try again.';
@@ -55,115 +57,177 @@ const isLoading = computed(() => ssoLoading.value);
 </script>
 
 <template>
-  <v-app>
-    <v-main class="login-page">
-      <v-container fluid class="fill-height pa-0">
-        <v-row class="fill-height ma-0">
-          <!-- Left Column - Image (hidden on mobile) -->
-          <v-col v-if="smAndUp" cols="4" class="login-sidebar d-flex align-center justify-center">
-            <div class="login-sidebar-image">
-              <img src="/login-left-img.jpg" alt="HRMS" class="login-image" />
-            </div>
-          </v-col>
+  <div class="auth-wrapper">
+    <!-- Top Logo -->
+    <div class="top-logo">
+      <img src="/programmers-io.svg" alt="Programmers.io" class="top-logo-image" />
+    </div>
+
+    <!-- Auth Card Container -->
+    <div class="auth-card-container">
+      <div class="auth-card">
+        <div class="login-grid">
+          <!-- Left Sidebar - Image (hidden on mobile) -->
+          <div v-if="!smAndDown" class="login-sidebar">
+            <img src="/login-left-img.jpg" alt="HRMS" class="sidebar-image" />
+          </div>
 
           <!-- Divider (hidden on mobile) -->
-          <v-col v-if="smAndUp" cols="1" class="d-flex justify-center pa-0">
+          <div v-if="!smAndDown" class="login-divider-container">
             <div class="login-divider"></div>
-          </v-col>
+          </div>
 
-          <!-- Right Column - SSO Login -->
-          <v-col :cols="smAndUp ? 7 : 12" class="d-flex align-center justify-center">
-            <v-card
-              flat
-              class="login-main-container"
-              :width="smAndUp ? 450 : '100%'"
-              :max-width="450"
+          <!-- Right Side - Form -->
+          <div class="login-form-section">
+            <!-- Logo and Brand Header -->
+            <div class="login-center-icon-container">
+              <div class="login-center-icon">
+                <img src="/pio-logo.svg" alt="Logo" height="40" />
+              </div>
+              <div class="brand-divider"></div>
+              <h3 class="brand-text">HRMS</h3>
+            </div>
+
+            <!-- Title -->
+            <div class="login-title-container">
+              <h3 class="login-title">Sign in to start Your Session</h3>
+            </div>
+
+            <!-- Error Alert -->
+            <v-alert
+              v-if="errorMessage"
+              type="error"
+              variant="tonal"
+              class="mb-4"
+              closable
+              density="compact"
+              @click:close="errorMessage = ''"
             >
-              <!-- Logo and Brand -->
-              <div class="login-center-icon-container mb-8">
-                <div class="login-center-icon">
-                  <img src="/pio-logo.svg" alt="Logo" height="40" />
-                </div>
-                <div class="login-brand-divider"></div>
-                <span class="login-brand-text">HRMS</span>
-              </div>
+              {{ errorMessage }}
+            </v-alert>
 
-              <!-- Title -->
-              <div class="text-center mb-8">
-                <h1 class="login-title">Sign in to start Your Session</h1>
-              </div>
-
-              <!-- Error Alert -->
-              <v-alert
-                v-if="errorMessage"
-                type="error"
-                variant="tonal"
-                class="mb-6"
-                closable
-                @click:close="errorMessage = ''"
-              >
-                {{ errorMessage }}
-              </v-alert>
-
-              <!-- SSO Login Button (Microsoft Only) -->
-              <div class="d-flex justify-center">
-                <v-btn
-                  variant="outlined"
-                  color="primary"
-                  size="large"
-                  class="login-sso-button"
-                  :loading="ssoLoading"
+            <!-- SSO Login Button -->
+            <div class="login-button-container">
+              <div class="login-button-wrapper">
+                <button
+                  type="button"
+                  class="login-button"
                   :disabled="isLoading"
                   @click="handleSSOLogin"
                 >
-                  <img src="/microsoft365.svg" alt="Microsoft" height="30" class="mr-3" />
-                  <span class="font-weight-bold">Sign In with Microsoft</span>
-                </v-btn>
+                  <img src="/microsoft365.svg" alt="Microsoft" height="30" class="button-icon" />
+                  <b>Sign In with Microsoft</b>
+                </button>
+                <v-progress-circular
+                  v-if="ssoLoading"
+                  indeterminate
+                  size="24"
+                  width="2"
+                  color="primary"
+                  class="loading-spinner"
+                />
               </div>
-            </v-card>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-main>
-  </v-app>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped lang="scss">
-.login-page {
-  background-color: #ffffff;
+// Auth Wrapper - Full page background
+.auth-wrapper {
   min-height: 100vh;
-}
-
-.login-sidebar {
-  background-color: #fafafa;
-}
-
-.login-sidebar-image {
+  background-color: #eef4fb;
+  background-image: url('/header-cloud-light.png');
+  background-repeat: no-repeat;
+  background-position: center bottom;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+}
 
-  .login-image {
-    max-width: 228px;
-    height: auto;
+// Top Logo
+.top-logo {
+  padding: 24px;
+
+  .top-logo-image {
+    height: 30px;
+    width: auto;
   }
 }
 
-.login-divider {
-  border-left: 2px solid #f0f0f0;
-  height: 100%;
-  min-height: 400px;
+// Auth Card Container - Centers the card
+.auth-card-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
 }
 
-.login-main-container {
-  padding: 40px;
+// Auth Card - Main white card
+.auth-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08);
+  max-width: 726px;
+  width: 100%;
+  padding: 20px;
 }
 
+// Login Grid - 3 column layout
+.login-grid {
+  display: grid;
+  grid-template-columns: 4fr 1fr 7fr;
+  min-height: 350px;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// Left Sidebar with Image
+.login-sidebar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+
+  .sidebar-image {
+    width: 258px;
+    height: 180px;
+    object-fit: contain;
+    opacity: 0.8;
+  }
+}
+
+// Divider Container
+.login-divider-container {
+  display: flex;
+  justify-content: center;
+  padding-left: 30px;
+
+  .login-divider {
+    border-right: 2px solid rgba(0, 0, 0, 0.12);
+    height: 100%;
+  }
+}
+
+// Right Side Form Section
+.login-form-section {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+// Logo and Brand Header
 .login-center-icon-container {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 20px;
+  margin-bottom: 24px;
 }
 
 .login-center-icon {
@@ -174,48 +238,101 @@ const isLoading = computed(() => ssoLoading.value);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 1px 8px 0px rgba(0, 0, 0, 0.3);
 }
 
-.login-brand-divider {
-  width: 2px;
-  height: 40px;
-  background-color: #d9d9d9;
+.brand-divider {
+  border-right: 2px solid rgba(0, 0, 0, 0.12);
+  height: 50px;
 }
 
-.login-brand-text {
-  font-size: 1.5rem;
+.brand-text {
+  font-size: 1.75rem;
   font-weight: 700;
   color: #283a50;
+  margin: 0;
+}
+
+// Title
+.login-title-container {
+  text-align: center;
+  margin-bottom: 24px;
 }
 
 .login-title {
   font-size: 1.5rem;
   font-weight: 700;
   color: #1e75bb;
+  margin: 0;
 }
 
-.login-sso-button {
-  height: 48px !important;
-  padding-left: 50px !important;
-  padding-right: 50px !important;
-  border-color: #1e75bb !important;
-  color: #1e75bb !important;
+// Button Container
+.login-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+}
 
-  &:hover {
-    background-color: #1e75bb !important;
-    color: #ffffff !important;
+.login-button-wrapper {
+  position: relative;
+  margin: 8px;
+}
 
-    img {
+.login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 12px 50px;
+  border: 1px solid #1e75bb;
+  border-radius: 4px;
+  background-color: transparent;
+  color: #1e75bb;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background-color: #1e75bb;
+    color: #ffffff;
+
+    .button-icon {
       filter: brightness(0) invert(1);
     }
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  .button-icon {
+    transition: filter 0.2s ease;
+  }
+}
+
+.loading-spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -12px;
+  margin-left: -12px;
 }
 
 // Mobile adjustments
-@media (max-width: 768px) {
-  .login-main-container {
-    padding: 24px 16px;
+@media (max-width: 600px) {
+  .auth-card {
+    margin: 8px;
+    padding: 16px;
+  }
+
+  .login-form-section {
+    padding: 16px 8px;
+  }
+
+  .login-button {
+    padding: 12px 24px;
   }
 }
 </style>

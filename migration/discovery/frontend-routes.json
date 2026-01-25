@@ -1,0 +1,461 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "component": "LoginPage",
+      "protected": false,
+      "permission": null
+    },
+    {
+      "path": "/dashboard",
+      "component": "DashboardDefault",
+      "protected": false,
+      "permission": null
+    },
+    {
+      "path": "/profile/personal-details",
+      "component": "ProfilePage",
+      "protected": true,
+      "permission": "PERSONAL_DETAILS.READ"
+    },
+    {
+      "path": "/profile/employment-details",
+      "component": "ProfilePage",
+      "protected": true,
+      "permission": "EMPLOYMENT_DETAILS.READ"
+    },
+    {
+      "path": "/profile/nominee-details",
+      "component": "ProfilePage",
+      "protected": true,
+      "permission": "NOMINEE_DETAILS.READ"
+    },
+    {
+      "path": "/profile/education-details",
+      "component": "ProfilePage",
+      "protected": true,
+      "permission": "EDUCATIONAL_DETAILS.READ"
+    },
+    {
+      "path": "/profile/certificate-details",
+      "component": "ProfilePage",
+      "protected": true,
+      "permission": "CERTIFICATION_DETAILS.READ"
+    },
+    {
+      "path": "/profile/official-details",
+      "component": "ProfilePage",
+      "protected": true,
+      "permission": "OFFICIAL_DETAILS.READ"
+    },
+    {
+      "path": "/profile/exit-details",
+      "component": "ProfilePage",
+      "protected": true,
+      "permission": "PERSONAL_DETAILS.READ",
+      "featureFlag": "enableExitEmployee"
+    },
+    {
+      "path": "/profile/it-assets",
+      "component": "ProfilePage",
+      "protected": false,
+      "featureFlag": "enableITAsset"
+    },
+    {
+      "path": "/leave/apply-leave",
+      "component": "LeaveDashboard",
+      "protected": true,
+      "permission": "LEAVE_DETAILS.READ",
+      "featureFlag": "enableLeave"
+    },
+    {
+      "path": "/leave/apply-leave/add/:leaveType",
+      "component": "LeaveFormPage",
+      "protected": true,
+      "permission": "LEAVE_DETAILS.CREATE",
+      "featureFlag": "enableLeave"
+    },
+    {
+      "path": "/leave/details/:requestId",
+      "component": "LeaveDetailsPage",
+      "protected": true,
+      "permission": "LEAVE_DETAILS.READ",
+      "featureFlag": "enableLeave"
+    },
+    {
+      "path": "/leave/leave-approval",
+      "component": "LeaveApproval",
+      "protected": true,
+      "permission": "LEAVE_APPROVAL.READ",
+      "featureFlag": "enableLeave"
+    },
+    {
+      "path": "/leave/leave-calendar",
+      "component": "LeaveCalendarAdmin",
+      "protected": true,
+      "permission": "LEAVE_CALENDAR.READ",
+      "featureFlag": "enableLeave"
+    },
+    {
+      "path": "/roles",
+      "component": "RolesPage",
+      "protected": true,
+      "permission": "ROLE.READ"
+    },
+    {
+      "path": "/roles/add",
+      "component": "RoleDetails",
+      "protected": true,
+      "permission": "ROLE.CREATE"
+    },
+    {
+      "path": "/roles/edit/:id",
+      "component": "RoleDetails",
+      "protected": true,
+      "permission": "ROLE.EDIT"
+    },
+    {
+      "path": "/company-policy",
+      "component": "CompanyPolicyPage",
+      "protected": true,
+      "permission": "COMPANY_POLICY.READ"
+    },
+    {
+      "path": "/company-policy/view/:id",
+      "component": "CompanyPolicyDetailPage",
+      "protected": true,
+      "permission": "COMPANY_POLICY.VIEW"
+    },
+    {
+      "path": "/company-policy/edit/:id",
+      "component": "EditCompanyPolicyPage",
+      "protected": true,
+      "permission": "COMPANY_POLICY.EDIT"
+    },
+    {
+      "path": "/company-policy/add",
+      "component": "EditCompanyPolicyPage",
+      "protected": true,
+      "permission": "COMPANY_POLICY.CREATE"
+    },
+    {
+      "path": "/employees/employee-list",
+      "component": "EmployeeListPage",
+      "protected": true,
+      "permission": "EMPLOYEES.READ"
+    },
+    {
+      "path": "/employees/Employee-list/add",
+      "component": "AddEmployeePage",
+      "protected": true,
+      "permission": "EMPLOYEES.CREATE"
+    },
+    {
+      "path": "/employees/employee-exit",
+      "component": "ExitEmployeeListPage",
+      "protected": true,
+      "permission": "EMPLOYEES.READ",
+      "requiredRole": "SUPER_ADMIN",
+      "featureFlag": "enableExitEmployee"
+    },
+    {
+      "path": "/employees/employee-exit/:resignationId",
+      "component": "ExitDetailsPage",
+      "protected": true,
+      "permission": "EMPLOYEES.READ",
+      "requiredRole": "SUPER_ADMIN",
+      "featureFlag": "enableExitEmployee"
+    },
+    {
+      "path": "/attendance/my-attendance",
+      "component": "AttendancePage",
+      "protected": true,
+      "permission": "Attendance_Details.READ",
+      "featureFlag": "enableAttendance"
+    },
+    {
+      "path": "/attendance/attendance-configuration",
+      "component": "AttendanceConfigurationPage",
+      "protected": true,
+      "permission": "ATTENDANCE_CONFIGURATION.READ",
+      "featureFlag": "enableAttendance"
+    },
+    {
+      "path": "/attendance/Employee-Report",
+      "component": "AttendanceEmployeeReportPage",
+      "protected": true,
+      "permission": "ATTENDANCE_EMPLOYEE_REPORT.READ",
+      "featureFlag": "enableAttendance"
+    },
+    {
+      "path": "/events",
+      "component": "EventsPage",
+      "protected": true,
+      "permission": "EVENTS.READ"
+    },
+    {
+      "path": "/events/add",
+      "component": "EditEventsPage",
+      "protected": true,
+      "permission": "EVENTS.CREATE"
+    },
+    {
+      "path": "/events/view/:id",
+      "component": "EventDetailPage",
+      "protected": true,
+      "permission": "EVENTS.VIEW"
+    },
+    {
+      "path": "/events/edit/:id",
+      "component": "EditEventsPage",
+      "protected": true,
+      "permission": "EVENTS.EDIT"
+    },
+    {
+      "path": "/employment-details/edit/:id",
+      "component": "EditEmploymentDetails",
+      "protected": true,
+      "permission": "EMPLOYEES.EDIT && EMPLOYMENT_DETAILS.READ"
+    },
+    {
+      "path": "/settings/department",
+      "component": "Department",
+      "protected": true,
+      "permission": "EMPLOYMENT_DETAILS.READ",
+      "requiredRole": "SUPER_ADMIN"
+    },
+    {
+      "path": "/settings/designation",
+      "component": "Designation",
+      "protected": true,
+      "permission": "EMPLOYMENT_DETAILS.READ",
+      "requiredRole": "SUPER_ADMIN"
+    },
+    {
+      "path": "/settings/team",
+      "component": "Team",
+      "protected": true,
+      "permission": "EMPLOYMENT_DETAILS.READ",
+      "requiredRole": "SUPER_ADMIN"
+    },
+    {
+      "path": "/settings/email-and-notification",
+      "component": "EmailTable",
+      "protected": true,
+      "permission": "EMPLOYMENT_DETAILS.READ",
+      "requiredRole": "SUPER_ADMIN"
+    },
+    {
+      "path": "/settings/email-and-notification/edit/:id",
+      "component": "EmailTemplates",
+      "protected": true,
+      "permission": "EMPLOYMENT_DETAILS.READ",
+      "requiredRole": "SUPER_ADMIN"
+    },
+    {
+      "path": "/settings/email-and-notification/add",
+      "component": "EmailTemplates",
+      "protected": true,
+      "permission": "EMPLOYMENT_DETAILS.READ",
+      "requiredRole": "SUPER_ADMIN"
+    },
+    {
+      "path": "/settings/user-guides",
+      "component": "UserGuideListPage",
+      "protected": false
+    },
+    {
+      "path": "/settings/user-guides/add",
+      "component": "UpsertUserGuide",
+      "protected": false
+    },
+    {
+      "path": "/settings/user-guides/:userGuideId/edit",
+      "component": "UpsertUserGuide",
+      "protected": false
+    },
+    {
+      "path": "/IT-Assets",
+      "component": "ItAssetPage",
+      "protected": true,
+      "permission": "ASSET_DETAILS.READ",
+      "featureFlag": "enableITAsset"
+    },
+    {
+      "path": "/IT-Assets/add",
+      "component": "AddITAssetPage",
+      "protected": true,
+      "permission": "ASSET_DETAILS.CREATE",
+      "featureFlag": "enableITAsset"
+    },
+    {
+      "path": "/IT-Assets/:assetId",
+      "component": "AssetDetailsLayout",
+      "protected": true,
+      "permission": "ASSET_DETAILS.READ",
+      "featureFlag": "enableITAsset",
+      "children": [
+        {
+          "path": "general",
+          "component": "AssetGeneralPage"
+        },
+        {
+          "path": "history",
+          "component": "HistoryTable"
+        }
+      ]
+    },
+    {
+      "path": "/developer/logs",
+      "component": "DeveloperLogsPage",
+      "protected": true,
+      "permission": "DEVELOPER_LOGS.READ"
+    },
+    {
+      "path": "/developer/logs/:id",
+      "component": "DeveloperLogDetailsPage",
+      "protected": true,
+      "permission": "DEVELOPER_LOGS.READ"
+    },
+    {
+      "path": "/developer/cron-jobs",
+      "component": "CronJobsPage",
+      "protected": true,
+      "permission": "DEVELOPER_LOGS.READ"
+    },
+    {
+      "path": "/KPI/my-KPI",
+      "component": "EmployeeKPI",
+      "protected": true,
+      "permission": "KPI.READ",
+      "featureFlag": "enableKPI"
+    },
+    {
+      "path": "/KPI/Kpi-Details/:employeeId",
+      "component": "KpiDetails",
+      "protected": true,
+      "permission": "KPI.VIEW",
+      "featureFlag": "enableKPI"
+    },
+    {
+      "path": "/KPI/Goals",
+      "component": "GoalPage",
+      "protected": true,
+      "permission": "KPI_GOALS.READ",
+      "featureFlag": "enableKPI"
+    },
+    {
+      "path": "/KPI/Goals/Add-Goal",
+      "component": "UpsertGoalsPage",
+      "protected": true,
+      "permission": "KPI.CREATE",
+      "featureFlag": "enableKPI"
+    },
+    {
+      "path": "/KPI/Goals/Edit-Goal/:id",
+      "component": "UpsertGoalsPage",
+      "protected": true,
+      "permission": "KPI.EDIT",
+      "featureFlag": "enableKPI"
+    },
+    {
+      "path": "/KPI/KPI-Management",
+      "component": "EmployeeGoalsPage",
+      "protected": true,
+      "permission": "KPI_DASHBOARD.READ",
+      "featureFlag": "enableKPI"
+    },
+    {
+      "path": "/grievance/grievance-configuration",
+      "component": "GrievanceDashboard",
+      "protected": true,
+      "permission": "GRIEVANCE_CONFIGURATION.READ",
+      "featureFlag": "enableGrievance"
+    },
+    {
+      "path": "/grievance/grievance-configuration/add-grievance",
+      "component": "UpsertGrievanceType",
+      "protected": true,
+      "permission": "GRIEVANCE_CONFIGURATION.READ",
+      "featureFlag": "enableGrievance"
+    },
+    {
+      "path": "/grievance/grievance-configuration/edit-grievance/:id",
+      "component": "UpsertGrievanceType",
+      "protected": true,
+      "permission": "GRIEVANCE_CONFIGURATION.READ",
+      "featureFlag": "enableGrievance"
+    },
+    {
+      "path": "/grievance/my-grievance",
+      "component": "EmployeeGrievanceListPage",
+      "protected": true,
+      "permission": "GRIEVANCE.READ",
+      "featureFlag": "enableGrievance"
+    },
+    {
+      "path": "/grievance/my-grievance/add-grievance",
+      "component": "AddGrievancePage",
+      "protected": true,
+      "permission": "GRIEVANCE.CREATE",
+      "featureFlag": "enableGrievance"
+    },
+    {
+      "path": "/grievance/all-grievance",
+      "component": "GrievanceAdminPage",
+      "protected": true,
+      "permission": "GRIEVANCE_DASHBOARD.READ",
+      "featureFlag": "enableGrievance"
+    },
+    {
+      "path": "/grievance/tickets/:ticketId",
+      "component": "GrievanceTicketPage",
+      "protected": true,
+      "permission": "GRIEVANCE.VIEW",
+      "featureFlag": "enableGrievance"
+    },
+    {
+      "path": "/Support/Support-Queries",
+      "component": "FeedBackAdminPage",
+      "protected": true,
+      "permission": "SUPPORT_DASHBOARD.READ"
+    },
+    {
+      "path": "/Support/Support-Details/:requestId",
+      "component": "FeedBackDetailPage",
+      "protected": true,
+      "permission": "SUPPORT.READ"
+    },
+    {
+      "path": "/Support/My-Support",
+      "component": "EmployeeFeedBackListPage",
+      "protected": true,
+      "permission": "SUPPORT.READ"
+    },
+    {
+      "path": "/resignation-form/:userId?",
+      "component": "ResignationFormPage",
+      "protected": false,
+      "featureFlag": "enableExitEmployee"
+    },
+    {
+      "path": "/internal-login",
+      "component": "InternalUserLogin",
+      "protected": false
+    },
+    {
+      "path": "/unauthorized",
+      "component": "Unauthorized",
+      "protected": false
+    },
+    {
+      "path": "*",
+      "component": "NotFoundPage",
+      "protected": false
+    }
+  ],
+  "totalRoutes": 72,
+  "protectedRoutes": 57,
+  "publicRoutes": 15,
+  "featureFlaggedRoutes": 26
+}

@@ -1,0 +1,229 @@
+{
+  "cssFramework": {
+    "name": "Material-UI (MUI)",
+    "version": "6.5.0",
+    "components": [
+      "@mui/material",
+      "@mui/icons-material",
+      "@mui/x-date-pickers"
+    ]
+  },
+  "styling": {
+    "primary": "Emotion",
+    "version": "11.14.0",
+    "additional": [
+      {
+        "name": "Styled Components",
+        "version": "6.1.11"
+      }
+    ]
+  },
+  "fonts": [
+    {
+      "name": "Roboto",
+      "source": "@fontsource/roboto",
+      "version": "5.0.13",
+      "usage": "Primary font"
+    },
+    {
+      "name": "Inter",
+      "source": "@fontsource/inter",
+      "version": "5.0.20"
+    },
+    {
+      "name": "Poppins",
+      "source": "@fontsource/poppins",
+      "version": "5.0.14"
+    },
+    {
+      "name": "Public Sans",
+      "source": "@fontsource/public-sans",
+      "version": "5.0.18"
+    }
+  ],
+  "themeConfiguration": {
+    "mode": "light",
+    "presetColor": "default",
+    "breakpoints": {
+      "xs": 0,
+      "sm": 768,
+      "md": 1024,
+      "lg": 1266,
+      "xl": 1440
+    },
+    "customizationFiles": [
+      "/src/themes/index.tsx",
+      "/src/themes/palette.tsx",
+      "/src/themes/typography.tsx",
+      "/src/themes/shadows.tsx",
+      "/src/themes/overrides.tsx"
+    ]
+  },
+  "layoutStructure": {
+    "mainLayout": "DashboardLayout",
+    "layoutComponents": [
+      "ResponsiveDrawer (sidebar navigation)",
+      "Header",
+      "Breadcrumbs"
+    ],
+    "layoutFile": "/src/layout/Dashboard/index.tsx"
+  },
+  "customStyles": [
+    "/src/App.css",
+    "/src/index.css"
+  ],
+  "uiLibraries": [
+    {
+      "name": "React Big Calendar",
+      "version": "1.19.4",
+      "usage": "Event and leave calendar views"
+    },
+    {
+      "name": "Material React Table",
+      "version": "3.2.1",
+      "usage": "Data tables with sorting, filtering, pagination"
+    },
+    {
+      "name": "CKEditor 5",
+      "version": "43.3.1",
+      "usage": "Rich text editor for policies, emails"
+    },
+    {
+      "name": "React Toastify",
+      "version": "10.0.5",
+      "usage": "Toast notifications"
+    },
+    {
+      "name": "Framer Motion",
+      "version": "11.3.20",
+      "usage": "Animations and transitions"
+    },
+    {
+      "name": "Slick Carousel",
+      "version": "1.8.1",
+      "usage": "Image carousels"
+    },
+    {
+      "name": "SimpleBar React",
+      "version": "3.2.6",
+      "usage": "Custom scrollbars"
+    }
+  ],
+  "formComponents": [
+    {
+      "name": "FormTextField",
+      "path": "/src/components/FormTextField",
+      "usage": "Text input fields"
+    },
+    {
+      "name": "FormSelectField",
+      "path": "/src/components/FormSelectField",
+      "usage": "Dropdown selects"
+    },
+    {
+      "name": "FormAutocomplete",
+      "path": "/src/components/FormAutocomplete",
+      "usage": "Autocomplete inputs"
+    },
+    {
+      "name": "FormDatePicker",
+      "path": "/src/components/FormDatePicker",
+      "usage": "Date selection"
+    },
+    {
+      "name": "FormDateTimePicker",
+      "path": "/src/components/FormDateTimePicker",
+      "usage": "Date and time selection"
+    },
+    {
+      "name": "FormCheckbox",
+      "path": "/src/components/FormCheckbox",
+      "usage": "Checkbox inputs"
+    },
+    {
+      "name": "FormPhoneField",
+      "path": "/src/components/FormPhoneField",
+      "usage": "Phone number input"
+    },
+    {
+      "name": "FormUrlField",
+      "path": "/src/components/FormUrlField",
+      "usage": "URL input"
+    }
+  ],
+  "commonComponents": [
+    {
+      "name": "DataTable",
+      "path": "/src/components/DataTable",
+      "description": "Reusable data table with pagination, sorting, filtering"
+    },
+    {
+      "name": "ConfirmationDialog",
+      "path": "/src/components/ConfirmationDialog",
+      "description": "Confirmation modal dialogs"
+    },
+    {
+      "name": "GlobalLoader",
+      "path": "/src/components/GlobalLoader",
+      "description": "Global loading indicator"
+    },
+    {
+      "name": "Breadcrumbs",
+      "path": "/src/components/@extended/Breadcrumbs",
+      "description": "Navigation breadcrumbs"
+    },
+    {
+      "name": "Avatar",
+      "path": "/src/components/@extended/Avatar",
+      "description": "User avatar component"
+    },
+    {
+      "name": "AnimateButton",
+      "path": "/src/components/@extended/AnimateButton",
+      "description": "Animated button wrapper"
+    },
+    {
+      "name": "Transitions",
+      "path": "/src/components/@extended/Transitions",
+      "description": "Page transition effects"
+    },
+    {
+      "name": "EmployeeSearch",
+      "path": "/src/components/EmployeeSearch",
+      "description": "Employee search autocomplete"
+    },
+    {
+      "name": "FilePreview",
+      "path": "/src/components/FilePreview",
+      "description": "File preview modal"
+    },
+    {
+      "name": "LabelValue",
+      "path": "/src/components/LabelValue",
+      "description": "Label-value display pairs"
+    }
+  ],
+  "iconLibrary": {
+    "primary": "@mui/icons-material",
+    "version": "6.5.0",
+    "additional": "@ant-design/icons 5.4.0"
+  },
+  "responsiveDesign": {
+    "approach": "Mobile-first with MUI breakpoints",
+    "navigation": "Responsive drawer (sidebar) with toggle",
+    "tables": "Horizontal scroll on mobile"
+  },
+  "accessibility": {
+    "features": [
+      "ARIA labels (MUI default)",
+      "Keyboard navigation",
+      "Focus management"
+    ],
+    "status": "UNCLEAR: No explicit accessibility testing mentioned"
+  },
+  "errorHandling": {
+    "errorBoundary": "React Error Boundary",
+    "fallbackComponent": "FallbackRender",
+    "path": "/src/components/FallbackRender"
+  }
+}

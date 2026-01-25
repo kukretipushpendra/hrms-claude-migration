@@ -1,0 +1,163 @@
+{
+  "modules": [
+    {
+      "name": "authentication",
+      "controller": "AuthController",
+      "features": ["sso-login", "jwt-login", "refresh-token"],
+      "frontendPages": ["Login", "InternalUserLogin"],
+      "isFoundation": true
+    },
+    {
+      "name": "dashboard",
+      "controller": "DashboardController",
+      "features": ["dashboard-view"],
+      "frontendPages": ["Dashboard"],
+      "isFoundation": true
+    },
+    {
+      "name": "roles-permissions",
+      "controller": "RolePermissionController",
+      "features": ["list-roles", "create-role", "edit-role", "assign-permissions"],
+      "frontendPages": ["Roles", "RoleDetails"],
+      "isFoundation": true
+    },
+    {
+      "name": "employee-management",
+      "controller": "EmployeeController",
+      "features": ["list-employees", "add-employee", "edit-employee", "view-employee", "employee-profile"],
+      "frontendPages": ["Employee/EmployeeTable", "Employee/Add/AddEmployee"],
+      "dependencies": ["authentication", "roles-permissions"]
+    },
+    {
+      "name": "profile",
+      "controller": "UserProfileController",
+      "features": ["personal-details", "employment-details", "nominee-details", "education-details", "certificate-details", "official-details"],
+      "frontendPages": ["Profile"],
+      "dependencies": ["employee-management", "employment-details"]
+    },
+    {
+      "name": "company-policy",
+      "controller": "CompanyPolicyController",
+      "features": ["list-policies", "view-policy", "create-policy", "edit-policy", "policy-versions"],
+      "frontendPages": ["CompanyPolicy", "CompanyPolicy/Detail", "CompanyPolicy/Edit"],
+      "dependencies": ["authentication"]
+    },
+    {
+      "name": "events",
+      "controller": "EventController",
+      "features": ["list-events", "view-event", "create-event", "edit-event"],
+      "frontendPages": ["Events", "Events/Detail", "Events/Edit/EditEventsPage"],
+      "dependencies": ["authentication"]
+    },
+    {
+      "name": "employment-details",
+      "controller": "EmploymentDetailController",
+      "features": ["edit-employment", "department-management", "designation-management", "team-management"],
+      "frontendPages": ["EmploymentDetails", "Settings/Department", "Settings/Designation", "Settings/Team"],
+      "dependencies": ["employee-management"]
+    },
+    {
+      "name": "education-certificates",
+      "controller": "EducationalDetailController, CertificateController",
+      "features": ["education-details", "certificate-details"],
+      "frontendPages": ["EducationDetails", "Certificates"],
+      "dependencies": ["employee-management"]
+    },
+    {
+      "name": "nominee-references",
+      "controller": "NomineeController, ProfessionalReferenceController, PreviousEmployerController",
+      "features": ["nominee-management", "professional-references", "previous-employers"],
+      "frontendPages": ["Nominee"],
+      "dependencies": ["employee-management"]
+    },
+    {
+      "name": "attendance",
+      "controller": "AttendanceController",
+      "features": ["my-attendance", "attendance-configuration", "employee-report", "time-doctor-sync"],
+      "frontendPages": ["Attendance/Employee", "Attendance/AttendanceConfiguration", "Attendance/EmployeeReport"],
+      "dependencies": ["employee-management"],
+      "featureFlag": "enableAttendance"
+    },
+    {
+      "name": "leave-management",
+      "controller": "LeaveManagementController, EmployeeLeaveController",
+      "features": ["apply-leave", "leave-details", "leave-approval", "leave-calendar", "leave-accrual"],
+      "frontendPages": ["Leaves/LeaveDashboard", "Leaves/LeaveFormPage", "Leaves/LeaveDetailsPage", "Leaves/LeaveApproval", "LeaveCalenderAdmin"],
+      "dependencies": ["employee-management"],
+      "featureFlag": "enableLeave"
+    },
+    {
+      "name": "asset-management",
+      "controller": "AssetManagementController",
+      "features": ["list-assets", "add-asset", "asset-details", "asset-history", "asset-assignment"],
+      "frontendPages": ["AssetManagement/ItAssetTable", "AssetManagement/AddITAssetPage", "AssetManagement/AssetDetails"],
+      "dependencies": ["employee-management"],
+      "featureFlag": "enableITAsset"
+    },
+    {
+      "name": "exit-management",
+      "controller": "ExitEmployeeController, AdminExitEmployeeController",
+      "features": ["resignation-form", "exit-employee-list", "exit-details", "clearance-workflow"],
+      "frontendPages": ["Resignation/ResignationForm", "ExitEmployee/ExitEmployeeListPage", "ExitEmployee/ExitDetailsPage"],
+      "dependencies": ["employee-management", "leave-management"],
+      "featureFlag": "enableExitEmployee"
+    },
+    {
+      "name": "kpi",
+      "controller": "KPIController",
+      "features": ["my-kpi", "kpi-details", "goals-list", "add-goal", "edit-goal", "kpi-management"],
+      "frontendPages": ["KPI/EmployeeKPI", "KPI/KpiDetails", "KPI/GoalListPage", "KPI/UpsertGoalPage", "KPI/MangerDashboardPage"],
+      "dependencies": ["employee-management"],
+      "featureFlag": "enableKPI"
+    },
+    {
+      "name": "grievance",
+      "controller": "GrievanceController",
+      "features": ["my-grievance", "add-grievance", "all-grievance", "grievance-tickets", "grievance-configuration"],
+      "frontendPages": ["Grievances/EmployeeGrievanceListPage", "Grievances/AddGrievancePage", "Grievances/GrievanceAdminReport", "Grievances/TicketPage", "Grievances/GrievanceConfiguration", "Grievances/UpsertGrievanceType"],
+      "dependencies": ["employee-management"],
+      "featureFlag": "enableGrievance"
+    },
+    {
+      "name": "support",
+      "controller": "FeedbackController",
+      "features": ["support-queries", "support-details", "my-support"],
+      "frontendPages": ["Support/SupportAdminPage", "Support/SupportDetailPage", "Support/SupportEmployeePage"],
+      "dependencies": ["employee-management"]
+    },
+    {
+      "name": "email-notifications",
+      "controller": "NotificationTemplateController",
+      "features": ["email-templates", "template-management"],
+      "frontendPages": ["Email/components/EmailTemplate", "Email/components/EmailTable"],
+      "dependencies": ["authentication"]
+    },
+    {
+      "name": "developer-tools",
+      "controller": "DevToolController",
+      "features": ["system-logs", "log-details", "cron-jobs"],
+      "frontendPages": ["Developer/Logging/LogsTable", "Developer/Logging/Detail/LogDetails", "Developer/Crons/LogsTable"],
+      "dependencies": ["authentication"]
+    },
+    {
+      "name": "user-guides",
+      "controller": "UserGuideController",
+      "features": ["list-guides", "add-guide", "edit-guide"],
+      "frontendPages": ["UserGuide/UserGuideListPage", "UserGuide/UpsertUserGuide"],
+      "dependencies": ["authentication"]
+    }
+  ],
+  "staticPages": [
+    {
+      "name": "not-found",
+      "path": "NotFoundPage"
+    },
+    {
+      "name": "unauthorized",
+      "path": "Unauthorized"
+    }
+  ],
+  "totalModules": 20,
+  "foundationModules": 3,
+  "featureFlaggedModules": 5
+}

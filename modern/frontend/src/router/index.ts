@@ -167,6 +167,19 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/events/EventCreateView.vue'),
     meta: { requiresAuth: true, title: 'Edit Event' },
   },
+  // Employment Details routes
+  {
+    path: '/employment-details',
+    name: 'employment-details',
+    component: () => import('@/views/employment/EmploymentDetailView.vue'),
+    meta: { requiresAuth: true, title: 'Employment Details' },
+  },
+  {
+    path: '/employment-details/edit',
+    name: 'employment-edit',
+    component: () => import('@/views/employment/EmploymentEditView.vue'),
+    meta: { requiresAuth: true, title: 'Edit Employment Details' },
+  },
   {
     path: '/settings/:path(.*)?',
     name: 'settings',

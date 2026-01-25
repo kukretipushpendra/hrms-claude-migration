@@ -1,10 +1,6 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs
-      :items="breadcrumbs"
-      divider=">"
-      class="px-0"
-    ></v-breadcrumbs>
+    <v-breadcrumbs :items="breadcrumbs" divider=">" class="px-0"></v-breadcrumbs>
 
     <v-card elevation="3">
       <v-card-title class="d-flex align-center pa-4 border-b">
@@ -27,12 +23,7 @@
           <div class="d-flex gap-2">
             <v-tooltip text="Add Employee" location="bottom">
               <template #activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  icon
-                  variant="text"
-                  :to="'/employees/create'"
-                >
+                <v-btn v-bind="props" icon variant="text" :to="'/employees/create'">
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
               </template>
@@ -54,12 +45,7 @@
 
             <v-tooltip text="Import" location="bottom">
               <template #activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  icon
-                  variant="text"
-                  @click="importDialogVisible = true"
-                >
+                <v-btn v-bind="props" icon variant="text" @click="importDialogVisible = true">
                   <v-icon>mdi-upload</v-icon>
                 </v-btn>
               </template>
@@ -94,11 +80,7 @@
                   :color="hasActiveFilters ? 'primary' : undefined"
                   @click="showFilters = !showFilters"
                 >
-                  <v-badge
-                    :model-value="hasActiveFilters"
-                    color="primary"
-                    dot
-                  >
+                  <v-badge :model-value="hasActiveFilters" color="primary" dot>
                     <v-icon>mdi-filter-variant</v-icon>
                   </v-badge>
                 </v-btn>
@@ -107,13 +89,7 @@
 
             <v-tooltip v-if="hasActiveFilters" text="Remove Filters" location="bottom">
               <template #activator="{ props }">
-                <v-btn
-                  v-bind="props"
-                  icon
-                  variant="text"
-                  color="error"
-                  @click="handleResetFilters"
-                >
+                <v-btn v-bind="props" icon variant="text" color="error" @click="handleResetFilters">
                   <v-icon>mdi-filter-variant-remove</v-icon>
                 </v-btn>
               </template>

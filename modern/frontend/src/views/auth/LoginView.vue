@@ -90,7 +90,7 @@ const isLoading = computed(() => ssoLoading.value);
 
               <!-- Title -->
               <div class="text-center mb-8">
-                <h1 class="login-title">Sign In</h1>
+                <h1 class="login-title">Sign in to start Your Session</h1>
               </div>
 
               <!-- Error Alert -->

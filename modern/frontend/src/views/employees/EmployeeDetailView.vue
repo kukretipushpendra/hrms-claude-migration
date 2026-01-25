@@ -1,20 +1,10 @@
 <template>
   <v-container fluid>
-    <v-breadcrumbs
-      :items="breadcrumbs"
-      divider=">"
-      class="px-0"
-    ></v-breadcrumbs>
+    <v-breadcrumbs :items="breadcrumbs" divider=">" class="px-0"></v-breadcrumbs>
 
     <v-card elevation="3">
       <v-card-title class="d-flex align-center pa-4 border-b">
-        <v-btn
-          icon
-          variant="text"
-          size="small"
-          @click="router.back()"
-          class="mr-2"
-        >
+        <v-btn icon variant="text" size="small" @click="router.back()" class="mr-2">
           <v-icon>mdi-arrow-left</v-icon>
         </v-btn>
         <h2 class="text-h5">Employee Details</h2>
@@ -110,7 +100,9 @@
                   <v-col cols="6">{{ formatDate(employee.joiningDate) }}</v-col>
 
                   <v-col cols="6"><strong>Confirmation Date:</strong></v-col>
-                  <v-col cols="6">{{ employee.confirmationDate ? formatDate(employee.confirmationDate) : 'N/A' }}</v-col>
+                  <v-col cols="6">{{
+                    employee.confirmationDate ? formatDate(employee.confirmationDate) : 'N/A'
+                  }}</v-col>
 
                   <v-col cols="6"><strong>Branch:</strong></v-col>
                   <v-col cols="6">{{ getBranchLabel(employee.branch) }}</v-col>
@@ -161,7 +153,9 @@
                   <v-col cols="6">{{ employee.passportNo || 'N/A' }}</v-col>
 
                   <v-col cols="6"><strong>Passport Expiry:</strong></v-col>
-                  <v-col cols="6">{{ employee.passportExpiry ? formatDate(employee.passportExpiry) : 'N/A' }}</v-col>
+                  <v-col cols="6">{{
+                    employee.passportExpiry ? formatDate(employee.passportExpiry) : 'N/A'
+                  }}</v-col>
                 </v-row>
               </v-card-text>
             </v-card>
@@ -214,7 +208,12 @@ const getBranchLabel = (branch: number) => {
 };
 
 const getJobTypeLabel = (jobType: number) => {
-  const labels: Record<number, string> = { 1: 'Full Time', 2: 'Part Time', 3: 'Contract', 4: 'Internship' };
+  const labels: Record<number, string> = {
+    1: 'Full Time',
+    2: 'Part Time',
+    3: 'Contract',
+    4: 'Internship',
+  };
   return labels[jobType] || 'N/A';
 };
 

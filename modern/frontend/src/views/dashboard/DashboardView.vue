@@ -23,6 +23,7 @@ import type {
 // Components
 import AnalyticsCard from '@/components/dashboard/AnalyticsCard.vue';
 import DashboardTile from '@/components/dashboard/DashboardTile.vue';
+import HolidayCalendarTile from '@/components/dashboard/HolidayCalendarTile.vue';
 
 const authStore = useAuthStore();
 
@@ -56,10 +57,10 @@ const isEmployee = computed(() => {
 });
 
 // Check permissions for tiles
-const hasAttendancePermission = computed(() => authStore.hasPermission('ATTENDANCE.READ'));
-const hasLeavePermission = computed(() => authStore.hasPermission('LEAVE.READ'));
-const hasCompanyPolicyPermission = computed(() => authStore.hasPermission('COMPANY_POLICY.READ'));
-const hasEventsPermission = computed(() => authStore.hasPermission('EVENTS.READ'));
+const hasAttendancePermission = computed(() => authStore.hasPermission('Read.Attendance'));
+const hasLeavePermission = computed(() => authStore.hasPermission('Read.Leave'));
+const hasCompanyPolicyPermission = computed(() => authStore.hasPermission('Read.CompanyPolicy'));
+const hasEventsPermission = computed(() => authStore.hasPermission('Read.Events'));
 
 // Show "Apply New" tile if attendance OR leave enabled
 const showApplyNewTile = computed(() => hasAttendancePermission.value || hasLeavePermission.value);
@@ -81,12 +82,19 @@ async function fetchDashboardData() {
     birthdays.value = birthdayRes.result || [];
     workAnniversaries.value = workAnniversaryRes.result || [];
 
-    // Merge India + USA holidays into single list
+    // Merge India + USA holidays into single list with location labels
     if (holidaysRes.result) {
-      upcomingHolidays.value = [
-        ...(holidaysRes.result.india || []),
-        ...(holidaysRes.result.usa || []),
-      ].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      const indiaHolidays = (holidaysRes.result.india || []).map((h) => ({
+        ...h,
+        location: 'India',
+      }));
+      const usaHolidays = (holidaysRes.result.usa || []).map((h) => ({
+        ...h,
+        location: 'USA',
+      }));
+      upcomingHolidays.value = [...indiaHolidays, ...usaHolidays].sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+      );
     }
 
     // Fetch permission-gated data
@@ -286,29 +294,7 @@ onMounted(() => {
 
         <!-- Upcoming Holidays -->
         <v-col cols="12" md="4">
-          <DashboardTile
-            title="Upcoming Holidays"
-            background-class="background-1"
-            icon="mdi-calendar-star"
-          >
-            <template #content>
-              <div v-if="upcomingHolidays.length === 0" class="no-data">No upcoming holidays</div>
-              <v-list v-else density="compact" class="pa-0">
-                <v-list-item
-                  v-for="(item, index) in upcomingHolidays.slice(0, 5)"
-                  :key="index"
-                  class="px-0"
-                >
-                  <v-list-item-title class="text-body-2">
-                    {{ item.title }}
-                  </v-list-item-title>
-                  <v-list-item-subtitle class="text-caption">
-                    {{ formatDate(item.date) }} ({{ item.location }})
-                  </v-list-item-subtitle>
-                </v-list-item>
-              </v-list>
-            </template>
-          </DashboardTile>
+          <HolidayCalendarTile :holidays="upcomingHolidays" />
         </v-col>
 
         <!-- Apply New (if attendance OR leave enabled) -->

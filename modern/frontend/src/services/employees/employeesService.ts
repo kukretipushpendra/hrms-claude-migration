@@ -18,7 +18,9 @@ const baseRoute = '/Employee';
 /**
  * Transform camelCase filters to PascalCase for .NET API
  */
-export function transformFiltersToRequest(filters: EmployeeSearchFilter): EmployeeSearchFilterRequest {
+export function transformFiltersToRequest(
+  filters: EmployeeSearchFilter
+): EmployeeSearchFilterRequest {
   return {
     EmployeeCode: filters.employeeCode,
     EmployeeName: filters.employeeName,

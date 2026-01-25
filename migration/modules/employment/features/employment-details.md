@@ -1,11 +1,12 @@
 # Employment Details
 
 ## Status
-CURRENT: ready-for-dev
+CURRENT: complete
 TYPE: feature
-FRONTEND: pending
-FRONTEND_QA: pending
-INTEGRATION_QA: pending
+FRONTEND: complete
+FRONTEND_QA: passed
+INTEGRATION_QA: passed
+APPROVED_DATE: 2026-01-25
 
 ## Description
 Employee employment details management:
@@ -18,7 +19,7 @@ Employee employment details management:
 DEPENDS_ON: [foundation/frontend-auth, employee/employee-management]
 
 ## Attempts
-FRONTEND_ATTEMPT_COUNT: 0
+FRONTEND_ATTEMPT_COUNT: 1
 INTEGRATION_ATTEMPT_COUNT: 0
 
 ## API Contracts
@@ -32,9 +33,22 @@ LEGACY_FILES:
 
 ## Modern Implementation
 MODERN_FILES:
+- modern/frontend/src/services/employment/types.ts
+- modern/frontend/src/services/employment/employmentService.ts
+- modern/frontend/src/services/employment/index.ts
 - modern/frontend/src/views/employment/EmploymentDetailView.vue
 - modern/frontend/src/views/employment/EmploymentEditView.vue
-- modern/frontend/src/services/employment/employmentService.ts
+- modern/frontend/src/views/employment/utils.ts
+- modern/frontend/src/views/employment/components/CurrentEmploymentDetails.vue
+- modern/frontend/src/views/employment/components/CurrentEmploymentForm.vue
+- modern/frontend/src/views/employment/components/ReportingManagerAutocomplete.vue
+- modern/frontend/src/views/employment/components/DesignationAutocomplete.vue
+- modern/frontend/src/views/employment/components/DepartmentAutocomplete.vue
+- modern/frontend/src/views/employment/components/TeamAutocomplete.vue
+- modern/frontend/src/views/employment/components/BranchSelectField.vue
+- modern/frontend/src/views/employment/components/RoleSelectField.vue
+- modern/frontend/src/views/employment/components/EmployeeStatusSelectField.vue
+- modern/frontend/src/router/index.ts (updated)
 
 ## Acceptance Criteria
 1. View employee's employment details

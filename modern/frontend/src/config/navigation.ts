@@ -20,7 +20,7 @@ export const navigationItems: NavItem[] = [
     type: 'item',
     url: '/roles',
     icon: 'mdi-shield-account',
-    permission: 'ROLES.READ',
+    permission: 'Read.Role',
   },
   {
     id: 'company-policy',
@@ -28,7 +28,7 @@ export const navigationItems: NavItem[] = [
     type: 'item',
     url: '/company-policy',
     icon: 'mdi-file-document',
-    permission: 'COMPANY_POLICY.READ',
+    permission: 'Read.CompanyPolicy',
   },
   {
     id: 'employees',
@@ -36,7 +36,7 @@ export const navigationItems: NavItem[] = [
     type: 'collapse',
     url: '/employees',
     icon: 'mdi-account-group',
-    permission: 'EMPLOYEE.READ',
+    permission: 'Read.Employees',
     children: [
       {
         id: 'employees-list',
@@ -61,7 +61,7 @@ export const navigationItems: NavItem[] = [
     type: 'collapse',
     url: '/attendance',
     icon: 'mdi-calendar-month',
-    permission: 'ATTENDANCE.READ',
+    permission: 'Read.Attendance',
     children: [
       {
         id: 'my-attendance',
@@ -93,7 +93,7 @@ export const navigationItems: NavItem[] = [
     type: 'item',
     url: '/IT-Assets',
     icon: 'mdi-devices',
-    permission: 'IT_ASSETS.READ',
+    permission: 'Read.Asset',
   },
   {
     id: 'leave',
@@ -101,7 +101,7 @@ export const navigationItems: NavItem[] = [
     type: 'collapse',
     url: '/leave',
     icon: 'mdi-calendar-check',
-    permission: 'LEAVE.READ',
+    permission: 'Read.Leave',
     children: [
       {
         id: 'apply-leave',
@@ -132,7 +132,7 @@ export const navigationItems: NavItem[] = [
     type: 'collapse',
     url: '/Kpi',
     icon: 'mdi-chart-box',
-    permission: 'KPI.READ',
+    permission: 'Read.KPI',
     children: [
       {
         id: 'my-kpi',
@@ -163,7 +163,7 @@ export const navigationItems: NavItem[] = [
     type: 'collapse',
     url: '/Grievance',
     icon: 'mdi-message-alert',
-    permission: 'GRIEVANCE.READ',
+    permission: 'Read.Grievances',
     children: [
       {
         id: 'my-grievance',
@@ -195,7 +195,7 @@ export const navigationItems: NavItem[] = [
     type: 'collapse',
     url: '/Support',
     icon: 'mdi-face-agent',
-    permission: 'SUPPORT.READ',
+    permission: 'Read.Support',
     children: [
       {
         id: 'my-support',
@@ -219,7 +219,7 @@ export const navigationItems: NavItem[] = [
     type: 'item',
     url: '/events',
     icon: 'mdi-calendar-star',
-    permission: 'EVENTS.READ',
+    permission: 'Read.Events',
   },
   {
     id: 'settings',
@@ -295,9 +295,18 @@ export function filterNavigation(
 ): NavItem[] {
   return items
     .filter((item) => {
-      // Check permission
-      if (item.permission && !userPermissions.includes(item.permission)) {
-        return false;
+      // Dashboard always shows (no permission required)
+      if (item.id === 'dashboard') {
+        return true;
+      }
+
+      // Check permission - if no permission specified, show the item
+      if (item.permission) {
+        // Check if user has the exact permission
+        const hasExactPermission = userPermissions.includes(item.permission);
+        if (!hasExactPermission) {
+          return false;
+        }
       }
 
       // Check roles

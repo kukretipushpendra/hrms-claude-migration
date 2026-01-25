@@ -81,11 +81,30 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/policy/PolicyCreateView.vue'),
     meta: { requiresAuth: true, title: 'Edit Policy' },
   },
+  // Employee routes
   {
-    path: '/employees/:path(.*)?',
+    path: '/employees',
     name: 'employees',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
+    component: () => import('@/views/employees/EmployeeListView.vue'),
     meta: { requiresAuth: true, title: 'Employees' },
+  },
+  {
+    path: '/employees/create',
+    name: 'employee-create',
+    component: () => import('@/views/employees/EmployeeCreateView.vue'),
+    meta: { requiresAuth: true, title: 'Add Employee' },
+  },
+  {
+    path: '/employees/view/:id',
+    name: 'employee-detail',
+    component: () => import('@/views/employees/EmployeeDetailView.vue'),
+    meta: { requiresAuth: true, title: 'Employee Details' },
+  },
+  {
+    path: '/employees/edit/:id',
+    name: 'employee-edit',
+    component: () => import('@/views/employees/EmployeeCreateView.vue'),
+    meta: { requiresAuth: true, title: 'Edit Employee' },
   },
   {
     path: '/attendance/:path(.*)?',

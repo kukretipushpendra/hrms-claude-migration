@@ -4,7 +4,8 @@
 Complete Key Performance Indicator (KPI) management system with quarterly self-ratings, manager reviews, goal assignment, and performance tracking. Supports multiple KPI plans per employee with review history tracking.
 
 ## Status
-CURRENT: frontend-ready-for-qa
+CURRENT: human-review
+FRONTEND_QA: passed
 TYPE: feature
 WAVE: 4
 DEPENDS_ON: [auth-pages, employees]

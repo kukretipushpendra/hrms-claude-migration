@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(taskkill:*)",
+      "Bash(cmd /c \"taskkill /PID 45756 /F\")",
+      "Bash(cmd /c \"tasklist | findstr /i \"\"HRMS dotnet\"\"\")",
+      "Bash(dotnet run)"
+    ]
+  }
+}

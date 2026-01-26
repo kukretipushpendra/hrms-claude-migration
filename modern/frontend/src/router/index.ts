@@ -192,11 +192,42 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/leave/LeaveCalendarView.vue'),
     meta: { requiresAuth: true, title: 'Leave Calendar' },
   },
+  // KPI routes
   {
-    path: '/KPI/:path(.*)?',
-    name: 'kpi',
+    path: '/KPI/my-KPI',
+    name: 'my-kpi',
+    component: () => import('@/views/kpi/EmployeeKPIView.vue'),
+    meta: { requiresAuth: true, title: 'My KPI' },
+  },
+  {
+    path: '/KPI/Kpi-Details/:employeeId',
+    name: 'kpi-details',
     component: () => import('@/views/placeholder/PlaceholderView.vue'),
-    meta: { requiresAuth: true, title: 'KPI' },
+    meta: { requiresAuth: true, title: 'KPI Details' },
+  },
+  {
+    path: '/KPI/Goals',
+    name: 'kpi-goals',
+    component: () => import('@/views/kpi/GoalListView.vue'),
+    meta: { requiresAuth: true, title: 'Goals' },
+  },
+  {
+    path: '/KPI/Goals/Add-Goal',
+    name: 'kpi-goal-add',
+    component: () => import('@/views/kpi/UpsertGoalView.vue'),
+    meta: { requiresAuth: true, title: 'Add Goal' },
+  },
+  {
+    path: '/KPI/Goals/Edit-Goal/:id',
+    name: 'kpi-goal-edit',
+    component: () => import('@/views/kpi/UpsertGoalView.vue'),
+    meta: { requiresAuth: true, title: 'Edit Goal' },
+  },
+  {
+    path: '/KPI/KPI-Management',
+    name: 'kpi-management',
+    component: () => import('@/views/placeholder/PlaceholderView.vue'),
+    meta: { requiresAuth: true, title: 'KPI Management' },
   },
   {
     path: '/Grievance/:path(.*)?',

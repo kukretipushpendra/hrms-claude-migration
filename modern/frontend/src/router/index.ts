@@ -393,6 +393,25 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/email/EmailTemplateFormView.vue'),
     meta: { requiresAuth: true, title: 'Edit Email Template' },
   },
+  // User Guide routes
+  {
+    path: '/settings/user-guides',
+    name: 'user-guides',
+    component: () => import('@/views/userguide/UserGuideListView.vue'),
+    meta: { requiresAuth: true, title: 'User Guides' },
+  },
+  {
+    path: '/settings/user-guides/add',
+    name: 'user-guide-add',
+    component: () => import('@/views/userguide/UserGuideFormView.vue'),
+    meta: { requiresAuth: true, title: 'Add User Guide' },
+  },
+  {
+    path: '/settings/user-guides/:id/edit',
+    name: 'user-guide-edit',
+    component: () => import('@/views/userguide/UserGuideFormView.vue'),
+    meta: { requiresAuth: true, title: 'Edit User Guide' },
+  },
   {
     path: '/settings/:path(.*)?',
     name: 'settings',

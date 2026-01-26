@@ -91,7 +91,6 @@ const emit = defineEmits<{
   (e: 'reset'): void;
 }>();
 
-const formRef = ref<any>(null);
 const filters = ref<AdminGrievanceFilter>({ ...props.modelValue });
 
 const statusOptions = [

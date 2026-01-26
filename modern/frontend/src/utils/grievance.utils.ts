@@ -2,12 +2,11 @@
 
 import {
   GrievanceStatus,
-  GrievanceStatusType,
   GrievanceLevel,
-  GrievanceLevelType,
   GRIEVANCE_STATUS_LABEL,
   GRIEVANCE_LEVEL_LABEL,
 } from '@/types/grievance.types';
+import type { GrievanceStatusType, GrievanceLevelType } from '@/types/grievance.types';
 
 export interface StatusMeta {
   label: string;

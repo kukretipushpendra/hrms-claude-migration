@@ -78,7 +78,6 @@ const emit = defineEmits<{
   ): void;
 }>();
 
-const formRef = ref<any>(null);
 const remarks = ref('');
 const attachment = ref<File[] | null>(null);
 const remarksError = ref('');

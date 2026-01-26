@@ -9,6 +9,7 @@ import {
   AssetCondition,
   ASSET_CONDITION_LABELS,
   type UpsertITClearanceRequest,
+  type AssetConditionType,
 } from '@/types/exit.types';
 
 interface Props {
@@ -116,8 +117,9 @@ const fetchClearance = async () => {
 // Handle file selection
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
-  if (target.files && target.files.length > 0) {
-    attachmentFile.value = target.files[0];
+  const file = target.files?.[0];
+  if (file) {
+    attachmentFile.value = file;
   }
 };
 
@@ -131,10 +133,10 @@ const onSubmit = handleSubmit(async (formValues) => {
       resignationId: props.resignationId,
       accessRevoked: formValues.accessRevoked,
       assetReturned: formValues.assetReturned,
-      assetCondition: formValues.assetCondition,
+      assetCondition: formValues.assetCondition as AssetConditionType,
       note: formValues.note,
       itClearanceCertification: formValues.itClearanceCertification,
-      attachmentUrl: attachmentFile.value || existingAttachment.value,
+      attachmentUrl: attachmentFile.value ?? existingAttachment.value ?? null,
     };
 
     const response = await upsertITClearance(request);

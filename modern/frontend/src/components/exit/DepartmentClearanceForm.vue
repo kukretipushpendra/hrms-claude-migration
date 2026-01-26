@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { useSnackbar } from '@/composables/useSnackbar';
 import { getDepartmentClearance, upsertDepartmentClearance } from '@/services/exit/exit.service';
 import { KTStatus, KT_STATUS_LABELS } from '@/types/exit.types';
-import type { UpsertDepartmentClearanceRequest } from '@/types/exit.types';
+import type { UpsertDepartmentClearanceRequest, KTStatusType } from '@/types/exit.types';
 
 interface Props {
   resignationId: number;
@@ -78,8 +78,9 @@ const fetchClearance = async () => {
 // Handle file selection
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
-  if (target.files && target.files.length > 0) {
-    attachmentFile.value = target.files[0];
+  const file = target.files?.[0];
+  if (file) {
+    attachmentFile.value = file;
   }
 };
 
@@ -91,10 +92,10 @@ const onSubmit = handleSubmit(async (values) => {
     const request: UpsertDepartmentClearanceRequest = {
       employeeId: props.employeeId,
       resignationId: props.resignationId,
-      ktStatus: values.ktStatus,
+      ktStatus: values.ktStatus as KTStatusType,
       ktNotes: values.ktNotes,
       ktUsers: values.ktUsers,
-      attachment: attachmentFile.value || existingAttachment.value,
+      attachment: attachmentFile.value ?? existingAttachment.value ?? null,
     };
 
     const response = await upsertDepartmentClearance(request);

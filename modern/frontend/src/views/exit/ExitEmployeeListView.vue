@@ -195,7 +195,11 @@ onMounted(() => {
             "
             size="small"
           >
-            {{ RESIGNATION_STATUS_LABELS[item.resignationStatus] }}
+            {{
+              RESIGNATION_STATUS_LABELS[
+                item.resignationStatus as keyof typeof RESIGNATION_STATUS_LABELS
+              ] || 'Unknown'
+            }}
           </v-chip>
         </template>
 
@@ -205,7 +209,7 @@ onMounted(() => {
             :color="item.ktStatus === 3 ? 'success' : item.ktStatus === 2 ? 'info' : 'warning'"
             size="small"
           >
-            {{ KT_STATUS_LABELS[item.ktStatus] }}
+            {{ KT_STATUS_LABELS[item.ktStatus as keyof typeof KT_STATUS_LABELS] || 'Unknown' }}
           </v-chip>
         </template>
 

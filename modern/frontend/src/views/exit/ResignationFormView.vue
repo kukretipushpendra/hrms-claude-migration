@@ -85,8 +85,9 @@ const checkResignationStatus = async () => {
       // Redirect if active resignation exists
       router.replace('/not-found');
     }
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to check resignation status');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to check resignation status');
     router.replace('/');
   } finally {
     loading.value = false;
@@ -110,8 +111,9 @@ const fetchResignationForm = async () => {
         resignationReason: '',
       });
     }
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to fetch resignation form');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to fetch resignation form');
     router.push('/');
   } finally {
     loading.value = false;
@@ -145,8 +147,9 @@ const onSubmit = handleSubmit(async (values) => {
     );
 
     showConfirmDialog.value = true;
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to submit resignation');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to submit resignation');
   } finally {
     submitting.value = false;
   }

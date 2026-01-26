@@ -87,8 +87,9 @@ const fetchClearance = async () => {
 // Handle file selection
 const handleFileChange = (event: Event) => {
   const target = event.target as HTMLInputElement;
-  if (target.files && target.files.length > 0) {
-    attachmentFile.value = target.files[0];
+  const file = target.files?.[0];
+  if (file) {
+    attachmentFile.value = file;
   }
 };
 

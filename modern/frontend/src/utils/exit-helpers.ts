@@ -68,7 +68,7 @@ export function canRevokeResignation(status: number, lastWorkingDay: string): bo
 
   // Can revoke if status is pending (1) or accepted (3) and LWD >= today
   const isValidStatus = status === 1 || status === 3;
-  const isBeforeLWD = lwd.isSameOrAfter(today, 'day');
+  const isBeforeLWD = lwd.isAfter(today, 'day') || lwd.isSame(today, 'day');
 
   return isValidStatus && isBeforeLWD;
 }

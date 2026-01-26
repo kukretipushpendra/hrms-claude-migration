@@ -374,6 +374,25 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/exit/ExitDetailsPageView.vue'),
     meta: { requiresAuth: true, permission: 'Read.Employees', title: 'Exit Details' },
   },
+  // Email Template routes
+  {
+    path: '/settings/email-and-notification',
+    name: 'email-templates',
+    component: () => import('@/views/email/EmailTemplateListView.vue'),
+    meta: { requiresAuth: true, title: 'Email and Notification' },
+  },
+  {
+    path: '/settings/email-and-notification/add',
+    name: 'email-template-add',
+    component: () => import('@/views/email/EmailTemplateFormView.vue'),
+    meta: { requiresAuth: true, title: 'Add Email Template' },
+  },
+  {
+    path: '/settings/email-and-notification/edit/:id',
+    name: 'email-template-edit',
+    component: () => import('@/views/email/EmailTemplateFormView.vue'),
+    meta: { requiresAuth: true, title: 'Edit Email Template' },
+  },
   {
     path: '/settings/:path(.*)?',
     name: 'settings',

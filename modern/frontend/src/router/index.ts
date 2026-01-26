@@ -399,11 +399,24 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/placeholder/PlaceholderView.vue'),
     meta: { requiresAuth: true, title: 'Settings' },
   },
+  // Developer routes
   {
-    path: '/developer/:path(.*)?',
-    name: 'developer',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
-    meta: { requiresAuth: true, title: 'Developer' },
+    path: '/developer/logs',
+    name: 'developer-logs',
+    component: () => import('@/views/developer/DeveloperLogsView.vue'),
+    meta: { requiresAuth: true, permission: 'Read.Logs', title: 'Developer Logs' },
+  },
+  {
+    path: '/developer/logs/:id',
+    name: 'developer-log-detail',
+    component: () => import('@/views/developer/LogDetailsView.vue'),
+    meta: { requiresAuth: true, permission: 'Read.Logs', title: 'Log Details' },
+  },
+  {
+    path: '/developer/cron-jobs',
+    name: 'developer-cron-jobs',
+    component: () => import('@/views/developer/CronJobsView.vue'),
+    meta: { requiresAuth: true, permission: 'Read.Logs', title: 'Cron Jobs' },
   },
   {
     path: '/:pathMatch(.*)*',

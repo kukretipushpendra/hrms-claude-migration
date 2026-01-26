@@ -229,11 +229,54 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/placeholder/PlaceholderView.vue'),
     meta: { requiresAuth: true, title: 'KPI Management' },
   },
+  // Grievance routes
   {
-    path: '/Grievance/:path(.*)?',
-    name: 'grievance',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
-    meta: { requiresAuth: true, title: 'Grievance' },
+    path: '/Grievance/configuration',
+    name: 'grievance-configuration',
+    component: () => import('@/views/grievance/GrievanceConfigurationView.vue'),
+    meta: { requiresAuth: true, title: 'Grievance Configuration' },
+  },
+  {
+    path: '/Grievance/configuration/add',
+    name: 'grievance-type-add',
+    component: () => import('@/views/grievance/GrievanceTypeFormView.vue'),
+    meta: { requiresAuth: true, title: 'Add Grievance Type' },
+  },
+  {
+    path: '/Grievance/configuration/edit/:id',
+    name: 'grievance-type-edit',
+    component: () => import('@/views/grievance/GrievanceTypeFormView.vue'),
+    meta: { requiresAuth: true, title: 'Edit Grievance Type' },
+  },
+  {
+    path: '/Grievance/My-Grievance',
+    name: 'my-grievances',
+    component: () => import('@/views/grievance/MyGrievanceListView.vue'),
+    meta: { requiresAuth: true, title: 'My Grievances' },
+  },
+  {
+    path: '/Grievance/My-Grievance/add',
+    name: 'add-grievance',
+    component: () => import('@/views/grievance/AddGrievanceView.vue'),
+    meta: { requiresAuth: true, title: 'Add Grievance' },
+  },
+  {
+    path: '/Grievance/My-Grievance/detail/:id',
+    name: 'grievance-detail',
+    component: () => import('@/views/grievance/GrievanceDetailsView.vue'),
+    meta: { requiresAuth: true, title: 'Grievance Details' },
+  },
+  {
+    path: '/Grievance/all-grievances',
+    name: 'all-grievances',
+    component: () => import('@/views/grievance/GrievanceAdminReportView.vue'),
+    meta: { requiresAuth: true, title: 'All Grievances' },
+  },
+  {
+    path: '/Grievance/tickets/:ticketId',
+    name: 'grievance-ticket',
+    component: () => import('@/views/grievance/GrievanceTicketView.vue'),
+    meta: { requiresAuth: true, title: 'Grievance Ticket' },
   },
   {
     path: '/Support/:path(.*)?',

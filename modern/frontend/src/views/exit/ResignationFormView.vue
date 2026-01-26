@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
@@ -14,10 +14,7 @@ import {
 } from '@/services/exit/exit.service';
 import { calculateLastWorkingDay, formatDateForApi } from '@/utils/exit-helpers';
 import { ResignationStatus } from '@/types/exit.types';
-import type {
-  ResignationFormData,
-  AddResignationRequest,
-} from '@/types/exit.types';
+import type { ResignationFormData, AddResignationRequest } from '@/types/exit.types';
 
 const route = useRoute();
 const router = useRouter();
@@ -298,9 +295,7 @@ onMounted(() => {
     <!-- Confirmation Dialog -->
     <v-dialog v-model="showConfirmDialog" max-width="500">
       <v-card>
-        <v-card-title class="text-h6 bg-primary text-white">
-          Resignation Submitted
-        </v-card-title>
+        <v-card-title class="text-h6 bg-primary text-white"> Resignation Submitted </v-card-title>
         <v-card-text class="pa-6">
           <p class="mb-2">Your resignation has been submitted successfully.</p>
           <v-divider class="my-4" />
@@ -321,9 +316,7 @@ onMounted(() => {
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="primary" variant="flat" @click="handleDialogClose">
-            OK
-          </v-btn>
+          <v-btn color="primary" variant="flat" @click="handleDialogClose"> OK </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>

@@ -33,20 +33,15 @@ import type {
  * Submit a new resignation request
  * POST /api/ExitEmployee/AddResignation
  */
-export const addResignation = async (
-  data: AddResignationRequest
-): Promise<ApiResponse<null>> => {
+export const addResignation = async (data: AddResignationRequest): Promise<ApiResponse<null>> => {
   // .NET backend expects PascalCase
-  const response = await httpClient.post<ApiResponse<null>>(
-    '/ExitEmployee/AddResignation',
-    {
-      EmployeeId: data.employeeId,
-      DepartmentId: data.departmentId,
-      Reason: data.reason,
-      ReportingManagerId: data.reportingManagerId,
-      JobType: data.jobType,
-    }
-  );
+  const response = await httpClient.post<ApiResponse<null>>('/ExitEmployee/AddResignation', {
+    EmployeeId: data.employeeId,
+    DepartmentId: data.departmentId,
+    Reason: data.reason,
+    ReportingManagerId: data.reportingManagerId,
+    JobType: data.jobType,
+  });
   return response.data;
 };
 
@@ -80,9 +75,7 @@ export const getResignationDetails = async (
  * Revoke a resignation request
  * POST /api/ExitEmployee/RevokeResignation/{resignationId}
  */
-export const revokeResignation = async (
-  resignationId: number
-): Promise<ApiResponse<null>> => {
+export const revokeResignation = async (resignationId: number): Promise<ApiResponse<null>> => {
   const response = await httpClient.post<ApiResponse<null>>(
     `/ExitEmployee/RevokeResignation/${resignationId}`
   );
@@ -96,13 +89,10 @@ export const revokeResignation = async (
 export const requestEarlyRelease = async (
   data: RequestEarlyReleaseRequest
 ): Promise<ApiResponse<null>> => {
-  const response = await httpClient.post<ApiResponse<null>>(
-    '/ExitEmployee/RequestEarlyRelease',
-    {
-      ResignationId: data.resignationId,
-      EarlyReleaseDate: data.earlyReleaseDate,
-    }
-  );
+  const response = await httpClient.post<ApiResponse<null>>('/ExitEmployee/RequestEarlyRelease', {
+    ResignationId: data.resignationId,
+    EarlyReleaseDate: data.earlyReleaseDate,
+  });
   return response.data;
 };
 
@@ -113,9 +103,9 @@ export const requestEarlyRelease = async (
 export const isResignationExist = async (
   employeeId: number
 ): Promise<ApiResponse<ResignationActiveStatusResult | null>> => {
-  const response = await httpClient.get<
-    ApiResponse<ResignationActiveStatusResult | null>
-  >(`/ExitEmployee/IsResignationExist/${employeeId}`);
+  const response = await httpClient.get<ApiResponse<ResignationActiveStatusResult | null>>(
+    `/ExitEmployee/IsResignationExist/${employeeId}`
+  );
   return response.data;
 };
 
@@ -131,27 +121,28 @@ export const getResignationList = async (
   request: GetResignationListRequest
 ): Promise<ApiResponse<GetResignationListResponse>> => {
   // .NET backend expects PascalCase
-  const response = await httpClient.post<
-    ApiResponse<GetResignationListResponse>
-  >('/AdminExitEmployee/GetResignationList', {
-    SortColumnName: request.sortColumnName,
-    SortDirection: request.sortDirection,
-    StartIndex: request.startIndex,
-    PageSize: request.pageSize,
-    Filters: {
-      EmployeeCode: request.filters.employeeCode || null,
-      EmployeeName: request.filters.employeeName || null,
-      ResignationStatus: request.filters.resignationStatus || null,
-      BranchId: request.filters.branchId || null,
-      DepartmentId: request.filters.departmentId || null,
-      ItNoDue: request.filters.itNoDue || null,
-      AccountsNoDue: request.filters.accountsNoDue || null,
-      LastWorkingDayFrom: request.filters.lastWorkingDayFrom || null,
-      LastWorkingDayTo: request.filters.lastWorkingDayTo || null,
-      ResignationDate: request.filters.resignationDate || null,
-      EmployeeStatus: request.filters.employeeStatus || null,
-    },
-  });
+  const response = await httpClient.post<ApiResponse<GetResignationListResponse>>(
+    '/AdminExitEmployee/GetResignationList',
+    {
+      SortColumnName: request.sortColumnName,
+      SortDirection: request.sortDirection,
+      StartIndex: request.startIndex,
+      PageSize: request.pageSize,
+      Filters: {
+        EmployeeCode: request.filters.employeeCode || null,
+        EmployeeName: request.filters.employeeName || null,
+        ResignationStatus: request.filters.resignationStatus || null,
+        BranchId: request.filters.branchId || null,
+        DepartmentId: request.filters.departmentId || null,
+        ItNoDue: request.filters.itNoDue || null,
+        AccountsNoDue: request.filters.accountsNoDue || null,
+        LastWorkingDayFrom: request.filters.lastWorkingDayFrom || null,
+        LastWorkingDayTo: request.filters.lastWorkingDayTo || null,
+        ResignationDate: request.filters.resignationDate || null,
+        EmployeeStatus: request.filters.employeeStatus || null,
+      },
+    }
+  );
   return response.data;
 };
 
@@ -172,9 +163,7 @@ export const getResignationById = async (
  * Accept resignation request
  * POST /api/AdminExitEmployee/AcceptResignation/{id}
  */
-export const acceptResignation = async (
-  resignationId: number
-): Promise<ApiResponse<string>> => {
+export const acceptResignation = async (resignationId: number): Promise<ApiResponse<string>> => {
   const response = await httpClient.post<ApiResponse<string>>(
     `/AdminExitEmployee/AcceptResignation/${resignationId}`
   );
@@ -202,18 +191,13 @@ export const acceptEarlyRelease = async (
  * Reject resignation or early release request
  * POST /api/AdminExitEmployee/AdminRejection
  */
-export const adminRejection = async (
-  data: AdminRejectionRequest
-): Promise<ApiResponse<string>> => {
-  const response = await httpClient.post<ApiResponse<string>>(
-    '/AdminExitEmployee/AdminRejection',
-    {
-      ResignationId: data.resignationId,
-      EmployeeId: data.employeeId,
-      RejectionType: data.rejectionType,
-      RejectReason: data.rejectReason || null,
-    }
-  );
+export const adminRejection = async (data: AdminRejectionRequest): Promise<ApiResponse<string>> => {
+  const response = await httpClient.post<ApiResponse<string>>('/AdminExitEmployee/AdminRejection', {
+    ResignationId: data.resignationId,
+    EmployeeId: data.employeeId,
+    RejectionType: data.rejectionType,
+    RejectReason: data.rejectReason || null,
+  });
   return response.data;
 };
 
@@ -245,9 +229,9 @@ export const updateLastWorkingDay = async (
 export const getITClearance = async (
   resignationId: number
 ): Promise<ApiResponse<ITClearanceDetails | null>> => {
-  const response = await httpClient.get<
-    ApiResponse<ITClearanceDetails | null>
-  >(`/AdminExitEmployee/GetITClearanceDetailByResignationId/${resignationId}`);
+  const response = await httpClient.get<ApiResponse<ITClearanceDetails | null>>(
+    `/AdminExitEmployee/GetITClearanceDetailByResignationId/${resignationId}`
+  );
   return response.data;
 };
 
@@ -265,10 +249,7 @@ export const upsertITClearance = async (
   formData.append('assetReturned', String(data.assetReturned));
   formData.append('assetCondition', String(data.assetCondition));
   formData.append('note', data.note || '');
-  formData.append(
-    'itClearanceCertification',
-    String(data.itClearanceCertification)
-  );
+  formData.append('itClearanceCertification', String(data.itClearanceCertification));
 
   if (data.attachmentUrl instanceof File) {
     formData.append('attachmentUrl', data.attachmentUrl);
@@ -299,9 +280,9 @@ export const upsertITClearance = async (
 export const getHRClearance = async (
   resignationId: number
 ): Promise<ApiResponse<HRClearanceDetails | null>> => {
-  const response = await httpClient.get<
-    ApiResponse<HRClearanceDetails | null>
-  >(`/AdminExitEmployee/GetHRClearanceByResignationId/${resignationId}`);
+  const response = await httpClient.get<ApiResponse<HRClearanceDetails | null>>(
+    `/AdminExitEmployee/GetHRClearanceByResignationId/${resignationId}`
+  );
   return response.data;
 };
 
@@ -315,10 +296,7 @@ export const upsertHRClearance = async (
   const formData = new FormData();
   formData.append('employeeId', String(data.employeeId));
   formData.append('resignationId', String(data.resignationId));
-  formData.append(
-    'advanceBonusRecoveryAmount',
-    String(data.advanceBonusRecoveryAmount)
-  );
+  formData.append('advanceBonusRecoveryAmount', String(data.advanceBonusRecoveryAmount));
   formData.append('serviceAgreementDetails', data.serviceAgreementDetails || '');
   formData.append('currentEL', String(data.currentEL));
   formData.append('numberOfBuyOutDays', String(data.numberOfBuyOutDays));
@@ -354,9 +332,7 @@ export const upsertHRClearance = async (
 export const getDepartmentClearance = async (
   resignationId: number
 ): Promise<ApiResponse<DepartmentClearanceDetails | null>> => {
-  const response = await httpClient.get<
-    ApiResponse<DepartmentClearanceDetails | null>
-  >(
+  const response = await httpClient.get<ApiResponse<DepartmentClearanceDetails | null>>(
     `/AdminExitEmployee/GetDepartmentClearanceDetailByResignationId/${resignationId}`
   );
   return response.data;
@@ -409,9 +385,9 @@ export const upsertDepartmentClearance = async (
 export const getAccountClearance = async (
   resignationId: number
 ): Promise<ApiResponse<AccountClearanceDetails | null>> => {
-  const response = await httpClient.get<
-    ApiResponse<AccountClearanceDetails | null>
-  >(`/AdminExitEmployee/GetAccountClearance/${resignationId}`);
+  const response = await httpClient.get<ApiResponse<AccountClearanceDetails | null>>(
+    `/AdminExitEmployee/GetAccountClearance/${resignationId}`
+  );
   return response.data;
 };
 
@@ -427,10 +403,7 @@ export const upsertAccountClearance = async (
   formData.append('resignationId', String(data.resignationId));
   formData.append('fnFStatus', String(data.fnFStatus));
   formData.append('fnFAmount', String(data.fnFAmount || 0));
-  formData.append(
-    'issueNoDueCertificate',
-    String(data.issueNoDueCertificate)
-  );
+  formData.append('issueNoDueCertificate', String(data.issueNoDueCertificate));
   formData.append('note', data.note || '');
 
   if (data.accountAttachment instanceof File) {

@@ -2,11 +2,7 @@
 // Utilities for calculating last working day, formatting dates, etc.
 
 import dayjs, { type Dayjs } from 'dayjs';
-import {
-  JobTypes,
-  type JobType,
-  NOTICE_PERIOD_CONFIG,
-} from '@/types/exit.types';
+import { JobTypes, type JobType, NOTICE_PERIOD_CONFIG } from '@/types/exit.types';
 
 /**
  * Calculate last working day based on resignation date and job type
@@ -14,10 +10,7 @@ import {
  * @param jobType - Employee's job type (probation, confirmed, training)
  * @returns Last working day
  */
-export function calculateLastWorkingDay(
-  resignationDate: Dayjs,
-  jobType: JobType
-): Dayjs {
+export function calculateLastWorkingDay(resignationDate: Dayjs, jobType: JobType): Dayjs {
   const config = NOTICE_PERIOD_CONFIG[jobType];
   return resignationDate.add(config.amount, config.unit);
 }
@@ -28,10 +21,7 @@ export function calculateLastWorkingDay(
  * @returns True if valid job type
  */
 export function isValidJobType(value: unknown): value is JobType {
-  return (
-    typeof value === 'number' &&
-    Object.values(JobTypes).includes(value as JobType)
-  );
+  return typeof value === 'number' && Object.values(JobTypes).includes(value as JobType);
 }
 
 /**
@@ -72,10 +62,7 @@ export function formatDateForDisplay(date: Dayjs | Date | string): string {
  * @param lastWorkingDay - Last working day
  * @returns True if can revoke
  */
-export function canRevokeResignation(
-  status: number,
-  lastWorkingDay: string
-): boolean {
+export function canRevokeResignation(status: number, lastWorkingDay: string): boolean {
   const today = dayjs();
   const lwd = dayjs(lastWorkingDay);
 
@@ -92,10 +79,7 @@ export function canRevokeResignation(
  * @param earlyReleaseStatus - Early release status
  * @returns True if can request early release
  */
-export function canRequestEarlyRelease(
-  status: number,
-  earlyReleaseStatus: number | null
-): boolean {
+export function canRequestEarlyRelease(status: number, earlyReleaseStatus: number | null): boolean {
   // Can request if resignation is accepted (3) and no early release requested yet
   return status === 3 && (earlyReleaseStatus === null || earlyReleaseStatus === 0);
 }

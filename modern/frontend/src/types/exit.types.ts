@@ -13,8 +13,7 @@ export const ResignationStatus = {
   completed: 5,
 } as const;
 
-export type ResignationStatusType =
-  (typeof ResignationStatus)[keyof typeof ResignationStatus];
+export type ResignationStatusType = (typeof ResignationStatus)[keyof typeof ResignationStatus];
 
 export const JobTypes = {
   probation: 1,
@@ -30,8 +29,7 @@ export const EarlyReleaseStatus = {
   rejected: 3,
 } as const;
 
-export type EarlyReleaseStatusType =
-  (typeof EarlyReleaseStatus)[keyof typeof EarlyReleaseStatus];
+export type EarlyReleaseStatusType = (typeof EarlyReleaseStatus)[keyof typeof EarlyReleaseStatus];
 
 export const AssetCondition = {
   ok: 1,
@@ -39,8 +37,7 @@ export const AssetCondition = {
   missing: 3,
 } as const;
 
-export type AssetConditionType =
-  (typeof AssetCondition)[keyof typeof AssetCondition];
+export type AssetConditionType = (typeof AssetCondition)[keyof typeof AssetCondition];
 
 export const KTStatus = {
   pending: 1,
@@ -57,8 +54,7 @@ export const EmployeeStatus = {
   exEmployee: 4,
 } as const;
 
-export type EmployeeStatusType =
-  (typeof EmployeeStatus)[keyof typeof EmployeeStatus];
+export type EmployeeStatusType = (typeof EmployeeStatus)[keyof typeof EmployeeStatus];
 
 export const EmploymentStatus = {
   fullTime: 1,
@@ -67,8 +63,7 @@ export const EmploymentStatus = {
   internship: 4,
 } as const;
 
-export type EmploymentStatusType =
-  (typeof EmploymentStatus)[keyof typeof EmploymentStatus];
+export type EmploymentStatusType = (typeof EmploymentStatus)[keyof typeof EmploymentStatus];
 
 // ============================================================================
 // EMPLOYEE EXIT TYPES
@@ -296,30 +291,23 @@ export interface ApiResponse<T> {
 // ============================================================================
 
 // Notice period configuration by job type
-export const NOTICE_PERIOD_CONFIG: Record<
-  JobType,
-  { amount: number; unit: 'days' | 'months' }
-> = {
+export const NOTICE_PERIOD_CONFIG: Record<JobType, { amount: number; unit: 'days' | 'months' }> = {
   [JobTypes.probation]: { amount: 15, unit: 'days' },
   [JobTypes.confirmed]: { amount: 3, unit: 'months' },
   [JobTypes.training]: { amount: 15, unit: 'days' },
 };
 
 // Resignation status labels
-export const RESIGNATION_STATUS_LABELS: Record<ResignationStatusType, string> =
-  {
-    [ResignationStatus.pending]: 'Pending',
-    [ResignationStatus.revoked]: 'Revoked',
-    [ResignationStatus.accepted]: 'Accepted',
-    [ResignationStatus.cancelled]: 'Cancelled',
-    [ResignationStatus.completed]: 'Completed',
-  };
+export const RESIGNATION_STATUS_LABELS: Record<ResignationStatusType, string> = {
+  [ResignationStatus.pending]: 'Pending',
+  [ResignationStatus.revoked]: 'Revoked',
+  [ResignationStatus.accepted]: 'Accepted',
+  [ResignationStatus.cancelled]: 'Cancelled',
+  [ResignationStatus.completed]: 'Completed',
+};
 
 // Early release status labels
-export const EARLY_RELEASE_STATUS_LABELS: Record<
-  EarlyReleaseStatusType,
-  string
-> = {
+export const EARLY_RELEASE_STATUS_LABELS: Record<EarlyReleaseStatusType, string> = {
   [EarlyReleaseStatus.pending]: 'Pending',
   [EarlyReleaseStatus.accepted]: 'Accepted',
   [EarlyReleaseStatus.rejected]: 'Rejected',

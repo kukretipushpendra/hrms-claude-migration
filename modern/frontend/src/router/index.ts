@@ -278,11 +278,24 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/grievance/GrievanceTicketView.vue'),
     meta: { requiresAuth: true, title: 'Grievance Ticket' },
   },
+  // Support routes
   {
-    path: '/Support/:path(.*)?',
-    name: 'support',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
-    meta: { requiresAuth: true, title: 'Support' },
+    path: '/Support/My-Support',
+    name: 'my-support',
+    component: () => import('@/views/support/MySupportView.vue'),
+    meta: { requiresAuth: true, title: 'My Support' },
+  },
+  {
+    path: '/Support/Support-Queries',
+    name: 'support-queries',
+    component: () => import('@/views/support/SupportAdminView.vue'),
+    meta: { requiresAuth: true, title: 'Support Queries' },
+  },
+  {
+    path: '/Support/Support-Details/:id',
+    name: 'support-details',
+    component: () => import('@/views/support/SupportDetailView.vue'),
+    meta: { requiresAuth: true, title: 'Support Details' },
   },
   // Events routes
   {

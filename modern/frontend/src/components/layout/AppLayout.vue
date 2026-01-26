@@ -5,6 +5,7 @@ import { useDisplay } from 'vuetify';
 import { useAuthStore } from '@/stores/auth.store';
 import { navigationItems, filterNavigation } from '@/config/navigation';
 import type { NavItem } from '@/types/navigation';
+import SubmitSupportButton from '@/components/support/SubmitSupportButton.vue';
 
 const router = useRouter();
 const route = useRoute();
@@ -171,17 +172,8 @@ watch(
 
       <v-spacer />
 
-      <!-- Support button (if permission) -->
-      <v-btn
-        v-if="authStore.hasPermission('SUPPORT.READ')"
-        icon
-        variant="text"
-        color="grey-600"
-        class="mr-2"
-      >
-        <v-icon>mdi-help-circle-outline</v-icon>
-        <v-tooltip activator="parent" location="bottom">Support</v-tooltip>
-      </v-btn>
+      <!-- Support button -->
+      <SubmitSupportButton />
 
       <!-- Profile Menu -->
       <v-menu

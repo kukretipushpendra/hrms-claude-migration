@@ -200,7 +200,7 @@ const headers = [
 ];
 
 const lastReviewDisplay = computed(() => {
-  const lastReview = data.value?.result[0]?.lastReviewDate;
+  const lastReview = data.value?.result[0]?.lastReviewDate ?? null;
   return formatDisplayDate(lastReview);
 });
 
@@ -220,7 +220,7 @@ const fetchEmployeeSelfRating = async () => {
     loading.value = true;
     error.value = null;
 
-    const userId = authStore.user?.userId;
+    const userId = authStore.user?.id;
     if (!userId) {
       throw new Error('User ID not found');
     }

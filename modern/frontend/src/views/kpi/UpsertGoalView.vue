@@ -16,7 +16,7 @@
                 v-model="formData.title"
                 label="Title *"
                 variant="outlined"
-                :rules="[(v) => !!v || 'Title is required']"
+                :rules="[(v: string) => !!v || 'Title is required']"
                 required
               />
             </v-col>
@@ -28,7 +28,7 @@
                 :items="[]"
                 label="Department *"
                 variant="outlined"
-                :rules="[(v) => !!v || 'Department is required']"
+                :rules="[(v: number | null) => !!v || 'Department is required']"
                 required
               />
             </v-col>
@@ -43,8 +43,8 @@
                 :maxlength="600"
                 counter
                 :rules="[
-                  (v) => !!v || 'Description is required',
-                  (v) => (v && v.length <= 600) || 'Maximum 600 characters allowed',
+                  (v: string) => !!v || 'Description is required',
+                  (v: string) => (v && v.length <= 600) || 'Maximum 600 characters allowed',
                 ]"
                 required
               />

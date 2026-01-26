@@ -109,7 +109,6 @@ const emit = defineEmits<{
 
 const { showSuccess, showError } = useSnackbar();
 
-const formRef = ref();
 const loading = ref(false);
 
 const formData = ref({

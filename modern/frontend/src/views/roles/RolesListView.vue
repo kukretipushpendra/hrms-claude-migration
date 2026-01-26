@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router';
 import { getRoles } from '@/services/roles';
 import type { RoleType } from '@/services/roles';
 import { useAuthStore } from '@/stores/auth.store';
+import { PERMISSIONS } from '@/constants/permissions';
 
 const router = useRouter();
 const authStore = useAuthStore();
@@ -22,8 +23,8 @@ const error = ref<string | null>(null);
 let debounceTimer: ReturnType<typeof setTimeout> | null = null;
 
 // Permissions
-const hasEditPermission = authStore.hasPermission('ROLE.EDIT');
-const hasCreatePermission = authStore.hasPermission('ROLE.CREATE');
+const hasEditPermission = authStore.hasPermission(PERMISSIONS.ROLE.EDIT);
+const hasCreatePermission = authStore.hasPermission(PERMISSIONS.ROLE.CREATE);
 
 // Headers for data table
 const headers = [

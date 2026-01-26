@@ -4,6 +4,7 @@ import { useRouter, useRoute } from 'vue-router';
 import { getRolePermissionById, getRolePermission, updatePermission } from '@/services/roles';
 import type { Module, Permission, UpdatePermissionArgs } from '@/services/roles/types';
 import { useAuthStore } from '@/stores/auth.store';
+import { PERMISSIONS } from '@/constants/permissions';
 
 // Router & Route
 const router = useRouter();
@@ -15,8 +16,8 @@ const roleId = computed(() => route.params.id as string);
 const isAdd = computed(() => route.name === 'role-add');
 
 // Permissions
-const hasEditPermission = authStore.hasPermission('ROLE.EDIT');
-const hasReadPermission = authStore.hasPermission('ROLE.READ');
+const hasEditPermission = authStore.hasPermission(PERMISSIONS.ROLE.EDIT);
+const hasReadPermission = authStore.hasPermission(PERMISSIONS.ROLE.READ);
 
 // State
 const roleName = ref('');

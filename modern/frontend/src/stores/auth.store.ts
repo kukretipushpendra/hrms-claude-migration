@@ -259,6 +259,9 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   function hasPermission(permission: string): boolean {
+    if (!user.value || !user.value.permissions) {
+      return false;
+    }
     return userPermissions.value.includes(permission);
   }
 

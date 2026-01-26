@@ -1,9 +1,13 @@
 /**
  * Navigation Configuration - Matches Legacy React Navigation Exactly
  * From: /layout/Dashboard/Drawer/DrawerContent/Navigation/menu-items/dashboard.tsx
+ *
+ * IMPORTANT: Navigation filtering uses the `menus` array from login response,
+ * NOT permission strings. See KNOWN_ISSUES_AND_PATTERNS.md for details.
  */
 
 import type { NavItem } from '@/types/navigation';
+import type { Menu } from '@/stores/auth.store';
 
 // Main navigation items matching legacy menu structure
 export const navigationItems: NavItem[] = [
@@ -20,7 +24,6 @@ export const navigationItems: NavItem[] = [
     type: 'item',
     url: '/roles',
     icon: 'mdi-shield-account',
-    permission: 'Read.Role',
   },
   {
     id: 'company-policy',
@@ -28,7 +31,6 @@ export const navigationItems: NavItem[] = [
     type: 'item',
     url: '/company-policy',
     icon: 'mdi-file-document',
-    permission: 'Read.CompanyPolicy',
   },
   {
     id: 'employees',
@@ -36,7 +38,6 @@ export const navigationItems: NavItem[] = [
     type: 'collapse',
     url: '/employees',
     icon: 'mdi-account-group',
-    permission: 'Read.Employees',
     children: [
       {
         id: 'employees-list',
@@ -61,7 +62,6 @@ export const navigationItems: NavItem[] = [
     type: 'collapse',
     url: '/attendance',
     icon: 'mdi-calendar-month',
-    permission: 'Read.Attendance',
     children: [
       {
         id: 'my-attendance',
@@ -93,7 +93,6 @@ export const navigationItems: NavItem[] = [
     type: 'item',
     url: '/IT-Assets',
     icon: 'mdi-devices',
-    permission: 'Read.Asset',
   },
   {
     id: 'leave',
@@ -101,7 +100,6 @@ export const navigationItems: NavItem[] = [
     type: 'collapse',
     url: '/leave',
     icon: 'mdi-calendar-check',
-    permission: 'Read.Leave',
     children: [
       {
         id: 'apply-leave',
@@ -132,7 +130,6 @@ export const navigationItems: NavItem[] = [
     type: 'collapse',
     url: '/Kpi',
     icon: 'mdi-chart-box',
-    permission: 'Read.KPI',
     children: [
       {
         id: 'my-kpi',
@@ -163,7 +160,6 @@ export const navigationItems: NavItem[] = [
     type: 'collapse',
     url: '/Grievance',
     icon: 'mdi-message-alert',
-    permission: 'Read.Grievances',
     children: [
       {
         id: 'my-grievance',
@@ -195,7 +191,6 @@ export const navigationItems: NavItem[] = [
     type: 'collapse',
     url: '/Support',
     icon: 'mdi-face-agent',
-    permission: 'Read.Support',
     children: [
       {
         id: 'my-support',
@@ -219,7 +214,6 @@ export const navigationItems: NavItem[] = [
     type: 'item',
     url: '/events',
     icon: 'mdi-calendar-star',
-    permission: 'Read.Events',
   },
   {
     id: 'settings',
@@ -286,40 +280,66 @@ export const navigationItems: NavItem[] = [
 ];
 
 /**
- * Filter navigation items based on user permissions and roles
+ * Filter navigation items based on user's permitted menus and role
+ * This matches the legacy React implementation exactly.
+ *
+ * The backend sends a `menus` array in the login response that contains
+ * the user's permitted navigation items. We filter the nav config against
+ * this array to show only what the user is allowed to see.
  */
-export function filterNavigation(
-  items: NavItem[],
-  userPermissions: string[],
-  userRole: string
-): NavItem[] {
+export function filterNavigation(items: NavItem[], userMenus: Menu[], userRole: string): NavItem[] {
   return items
     .filter((item) => {
-      // Dashboard always shows (no permission required)
+      // Dashboard always shows
       if (item.id === 'dashboard') {
         return true;
       }
 
-      // Check permission - if no permission specified, show the item
-      if (item.permission) {
-        // Check if user has the exact permission
-        const hasExactPermission = userPermissions.includes(item.permission);
-        if (!hasExactPermission) {
-          return false;
-        }
-      }
-
-      // Check roles
+      // Check role restrictions first
       if (item.roles && item.roles.length > 0 && !item.roles.includes(userRole)) {
         return false;
       }
 
-      return true;
+      // Find matching menu in user's permitted menus
+      // Compare by title (case-insensitive)
+      const permittedMenu = userMenus.find(
+        (menu) => menu.mainMenu.toLowerCase() === item.title.toLowerCase()
+      );
+
+      // If this is a role-only item (Settings, Developer), allow if role matches
+      if (item.roles && item.roles.includes(userRole)) {
+        return true;
+      }
+
+      // Must have permission in menus array
+      return !!permittedMenu;
     })
     .map((item) => {
-      // Filter children recursively
+      // Filter children based on subMenus
       if (item.children && item.children.length > 0) {
-        const filteredChildren = filterNavigation(item.children, userPermissions, userRole);
+        // Find the parent menu to get subMenus
+        const permittedMenu = userMenus.find(
+          (menu) => menu.mainMenu.toLowerCase() === item.title.toLowerCase()
+        );
+
+        const filteredChildren = item.children.filter((child) => {
+          // Check role restrictions
+          if (child.roles && child.roles.length > 0 && !child.roles.includes(userRole)) {
+            return false;
+          }
+
+          // If parent has subMenus, filter by them
+          if (permittedMenu && permittedMenu.subMenus && permittedMenu.subMenus.length > 0) {
+            const hasSubMenuPermission = permittedMenu.subMenus.some(
+              (sub) => sub.subMenu.toLowerCase() === child.title.toLowerCase()
+            );
+            return hasSubMenuPermission;
+          }
+
+          // If no subMenus specified, show all children (parent permission grants access)
+          return true;
+        });
+
         return {
           ...item,
           children: filteredChildren,

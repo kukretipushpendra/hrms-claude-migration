@@ -196,21 +196,17 @@ export const useAuthStore = defineStore('auth', () => {
     if (!accessToken.value) return;
 
     try {
-      // First try to load from localStorage
+      // Load from localStorage - all user data is stored during login
       const storedUserData = localStorage.getItem('userData');
       if (storedUserData) {
         user.value = JSON.parse(storedUserData);
         return;
       }
 
-      // If not in localStorage, fetch from API
-      const response = await httpClient.get<ApiResponse<UserData>>(
-        '/UserProfile/GetPersonalDetail'
-      );
-      if (response.data.result) {
-        user.value = mapUserDataToUser(response.data.result);
-        localStorage.setItem('userData', JSON.stringify(user.value));
-      }
+      // If no stored user data but we have a token, the session is invalid
+      // Note: We can't fetch user profile without knowing the user ID
+      // which is only available after login. Force re-login.
+      await logout();
     } catch {
       await logout();
     }

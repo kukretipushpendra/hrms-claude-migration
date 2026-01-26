@@ -106,41 +106,196 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/employees/EmployeeCreateView.vue'),
     meta: { requiresAuth: true, title: 'Edit Employee' },
   },
+  // Attendance routes
   {
-    path: '/attendance/:path(.*)?',
-    name: 'attendance',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
-    meta: { requiresAuth: true, title: 'Attendance' },
+    path: '/attendance/my-attendance',
+    name: 'my-attendance',
+    component: () => import('@/views/attendance/MyAttendanceView.vue'),
+    meta: { requiresAuth: true, title: 'My Attendance' },
   },
+  {
+    path: '/attendance/attendance-configuration',
+    name: 'attendance-configuration',
+    component: () => import('@/views/attendance/AttendanceConfigurationView.vue'),
+    meta: { requiresAuth: true, title: 'Attendance Configuration' },
+  },
+  {
+    path: '/attendance/employee-report',
+    name: 'attendance-employee-report',
+    component: () => import('@/views/attendance/EmployeeReportView.vue'),
+    meta: { requiresAuth: true, title: 'Employee Report' },
+  },
+  // IT Assets routes
   {
     path: '/IT-Assets',
     name: 'it-assets',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
+    component: () => import('@/views/assets/ITAssetListView.vue'),
     meta: { requiresAuth: true, title: 'IT Assets' },
   },
   {
-    path: '/leave/:path(.*)?',
-    name: 'leave',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
-    meta: { requiresAuth: true, title: 'Leave' },
+    path: '/IT-Assets/add',
+    name: 'it-asset-add',
+    component: () => import('@/views/assets/AddITAssetView.vue'),
+    meta: { requiresAuth: true, title: 'Add IT Asset' },
   },
   {
-    path: '/KPI/:path(.*)?',
-    name: 'kpi',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
-    meta: { requiresAuth: true, title: 'KPI' },
+    path: '/IT-Assets/:assetId',
+    component: () => import('@/views/assets/AssetDetailsLayout.vue'),
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: '',
+        redirect: 'general',
+      },
+      {
+        path: 'general',
+        name: 'asset-general',
+        component: () => import('@/views/assets/AssetGeneralView.vue'),
+        meta: { requiresAuth: true, title: 'Asset Details' },
+      },
+      {
+        path: 'history',
+        name: 'asset-history',
+        component: () => import('@/views/assets/AssetHistoryView.vue'),
+        meta: { requiresAuth: true, title: 'Asset History' },
+      },
+    ],
   },
   {
-    path: '/Grievance/:path(.*)?',
-    name: 'grievance',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
-    meta: { requiresAuth: true, title: 'Grievance' },
+    path: '/profile/it-assets',
+    name: 'employee-it-assets',
+    component: () => import('@/views/assets/EmployeeITAssetsView.vue'),
+    meta: { requiresAuth: true, title: 'My IT Assets' },
+  },
+  // Leave routes
+  {
+    path: '/leave/apply-leave',
+    name: 'apply-leave',
+    component: () => import('@/views/leave/ApplyLeaveView.vue'),
+    meta: { requiresAuth: true, title: 'Apply Leave' },
   },
   {
-    path: '/Support/:path(.*)?',
-    name: 'support',
+    path: '/leave/apply-leave/add/:id',
+    name: 'leave-application-form',
+    component: () => import('@/views/leave/LeaveApplicationFormView.vue'),
+    meta: { requiresAuth: true, title: 'Apply for Leave' },
+  },
+  {
+    path: '/leave/leave-approval',
+    name: 'leave-approval',
+    component: () => import('@/views/leave/LeaveApprovalView.vue'),
+    meta: { requiresAuth: true, title: 'Leave Approval' },
+  },
+  {
+    path: '/leave/leave-calendar',
+    name: 'leave-calendar',
+    component: () => import('@/views/leave/LeaveCalendarView.vue'),
+    meta: { requiresAuth: true, title: 'Leave Calendar' },
+  },
+  // KPI routes
+  {
+    path: '/KPI/my-KPI',
+    name: 'my-kpi',
+    component: () => import('@/views/kpi/EmployeeKPIView.vue'),
+    meta: { requiresAuth: true, title: 'My KPI' },
+  },
+  {
+    path: '/KPI/Kpi-Details/:employeeId',
+    name: 'kpi-details',
     component: () => import('@/views/placeholder/PlaceholderView.vue'),
-    meta: { requiresAuth: true, title: 'Support' },
+    meta: { requiresAuth: true, title: 'KPI Details' },
+  },
+  {
+    path: '/KPI/Goals',
+    name: 'kpi-goals',
+    component: () => import('@/views/kpi/GoalListView.vue'),
+    meta: { requiresAuth: true, title: 'Goals' },
+  },
+  {
+    path: '/KPI/Goals/Add-Goal',
+    name: 'kpi-goal-add',
+    component: () => import('@/views/kpi/UpsertGoalView.vue'),
+    meta: { requiresAuth: true, title: 'Add Goal' },
+  },
+  {
+    path: '/KPI/Goals/Edit-Goal/:id',
+    name: 'kpi-goal-edit',
+    component: () => import('@/views/kpi/UpsertGoalView.vue'),
+    meta: { requiresAuth: true, title: 'Edit Goal' },
+  },
+  {
+    path: '/KPI/KPI-Management',
+    name: 'kpi-management',
+    component: () => import('@/views/placeholder/PlaceholderView.vue'),
+    meta: { requiresAuth: true, title: 'KPI Management' },
+  },
+  // Grievance routes
+  {
+    path: '/Grievance/configuration',
+    name: 'grievance-configuration',
+    component: () => import('@/views/grievance/GrievanceConfigurationView.vue'),
+    meta: { requiresAuth: true, title: 'Grievance Configuration' },
+  },
+  {
+    path: '/Grievance/configuration/add',
+    name: 'grievance-type-add',
+    component: () => import('@/views/grievance/GrievanceTypeFormView.vue'),
+    meta: { requiresAuth: true, title: 'Add Grievance Type' },
+  },
+  {
+    path: '/Grievance/configuration/edit/:id',
+    name: 'grievance-type-edit',
+    component: () => import('@/views/grievance/GrievanceTypeFormView.vue'),
+    meta: { requiresAuth: true, title: 'Edit Grievance Type' },
+  },
+  {
+    path: '/Grievance/My-Grievance',
+    name: 'my-grievances',
+    component: () => import('@/views/grievance/MyGrievanceListView.vue'),
+    meta: { requiresAuth: true, title: 'My Grievances' },
+  },
+  {
+    path: '/Grievance/My-Grievance/add',
+    name: 'add-grievance',
+    component: () => import('@/views/grievance/AddGrievanceView.vue'),
+    meta: { requiresAuth: true, title: 'Add Grievance' },
+  },
+  {
+    path: '/Grievance/My-Grievance/detail/:id',
+    name: 'grievance-detail',
+    component: () => import('@/views/grievance/GrievanceDetailsView.vue'),
+    meta: { requiresAuth: true, title: 'Grievance Details' },
+  },
+  {
+    path: '/Grievance/all-grievances',
+    name: 'all-grievances',
+    component: () => import('@/views/grievance/GrievanceAdminReportView.vue'),
+    meta: { requiresAuth: true, title: 'All Grievances' },
+  },
+  {
+    path: '/Grievance/tickets/:ticketId',
+    name: 'grievance-ticket',
+    component: () => import('@/views/grievance/GrievanceTicketView.vue'),
+    meta: { requiresAuth: true, title: 'Grievance Ticket' },
+  },
+  // Support routes
+  {
+    path: '/Support/My-Support',
+    name: 'my-support',
+    component: () => import('@/views/support/MySupportView.vue'),
+    meta: { requiresAuth: true, title: 'My Support' },
+  },
+  {
+    path: '/Support/Support-Queries',
+    name: 'support-queries',
+    component: () => import('@/views/support/SupportAdminView.vue'),
+    meta: { requiresAuth: true, title: 'Support Queries' },
+  },
+  {
+    path: '/Support/Support-Details/:id',
+    name: 'support-details',
+    component: () => import('@/views/support/SupportDetailView.vue'),
+    meta: { requiresAuth: true, title: 'Support Details' },
   },
   // Events routes
   {
@@ -179,6 +334,45 @@ const routes: RouteRecordRaw[] = [
     name: 'employment-edit',
     component: () => import('@/views/employment/EmploymentEditView.vue'),
     meta: { requiresAuth: true, title: 'Edit Employment Details' },
+  },
+  // Nominee routes
+  {
+    path: '/nominees',
+    name: 'nominees',
+    component: () => import('@/views/nominees/NomineeListView.vue'),
+    meta: { requiresAuth: true, title: 'Nominee Details' },
+  },
+  // Certificate routes
+  {
+    path: '/certificates',
+    name: 'certificates',
+    component: () => import('@/views/certificates/CertificatesListView.vue'),
+    meta: { requiresAuth: true, title: 'Certificate Details' },
+  },
+  // Exit Management routes
+  {
+    path: '/resignation-form/:userId?',
+    name: 'resignation-form',
+    component: () => import('@/views/exit/ResignationFormView.vue'),
+    meta: { requiresAuth: true, title: 'Resignation Form' },
+  },
+  {
+    path: '/profile/exit-details',
+    name: 'exit-details',
+    component: () => import('@/views/exit/ExitDetailsView.vue'),
+    meta: { requiresAuth: true, title: 'Exit Details' },
+  },
+  {
+    path: '/employees/employee-exit',
+    name: 'exit-employee-list',
+    component: () => import('@/views/exit/ExitEmployeeListView.vue'),
+    meta: { requiresAuth: true, permission: 'Read.Employees', title: 'Employee Exit' },
+  },
+  {
+    path: '/employees/employee-exit/:resignationId',
+    name: 'exit-employee-details',
+    component: () => import('@/views/exit/ExitDetailsPageView.vue'),
+    meta: { requiresAuth: true, permission: 'Read.Employees', title: 'Exit Details' },
   },
   {
     path: '/settings/:path(.*)?',

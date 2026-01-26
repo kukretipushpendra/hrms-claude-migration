@@ -8,6 +8,7 @@ import type {
   EmailTemplate,
   EmailTemplateTypeOption,
   EmailTemplateSearchFilter,
+  EmailTemplateStatusValue,
 } from '@/types/email.types';
 import {
   getEmailTemplates,
@@ -99,12 +100,16 @@ const applyFilters = () => {
       !filters.value.senderEmail ||
       template.senderEmail.toLowerCase().includes(filters.value.senderEmail.toLowerCase());
 
+    // Status filter: null means show all (Active/Inactive), status value matches directly
+    // Special handling: if filtering for "Default" templates (status === null in DB),
+    // we detect this by checking if the filter doesn't match 0 or 1
+    const filterStatus = filters.value.status;
     const matchesStatus =
-      filters.value.status === null
+      filterStatus === null
         ? template.status === 1 || template.status === 0
-        : filters.value.status === 2
+        : filterStatus === (2 as unknown as EmailTemplateStatusValue)
           ? template.status === null
-          : template.status === filters.value.status;
+          : template.status === filterStatus;
 
     return matchesName && matchesType && matchesSenderName && matchesSenderEmail && matchesStatus;
   });
@@ -155,7 +160,7 @@ const handleToggleStatus = async (template: EmailTemplate) => {
 
     // Update local state
     const index = templates.value.findIndex((t) => t.id === template.id);
-    if (index !== -1) {
+    if (index !== -1 && templates.value[index]) {
       templates.value[index].status = newStatus;
     }
     applyFilters();

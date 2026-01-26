@@ -3,7 +3,7 @@ import { ref, computed } from 'vue';
 import { EMAIL_TEMPLATE_PLACEHOLDERS } from '@/types/email.types';
 
 interface Props {
-  modelValue: string;
+  modelValue: string | undefined;
   label?: string;
   error?: string;
 }
@@ -18,7 +18,7 @@ const emit = defineEmits<{
 }>();
 
 const content = computed({
-  get: () => props.modelValue,
+  get: () => props.modelValue ?? '',
   set: (value) => emit('update:modelValue', value),
 });
 

@@ -11,6 +11,7 @@ import type {
   EmailTemplateTypeOption,
   AddEmailTemplateRequest,
   UpdateEmailTemplateRequest,
+  EmailTemplateTypeValue,
 } from '@/types/email.types';
 import {
   getEmailTemplateById,
@@ -153,7 +154,7 @@ const onSubmit = handleSubmit(async (formValues) => {
         templateName: formValues.templateName,
         subject: formValues.subject,
         content: formValues.body,
-        type: formValues.type,
+        type: formValues.type as EmailTemplateTypeValue,
         senderName: formValues.senderName,
         senderEmail: formValues.senderEmail,
         ccEmails: formValues.cc || '',
@@ -167,7 +168,7 @@ const onSubmit = handleSubmit(async (formValues) => {
         templateName: formValues.templateName,
         subject: formValues.subject,
         content: formValues.body,
-        type: formValues.type,
+        type: formValues.type as EmailTemplateTypeValue,
         senderName: formValues.senderName,
         senderEmail: formValues.senderEmail,
         ccEmails: formValues.cc || '',

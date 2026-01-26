@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import type { EmailTemplateTypeOption } from '@/types/email.types';
 
 interface Props {
-  modelValue: number | null;
+  modelValue: number | null | undefined;
   options: EmailTemplateTypeOption[];
   label?: string;
   disabled?: boolean;
@@ -17,11 +17,11 @@ const props = withDefaults(defineProps<Props>(), {
 });
 
 const emit = defineEmits<{
-  (e: 'update:modelValue', value: number | null): void;
+  (e: 'update:modelValue', value: number | null | undefined): void;
 }>();
 
 const selectedValue = computed({
-  get: () => props.modelValue,
+  get: () => props.modelValue ?? null,
   set: (value) => emit('update:modelValue', value),
 });
 </script>

@@ -4,7 +4,12 @@ import { useForm } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
 import EmailTemplateTypeSelect from './EmailTemplateTypeSelect.vue';
-import type { EmailTemplateTypeOption, EmailTemplateSearchFilter } from '@/types/email.types';
+import type {
+  EmailTemplateTypeOption,
+  EmailTemplateSearchFilter,
+  EmailTemplateTypeValue,
+  EmailTemplateStatusValue,
+} from '@/types/email.types';
 
 interface Props {
   templateTypeOptions: EmailTemplateTypeOption[];
@@ -54,10 +59,10 @@ const statusOptions = ref([
 const onSubmit = handleSubmit((values) => {
   emit('search', {
     templateName: values.templateName || '',
-    templateType: values.templateType || null,
+    templateType: (values.templateType as EmailTemplateTypeValue | null) || null,
     senderName: values.senderName || '',
     senderEmail: values.senderEmail || '',
-    status: values.status === 2 ? null : (values.status as number | null),
+    status: values.status === 2 ? null : (values.status as EmailTemplateStatusValue | null),
   });
 });
 

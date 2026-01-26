@@ -1,5 +1,10 @@
 <script setup lang="ts">
-import type { EmailTemplate, EmailTemplateTypeOption } from '@/types/email.types';
+import type {
+  EmailTemplate,
+  EmailTemplateTypeOption,
+  EmailTemplateStatusValue,
+  EmailTemplateTypeValue,
+} from '@/types/email.types';
 import { EMAIL_TEMPLATE_TYPE_LABEL, EMAIL_TEMPLATE_STATUS_LABEL } from '@/types/email.types';
 
 interface Props {
@@ -34,7 +39,7 @@ const getStatusColor = (status: number | null): string => {
 };
 
 // Get status text
-const getStatusText = (status: number | null): string => {
+const getStatusText = (status: EmailTemplateStatusValue | null): string => {
   if (status === null) return 'Default';
   return EMAIL_TEMPLATE_STATUS_LABEL[status] || 'Unknown';
 };
@@ -58,7 +63,7 @@ const getStatusText = (status: number | null): string => {
     class="elevation-1"
   >
     <template #item.type="{ item }">
-      {{ EMAIL_TEMPLATE_TYPE_LABEL[item.type] || item.type }}
+      {{ EMAIL_TEMPLATE_TYPE_LABEL[item.type as EmailTemplateTypeValue] || item.type }}
     </template>
 
     <template #item.subject="{ item }">

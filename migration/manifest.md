@@ -25,11 +25,11 @@ TOTAL_COMPONENTS: 632
 
 ## Progress - Frontend Migration (Phase 1)
 TOTAL_FRONTEND_FEATURES: 100+
-FRONTEND_COMPLETED: 17
+FRONTEND_COMPLETED: 18
 FRONTEND_IN_PROGRESS: 0
-FRONTEND_HUMAN_REVIEW: 8
+FRONTEND_HUMAN_REVIEW: 9
 FRONTEND_READY_FOR_QA: 0
-FRONTEND_PERCENT: 17%
+FRONTEND_PERCENT: 18%
 
 ## Progress - Backend Migration (Phase 2)
 TOTAL_BACKEND_FEATURES: 0 (not started)
@@ -97,6 +97,9 @@ BACKEND_FOUNDATION_COMPLETE: false (Phase 2)
 - [x] email-notifications (HUMAN-REVIEW 2026-01-26)
 - [x] developer-tools (HUMAN-REVIEW 2026-01-26)
 - [x] user-guides (HUMAN-REVIEW 2026-01-26)
+
+### Wave 6: Discovered Features
+- [x] document-management (HUMAN-REVIEW 2026-01-27)
 
 ## Active Worktrees
 ACTIVE_WORKTREES: none
@@ -183,6 +186,7 @@ CURRENT_PARALLEL: 0
 2026-01-26 | migrate-next | email-notifications | HUMAN-REVIEW - Frontend migrated (8 files)
 2026-01-26 | migrate-next | developer-tools | HUMAN-REVIEW - Frontend migrated (10 files)
 2026-01-26 | migrate-next | user-guides | HUMAN-REVIEW - Frontend migrated (6 files)
+2026-01-27 | migrate-next | document-management | HUMAN-REVIEW - Frontend migrated (7 files)
 ```
 
 LAST_UPDATE: 2026-01-26
@@ -200,15 +204,16 @@ LAST_UPDATE: 2026-01-26
 2026-01-26 | email-notifications | main | Frontend Vue.js migrated (8 files)
 2026-01-26 | developer-tools | main | Frontend Vue.js migrated (10 files)
 2026-01-26 | user-guides | main | Frontend Vue.js migrated (6 files)
+2026-01-27 | document-management | main | Frontend Vue.js migrated (7 files)
 ```
 
 ## Checkpoint
 CHECKPOINT: true
-CHECKPOINT_REASON: wave-5-complete
-CHECKPOINT_AT: wave-5-additional
-LAST_COMPLETED: user-guides
-LAST_PHASE: wave-5-additional
-NEXT_FEATURE: none (all waves complete)
+CHECKPOINT_REASON: wave-6-in-progress
+CHECKPOINT_AT: wave-6-discovered
+LAST_COMPLETED: document-management
+LAST_PHASE: wave-6-discovered
+NEXT_FEATURE: settings-management (department, designation, team)
 CHECKPOINT_TIME: 2026-01-26
 RESUMED_AT: 2026-01-26
 

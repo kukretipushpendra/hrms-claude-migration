@@ -4,26 +4,37 @@
 
     <v-card elevation="3">
       <v-card-title class="page-header">
-        <h2>Add IT Asset</h2>
+        <div class="d-flex align-center">
+          <v-btn icon="mdi-arrow-left" variant="text" size="small" @click="goBack" class="mr-2" />
+          <h2>Add Asset</h2>
+        </div>
       </v-card-title>
 
-      <v-card-text class="px-5 pb-5">
-        <p class="text-subtitle-1 mb-4">
-          This view is under construction. Full asset form coming soon.
-        </p>
-
-        <v-btn color="primary" :to="/IT-Assets"> Back to Assets List </v-btn>
-      </v-card-text>
+      <ITAssetForm mode="add" :is-editable="true" @success="handleSuccess" />
     </v-card>
   </div>
 </template>
 
 <script setup lang="ts">
+import { useRouter } from 'vue-router';
+import ITAssetForm from '@/components/assets/ITAssetForm.vue';
+
+const router = useRouter();
+
 const breadcrumbs = [
   { title: 'Dashboard', disabled: false, href: '/dashboard' },
   { title: 'IT Assets', disabled: false, href: '/IT-Assets' },
   { title: 'Add Asset', disabled: true },
 ];
+
+function goBack() {
+  router.push('/IT-Assets');
+}
+
+function handleSuccess() {
+  // Form already shows success message and resets
+  // Could navigate back if needed
+}
 </script>
 
 <style scoped>

@@ -139,6 +139,29 @@ const routes: RouteRecordRaw[] = [
     meta: { requiresAuth: true, title: 'Add IT Asset' },
   },
   {
+    path: '/IT-Assets/:assetId',
+    component: () => import('@/views/assets/AssetDetailsLayout.vue'),
+    meta: { requiresAuth: true },
+    children: [
+      {
+        path: '',
+        redirect: 'general',
+      },
+      {
+        path: 'general',
+        name: 'asset-general',
+        component: () => import('@/views/assets/AssetGeneralView.vue'),
+        meta: { requiresAuth: true, title: 'Asset Details' },
+      },
+      {
+        path: 'history',
+        name: 'asset-history',
+        component: () => import('@/views/assets/AssetHistoryView.vue'),
+        meta: { requiresAuth: true, title: 'Asset History' },
+      },
+    ],
+  },
+  {
     path: '/profile/it-assets',
     name: 'employee-it-assets',
     component: () => import('@/views/assets/EmployeeITAssetsView.vue'),

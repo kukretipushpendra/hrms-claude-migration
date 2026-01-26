@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { VDataTableServer, VChip } from 'vuetify/components';
 import type { CronLog } from '@/types/developer.types';
 import { format } from 'date-fns';
 
@@ -53,7 +52,7 @@ const tableItems = computed(() => props.logs);
 </script>
 
 <template>
-  <VDataTableServer
+  <v-data-table-server
     :headers="headers"
     :items="tableItems"
     :loading="loading"
@@ -76,9 +75,9 @@ const tableItems = computed(() => props.logs);
     </template>
 
     <template #item.status="{ item }">
-      <VChip :color="getStatusColor(item.status)" size="small">
+      <v-chip :color="getStatusColor(item.status)" size="small">
         {{ item.status }}
-      </VChip>
+      </v-chip>
     </template>
 
     <template #item.actions="{ item }">
@@ -92,7 +91,7 @@ const tableItems = computed(() => props.logs);
         View Log
       </v-btn>
     </template>
-  </VDataTableServer>
+  </v-data-table-server>
 </template>
 
 <style scoped>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { ref, computed, watch } from 'vue';
-import { VCard, VCardText, VRow, VCol, VTextField, VSelect, VBtn } from 'vuetify/components';
 import type {
   DeveloperLogsFilter,
   LogLevelType,
@@ -138,31 +137,31 @@ defineExpose({
 </script>
 
 <template>
-  <VCard class="mb-4">
-    <VCardText>
-      <VRow>
-        <VCol cols="12" md="6">
-          <VTextField
+  <v-card class="mb-4">
+    <v-card-text>
+      <v-row>
+        <v-col cols="12" md="6">
+          <v-text-field
             v-model="message"
             label="Message"
             density="compact"
             clearable
             variant="outlined"
           />
-        </VCol>
+        </v-col>
 
-        <VCol cols="12" md="6">
-          <VTextField
+        <v-col cols="12" md="6">
+          <v-text-field
             v-model="requestId"
             label="Request ID"
             density="compact"
             clearable
             variant="outlined"
           />
-        </VCol>
+        </v-col>
 
-        <VCol cols="12" md="4">
-          <VSelect
+        <v-col cols="12" md="4">
+          <v-select
             v-model="logLevel"
             :items="logLevelOptions"
             label="Log Level"
@@ -170,10 +169,10 @@ defineExpose({
             variant="outlined"
             clearable
           />
-        </VCol>
+        </v-col>
 
-        <VCol cols="12" md="4">
-          <VSelect
+        <v-col cols="12" md="4">
+          <v-select
             v-model="selectedPreset"
             :items="datePresets"
             item-title="label"
@@ -182,35 +181,35 @@ defineExpose({
             density="compact"
             variant="outlined"
           />
-        </VCol>
+        </v-col>
 
-        <VCol v-if="isCustomDateRange" cols="12" md="2">
-          <VTextField
+        <v-col v-if="isCustomDateRange" cols="12" md="2">
+          <v-text-field
             v-model="fromDate"
             label="From Date"
             type="datetime-local"
             density="compact"
             variant="outlined"
           />
-        </VCol>
+        </v-col>
 
-        <VCol v-if="isCustomDateRange" cols="12" md="2">
-          <VTextField
+        <v-col v-if="isCustomDateRange" cols="12" md="2">
+          <v-text-field
             v-model="toDate"
             label="To Date"
             type="datetime-local"
             density="compact"
             variant="outlined"
           />
-        </VCol>
+        </v-col>
 
-        <VCol cols="12" class="d-flex gap-2">
-          <VBtn color="primary" @click="handleSearch">Search</VBtn>
-          <VBtn variant="outlined" @click="handleReset">Reset</VBtn>
-        </VCol>
-      </VRow>
-    </VCardText>
-  </VCard>
+        <v-col cols="12" class="d-flex gap-2">
+          <v-btn color="primary" @click="handleSearch">Search</v-btn>
+          <v-btn variant="outlined" @click="handleReset">Reset</v-btn>
+        </v-col>
+      </v-row>
+    </v-card-text>
+  </v-card>
 </template>
 
 <style scoped>

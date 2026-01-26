@@ -125,11 +125,24 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/attendance/EmployeeReportView.vue'),
     meta: { requiresAuth: true, title: 'Employee Report' },
   },
+  // IT Assets routes
   {
     path: '/IT-Assets',
     name: 'it-assets',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
+    component: () => import('@/views/assets/ITAssetListView.vue'),
     meta: { requiresAuth: true, title: 'IT Assets' },
+  },
+  {
+    path: '/IT-Assets/add',
+    name: 'it-asset-add',
+    component: () => import('@/views/assets/AddITAssetView.vue'),
+    meta: { requiresAuth: true, title: 'Add IT Asset' },
+  },
+  {
+    path: '/profile/it-assets',
+    name: 'employee-it-assets',
+    component: () => import('@/views/assets/EmployeeITAssetsView.vue'),
+    meta: { requiresAuth: true, title: 'My IT Assets' },
   },
   // Leave routes
   {

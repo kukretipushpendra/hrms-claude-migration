@@ -5,7 +5,12 @@ import {
   FEEDBACK_STATUS_OPTIONS,
   DATE_RANGE_OPTIONS,
 } from '@/types/support.types';
-import type { FeedbackSearchFilter, DateRangeType } from '@/types/support.types';
+import type {
+  FeedbackSearchFilter,
+  DateRangeType,
+  FeedbackStatusType,
+  FeedbackTypeValue,
+} from '@/types/support.types';
 
 interface Emits {
   (e: 'search', filters: FeedbackSearchFilter): void;
@@ -34,24 +39,24 @@ function getDateRange(): { from: string | null; to: string | null } {
       const from = new Date(today);
       from.setDate(from.getDate() - 15);
       return {
-        from: from.toISOString().split('T')[0],
-        to: today.toISOString().split('T')[0],
+        from: from.toISOString().split('T')[0] ?? null,
+        to: today.toISOString().split('T')[0] ?? null,
       };
     }
     case 'previous30Days': {
       const from = new Date(today);
       from.setDate(from.getDate() - 30);
       return {
-        from: from.toISOString().split('T')[0],
-        to: today.toISOString().split('T')[0],
+        from: from.toISOString().split('T')[0] ?? null,
+        to: today.toISOString().split('T')[0] ?? null,
       };
     }
     case 'previous90Days': {
       const from = new Date(today);
       from.setDate(from.getDate() - 90);
       return {
-        from: from.toISOString().split('T')[0],
-        to: today.toISOString().split('T')[0],
+        from: from.toISOString().split('T')[0] ?? null,
+        to: today.toISOString().split('T')[0] ?? null,
       };
     }
     case 'custom':
@@ -68,8 +73,8 @@ function handleSearch() {
   const { from, to } = getDateRange();
 
   const filters: FeedbackSearchFilter = {
-    ticketStatus: ticketStatus.value ?? undefined,
-    feedbackType: feedbackType.value ?? undefined,
+    ticketStatus: ticketStatus.value as FeedbackStatusType | null ?? undefined,
+    feedbackType: feedbackType.value as FeedbackTypeValue | null ?? undefined,
     searchQuery: searchQuery.value || '',
     createdOnFrom: from,
     createdOnTo: to,

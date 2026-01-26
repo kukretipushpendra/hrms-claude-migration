@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { useAuthStore } from '@/stores/auth.store';
 import { addFeedback } from '@/services/support/support.service';
 import { FEEDBACK_TYPE_OPTIONS } from '@/types/support.types';
-import type { AddFeedbackRequest } from '@/types/support.types';
+import type { AddFeedbackRequest, FeedbackTypeValue } from '@/types/support.types';
 
 interface Props {
   open: boolean;
@@ -63,7 +63,7 @@ const { handleSubmit, errors, resetForm } = useForm({
 const { value: bugType } = useField<number | undefined>('bugType');
 const { value: subject } = useField<string>('subject');
 const { value: description } = useField<string>('description');
-const { value: attachment } = useField<File | null>('attachment');
+const { value: attachment } = useField<File | null | undefined>('attachment');
 
 // Pre-filled user data from auth store
 const userName = computed(() => {
@@ -104,10 +104,10 @@ const onSubmit = handleSubmit(async (values) => {
   try {
     const request: AddFeedbackRequest = {
       employeeId: Number(authStore.user.id),
-      feedbackType: values.bugType!,
+      feedbackType: values.bugType as FeedbackTypeValue,
       subject: values.subject,
       description: values.description,
-      attachment: values.attachment || null,
+      attachment: values.attachment ?? null,
     };
 
     await addFeedback(request);

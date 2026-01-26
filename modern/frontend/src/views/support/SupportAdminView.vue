@@ -5,7 +5,7 @@ import { getFeedbackList } from '@/services/support/support.service';
 import AdminFilterForm from '@/components/support/AdminFilterForm.vue';
 import SupportStatusChip from '@/components/support/SupportStatusChip.vue';
 import { FEEDBACK_TYPE_LABEL } from '@/types/support.types';
-import type { Feedback, FeedbackSearchFilter } from '@/types/support.types';
+import type { Feedback, FeedbackSearchFilter, FeedbackTypeValue } from '@/types/support.types';
 
 const router = useRouter();
 
@@ -23,7 +23,6 @@ const sortBy = ref<{ key: string; order: 'asc' | 'desc' }[]>([{ key: 'createdOn'
 
 // Filters
 const showFilters = ref(false);
-const filterFormRef = ref<InstanceType<typeof AdminFilterForm> | null>(null);
 const filters = ref<FeedbackSearchFilter>({
   ticketStatus: undefined,
   feedbackType: undefined,
@@ -153,7 +152,7 @@ onMounted(() => {
 
         <!-- Filter Form -->
         <div v-if="showFilters" class="mb-4">
-          <AdminFilterForm ref="filterFormRef" @search="handleSearch" @reset="handleFilterReset" />
+          <AdminFilterForm @search="handleSearch" @reset="handleFilterReset" />
         </div>
 
         <!-- Data Table -->
@@ -171,7 +170,7 @@ onMounted(() => {
           <!-- Type Column -->
           <template #item.feedbackType="{ item }">
             <v-chip size="small" color="primary" variant="outlined">
-              {{ FEEDBACK_TYPE_LABEL[item.feedbackType] }}
+              {{ FEEDBACK_TYPE_LABEL[item.feedbackType as FeedbackTypeValue] }}
             </v-chip>
           </template>
 

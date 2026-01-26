@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { FEEDBACK_TYPE_OPTIONS, FEEDBACK_STATUS_OPTIONS } from '@/types/support.types';
-import type { EmployeeFeedbackFilter } from '@/types/support.types';
+import type {
+  EmployeeFeedbackFilter,
+  FeedbackStatusType,
+  FeedbackTypeValue,
+} from '@/types/support.types';
 
 interface Emits {
   (e: 'search', filters: EmployeeFeedbackFilter): void;
@@ -16,8 +20,8 @@ const feedbackType = ref<number | null>(null);
 
 function handleSearch() {
   const filters: EmployeeFeedbackFilter = {
-    ticketStatus: ticketStatus.value ?? undefined,
-    feedbackType: feedbackType.value ?? undefined,
+    ticketStatus: (ticketStatus.value as FeedbackStatusType | null) ?? undefined,
+    feedbackType: (feedbackType.value as FeedbackTypeValue | null) ?? undefined,
   };
 
   emit('search', filters);

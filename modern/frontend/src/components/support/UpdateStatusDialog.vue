@@ -53,7 +53,7 @@ const onSubmit = handleSubmit(async (values) => {
   try {
     await modifyFeedbackStatus({
       id: props.feedback.id,
-      ticketStatus: values.ticketStatus,
+      ticketStatus: values.ticketStatus as FeedbackStatusType,
       adminComment: values.adminComment,
     });
 

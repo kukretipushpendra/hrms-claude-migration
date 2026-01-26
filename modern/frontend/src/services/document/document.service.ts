@@ -1,4 +1,4 @@
-import apiClient from '../api/axios-client';
+import apiClient from '../api/http-client';
 import type {
   GovtDocumentType,
   UserDocument,

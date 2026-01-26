@@ -76,7 +76,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { toast } from 'vue3-toastify';
+import { useSnackbar } from '@/composables/useSnackbar';
 import type { ITAssetHistory } from '@/types/asset.types';
 import { getAssetHistoryById } from '@/services/assets/asset.service';
 import {
@@ -90,6 +90,7 @@ const route = useRoute();
 
 const historyItems = ref<ITAssetHistory[]>([]);
 const loading = ref(false);
+const { showError } = useSnackbar();
 
 const assetId = computed(() => Number(route.params.assetId));
 
@@ -117,11 +118,11 @@ async function fetchHistory() {
     if (response.statusCode === 200 && response.result) {
       historyItems.value = response.result;
     } else {
-      toast.error('Failed to load asset history');
+      showError('Failed to load asset history');
     }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Failed to load asset history';
-    toast.error(message);
+    showError(message);
   } finally {
     loading.value = false;
   }

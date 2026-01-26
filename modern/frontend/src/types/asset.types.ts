@@ -3,41 +3,49 @@
  * Generated from API contracts in /migration/api-contracts/assets/asset-management.api.md
  */
 
-// Enums
-export enum AssetType {
-  Laptop = 1,
-  Desktop = 2,
-  Monitor = 3,
-  Keyboard = 4,
-  Mouse = 5,
-  Printer = 6,
-  Scanner = 7,
-  UPS = 8,
-  ExternalHardDrive = 9,
-  Headset = 10,
-  Webcam = 11,
-  Projector = 12,
-  SoftwareLicense = 13,
-  NetworkCable = 14,
-}
+// Type unions for enums (using as const pattern for type safety)
+export const AssetType = {
+  Laptop: 1,
+  Desktop: 2,
+  Monitor: 3,
+  Keyboard: 4,
+  Mouse: 5,
+  Printer: 6,
+  Scanner: 7,
+  UPS: 8,
+  ExternalHardDrive: 9,
+  Headset: 10,
+  Webcam: 11,
+  Projector: 12,
+  SoftwareLicense: 13,
+  NetworkCable: 14,
+} as const;
 
-export enum AssetStatus {
-  InInventory = 1,
-  Allocated = 2,
-  Retired = 3,
-}
+export type AssetType = (typeof AssetType)[keyof typeof AssetType];
 
-export enum AssetCondition {
-  Ok = 1,
-  Damage = 2,
-  Missing = 3,
-}
+export const AssetStatus = {
+  InInventory: 1,
+  Allocated: 2,
+  Retired: 3,
+} as const;
 
-export enum BranchLocation {
-  Hyderabad = 1,
-  Jaipur = 2,
-  Pune = 3,
-}
+export type AssetStatus = (typeof AssetStatus)[keyof typeof AssetStatus];
+
+export const AssetCondition = {
+  Ok: 1,
+  Damage: 2,
+  Missing: 3,
+} as const;
+
+export type AssetCondition = (typeof AssetCondition)[keyof typeof AssetCondition];
+
+export const BranchLocation = {
+  Hyderabad: 1,
+  Jaipur: 2,
+  Pune: 3,
+} as const;
+
+export type BranchLocation = (typeof BranchLocation)[keyof typeof BranchLocation];
 
 // Enum Options for Dropdowns
 export const ASSET_TYPE_OPTIONS = [

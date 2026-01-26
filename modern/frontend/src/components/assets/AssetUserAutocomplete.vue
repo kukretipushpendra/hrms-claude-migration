@@ -21,7 +21,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue';
-import { toast } from 'vue3-toastify';
+import { useSnackbar } from '@/composables/useSnackbar';
 import httpClient from '@/services/api/http-client';
 
 interface Employee {
@@ -50,6 +50,7 @@ const emit = defineEmits<{
 
 const employees = ref<Employee[]>([]);
 const loading = ref(false);
+const { showError } = useSnackbar();
 
 // Computed property to format employee display name
 const employeesWithDisplayName = computed(() =>
@@ -74,7 +75,7 @@ async function fetchEmployees() {
     }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Failed to fetch employees';
-    toast.error(message);
+    showError(message);
   } finally {
     loading.value = false;
   }

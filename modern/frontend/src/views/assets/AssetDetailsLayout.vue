@@ -45,7 +45,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { toast } from 'vue3-toastify';
+import { useSnackbar } from '@/composables/useSnackbar';
 import type { AssetData } from '@/types/asset.types';
 import { getAssetById } from '@/services/assets/asset.service';
 
@@ -55,6 +55,7 @@ const assetData = ref<AssetData | null>(null);
 const loading = ref(false);
 const isEditable = ref(false);
 const currentTab = ref('general');
+const { showError } = useSnackbar();
 
 const assetId = computed(() => Number(route.params.assetId));
 
@@ -109,11 +110,11 @@ async function fetchAsset() {
     if (response.statusCode === 200 && response.result) {
       assetData.value = response.result;
     } else {
-      toast.error('Failed to load asset details');
+      showError('Failed to load asset details');
     }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Failed to load asset details';
-    toast.error(message);
+    showError(message);
   } finally {
     loading.value = false;
   }

@@ -2,7 +2,7 @@
   <div class="it-asset-toolbar">
     <!-- Action Buttons Row -->
     <div class="toolbar-actions">
-      <v-btn color="primary" prepend-icon="mdi-plus" :to="/IT-Assets/add" class="me-2">
+      <v-btn color="primary" prepend-icon="mdi-plus" to="/IT-Assets/add" class="me-2">
         Add Asset
       </v-btn>
 

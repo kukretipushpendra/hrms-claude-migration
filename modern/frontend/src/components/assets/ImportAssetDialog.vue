@@ -58,7 +58,8 @@ const dialog = computed({
 
 // Handle import
 const handleImport = async () => {
-  if (!selectedFile.value || selectedFile.value.length === 0) {
+  if (!selectedFile.value || selectedFile.value.length === 0 || !selectedFile.value[0]) {
+    errorMessage.value = 'Please select a file';
     return;
   }
 

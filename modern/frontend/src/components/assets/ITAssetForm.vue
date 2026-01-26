@@ -323,7 +323,7 @@ import { ref, computed, watch, onMounted } from 'vue';
 import { useForm, useField } from 'vee-validate';
 import { toTypedSchema } from '@vee-validate/zod';
 import { z } from 'zod';
-import { toast } from 'vue3-toastify';
+import { useSnackbar } from '@/composables/useSnackbar';
 import {
   ASSET_TYPE_OPTIONS,
   ASSET_STATUS_OPTIONS,
@@ -355,6 +355,7 @@ const emit = defineEmits<{
 const loading = ref(false);
 const originalAssetStatus = ref<number | null>(null);
 const originalAssetCondition = ref<number | null>(null);
+const { showSuccess, showError } = useSnackbar();
 
 // Validation Schema
 const createValidationSchema = (isDisabled: boolean) => {
@@ -584,17 +585,17 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await upsertITAsset(payload);
 
     if (response.statusCode === 200) {
-      toast.success(response.message);
+      showSuccess(response.message);
       if (props.mode === 'add') {
         handleReset();
       }
       emit('success');
     } else {
-      toast.error(response.message || 'Failed to save asset');
+      showError(response.message || 'Failed to save asset');
     }
   } catch (error: unknown) {
     const message = error instanceof Error ? error.message : 'Failed to save asset';
-    toast.error(message);
+    showError(message);
   } finally {
     loading.value = false;
   }

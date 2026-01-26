@@ -52,18 +52,18 @@ defineProps<Props>();
   border-radius: 50%;
 
   &.decorative-circle-1 {
-    width: 180px;
-    height: 180px;
-    right: -60px;
-    top: -60px;
+    width: 200px;
+    height: 210px;
+    right: -88px;
+    top: -75px;
     background-color: rgba(255, 255, 255, 0.05);
   }
 
   &.decorative-circle-2 {
-    width: 120px;
-    height: 120px;
-    right: 20px;
-    bottom: -40px;
+    width: 250px;
+    height: 250px;
+    right: -63px;
+    bottom: -122px;
     background-color: rgba(255, 255, 255, 0.1);
   }
 }

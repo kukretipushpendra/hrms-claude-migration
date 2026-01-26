@@ -1,5 +1,6 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate';
 import App from './App.vue';
 import router from './router';
 
@@ -9,14 +10,26 @@ import vuetify from './plugins/vuetify';
 // Global styles matching legacy
 import './styles/global.scss';
 
-// Create Pinia store
+// Feature flags initialization
+import { initFeatureFlags } from './plugins/featureFlags';
+
+// Create Pinia store with persistence plugin
 const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
 
-// Create and mount app
-const app = createApp(App);
+// Initialize app
+async function initApp() {
+  const app = createApp(App);
 
-app.use(pinia);
-app.use(router);
-app.use(vuetify);
+  app.use(pinia);
+  app.use(router);
+  app.use(vuetify);
 
-app.mount('#app');
+  // Load feature flags BEFORE mounting app (like legacy FeatureFlagProvider)
+  await initFeatureFlags();
+
+  app.mount('#app');
+}
+
+// Start app
+initApp();

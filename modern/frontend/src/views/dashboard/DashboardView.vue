@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue';
 import { useAuthStore } from '@/stores/auth.store';
+import { useFeatureFlagStore } from '@/stores/featureFlag.store';
+import { format, subDays } from 'date-fns';
 
 // Dashboard service (matching legacy endpoints)
 import {
@@ -24,13 +26,18 @@ import type {
 import AnalyticsCard from '@/components/dashboard/AnalyticsCard.vue';
 import DashboardTile from '@/components/dashboard/DashboardTile.vue';
 import HolidayCalendarTile from '@/components/dashboard/HolidayCalendarTile.vue';
+import CustomDatePicker from '@/components/dashboard/CustomDatePicker.vue';
 
 const authStore = useAuthStore();
+const featureFlagStore = useFeatureFlagStore();
 
 // State
 const loading = ref(true);
 const error = ref<string | null>(null);
 const selectedDays = ref('30');
+const showCustomDatePicker = ref(false);
+const customDateRange = ref<{ from: string; to: string; days: number } | null>(null);
+const customLabel = ref('');
 
 // Dashboard data (separate state for each section, like legacy)
 const employeeCount = ref<EmployeeCount>({
@@ -46,11 +53,12 @@ const usaHolidays = ref<Holiday[]>([]);
 const upcomingEventsList = ref<UpcomingEvent[]>([]);
 const companyPolicies = ref<CompanyPolicyDocument[]>([]);
 
-// Day filter options (matching legacy)
+// Day filter options (matching legacy exactly)
 const dayOptions = [
-  { title: 'Last 7 Days', value: '7' },
-  { title: 'Last 30 Days', value: '30' },
-  { title: 'Last 90 Days', value: '90' },
+  { title: 'Past 7 Days', value: '7' },
+  { title: 'Past 15 Days', value: '15' },
+  { title: 'Past 30 Days', value: '30' },
+  { title: 'Custom', value: '-1' },
 ];
 
 // Check if user is Employee role (for hiding analytics)
@@ -63,9 +71,43 @@ const hasAttendancePermission = computed(() => authStore.hasPermission('Read.Att
 const hasLeavePermission = computed(() => authStore.hasPermission('Read.Leave'));
 const hasCompanyPolicyPermission = computed(() => authStore.hasPermission('Read.CompanyPolicy'));
 const hasEventsPermission = computed(() => authStore.hasPermission('Read.Events'));
+const hasEmploymentDetailsPermission = computed(() =>
+  authStore.hasPermission('Read.EmploymentDetails')
+);
 
-// Show "Apply New" tile if attendance OR leave enabled
-const showApplyNewTile = computed(() => hasAttendancePermission.value || hasLeavePermission.value);
+// Show "Apply New" tile if attendance OR leave enabled AND has permission
+const showApplyNewTile = computed(() => {
+  const enableAttendance = featureFlagStore.flags.enableAttendance;
+  const enableLeave = featureFlagStore.flags.enableLeave;
+  return (
+    (hasAttendancePermission.value && enableAttendance) || (hasLeavePermission.value && enableLeave)
+  );
+});
+
+// Calculate from/to dates based on selected days or custom range
+const dateRange = computed(() => {
+  if (customDateRange.value) {
+    return customDateRange.value;
+  }
+
+  const days = parseInt(selectedDays.value, 10);
+  const today = new Date();
+  const fromDate = subDays(today, days - 1); // Subtract 1 to make fromDate inclusive
+
+  return {
+    from: format(fromDate, 'yyyy-MM-dd'),
+    to: format(today, 'yyyy-MM-dd'),
+    days,
+  };
+});
+
+// Display value for the dropdown (show custom label when active)
+const displayDayOptions = computed(() => {
+  if (customLabel.value) {
+    return [...dayOptions.slice(0, 3), { title: customLabel.value, value: '-1' }];
+  }
+  return dayOptions;
+});
 
 // Fetch dashboard data using separate endpoints (matching legacy)
 async function fetchDashboardData() {
@@ -102,12 +144,12 @@ async function fetchDashboardData() {
 
 // Fetch data that requires permissions
 async function fetchPermissionGatedData() {
-  const days = parseInt(selectedDays.value, 10);
+  const { days } = dateRange.value;
 
   const promises: Promise<void>[] = [];
 
-  // Employee count (non-employee roles only)
-  if (!isEmployee.value) {
+  // Employee count (non-employee roles only AND has permission)
+  if (!isEmployee.value && hasEmploymentDetailsPermission.value) {
     promises.push(
       getEmployeesCount({ days })
         .then((res) => {
@@ -144,8 +186,55 @@ async function fetchPermissionGatedData() {
   await Promise.all(promises);
 }
 
-// Handle day filter change (refetch permission-gated data)
-async function handleDayChange() {
+// Handle day filter change
+async function handleDayChange(value: string) {
+  if (value === '-1') {
+    // Show custom date picker
+    showCustomDatePicker.value = true;
+    return;
+  }
+
+  // Clear custom range
+  customDateRange.value = null;
+  customLabel.value = '';
+  selectedDays.value = value;
+
+  // Refetch permission-gated data
+  loading.value = true;
+  try {
+    await fetchPermissionGatedData();
+  } finally {
+    loading.value = false;
+  }
+}
+
+// Handle custom date picker close
+function handleCustomDatePickerClose() {
+  showCustomDatePicker.value = false;
+
+  // If no custom range was applied, reset to previous selection
+  if (!customDateRange.value) {
+    selectedDays.value = selectedDays.value === '-1' ? '30' : selectedDays.value;
+  }
+}
+
+// Handle custom date range confirmation
+async function handleCustomDateConfirm(data: {
+  from: string;
+  to: string;
+  days: number;
+  label: string;
+}) {
+  customDateRange.value = {
+    from: data.from,
+    to: data.to,
+    days: data.days,
+  };
+  customLabel.value = data.label;
+  selectedDays.value = '-1';
+  showCustomDatePicker.value = false;
+
+  // Refetch permission-gated data with custom range
   loading.value = true;
   try {
     await fetchPermissionGatedData();
@@ -189,17 +278,24 @@ onMounted(() => {
       <v-col cols="6" class="d-flex justify-end">
         <v-select
           v-model="selectedDays"
-          :items="dayOptions"
+          :items="displayDayOptions"
           item-title="title"
           item-value="value"
           variant="outlined"
           density="compact"
           hide-details
-          style="max-width: 180px"
+          style="max-width: 240px"
           @update:model-value="handleDayChange"
         />
       </v-col>
     </v-row>
+
+    <!-- Custom Date Picker Dialog -->
+    <CustomDatePicker
+      :open="showCustomDatePicker"
+      @close="handleCustomDatePickerClose"
+      @confirm="handleCustomDateConfirm"
+    />
 
     <!-- Loading State -->
     <v-row v-if="loading">

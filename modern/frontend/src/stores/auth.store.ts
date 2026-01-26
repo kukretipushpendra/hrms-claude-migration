@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import httpClient, { API_KEY } from '@/services/api/http-client';
+import { cleanupFeatureFlags } from '@/plugins/featureFlags';
 
 // Menu types matching legacy
 export interface SubMenu {
@@ -167,6 +168,9 @@ export const useAuthStore = defineStore('auth', () => {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('isInternalUser');
     localStorage.removeItem('userData');
+
+    // Cleanup feature flags (matching legacy)
+    cleanupFeatureFlags();
   }
 
   async function refreshAccessToken(): Promise<void> {

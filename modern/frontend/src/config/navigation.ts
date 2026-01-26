@@ -8,6 +8,8 @@
 
 import type { NavItem } from '@/types/navigation';
 import type { Menu } from '@/stores/auth.store';
+import type { FeatureFlagMap } from '@/stores/featureFlag.store';
+import { FEATURE_FLAG_TO_MENU_ID } from '@/constants/featureFlags';
 
 // Main navigation items matching legacy menu structure
 export const navigationItems: NavItem[] = [
@@ -287,7 +289,27 @@ export const navigationItems: NavItem[] = [
  * the user's permitted navigation items. We filter the nav config against
  * this array to show only what the user is allowed to see.
  */
-export function filterNavigation(items: NavItem[], userMenus: Menu[], userRole: string): NavItem[] {
+export function filterNavigation(
+  items: NavItem[],
+  userMenus: Menu[],
+  userRole: string,
+  featureFlags?: FeatureFlagMap
+): NavItem[] {
+  // First filter by permissions and role
+  let filteredItems = filterByPermissions(items, userMenus, userRole);
+
+  // Then filter by feature flags if provided
+  if (featureFlags) {
+    filteredItems = filterByFeatureFlags(filteredItems, featureFlags);
+  }
+
+  return filteredItems;
+}
+
+/**
+ * Filter navigation by permissions and role
+ */
+function filterByPermissions(items: NavItem[], userMenus: Menu[], userRole: string): NavItem[] {
   return items
     .filter((item) => {
       // Dashboard always shows
@@ -354,4 +376,71 @@ export function filterNavigation(items: NavItem[], userMenus: Menu[], userRole: 
       }
       return true;
     });
+}
+
+/**
+ * Filter navigation by feature flags
+ * Matches legacy filterMenusByFeatureFlags function
+ * From: /layout/Dashboard/Drawer/DrawerContent/Navigation/index.tsx
+ */
+function filterByFeatureFlags(items: NavItem[], flags: FeatureFlagMap): NavItem[] {
+  // Create reverse mapping: menuId -> flagKey
+  const menuIdToFlag: Record<string, string> = {};
+  Object.entries(FEATURE_FLAG_TO_MENU_ID).forEach(([flagKey, menuIds]) => {
+    menuIds.forEach((id) => {
+      menuIdToFlag[id] = flagKey;
+    });
+  });
+
+  /**
+   * Filter a single item
+   */
+  function filterItem(item: NavItem): NavItem | null {
+    const flagKey = menuIdToFlag[item.id];
+    if (flagKey) {
+      return flags[flagKey] ? item : null;
+    }
+    return item;
+  }
+
+  /**
+   * Filter a collapse item with children
+   */
+  function filterCollapse(item: NavItem): NavItem | null {
+    // Check if parent is disabled
+    const itemFlag = menuIdToFlag[item.id];
+    if (itemFlag && !flags[itemFlag]) {
+      return null;
+    }
+
+    // Filter children
+    if (item.children && item.children.length > 0) {
+      const filteredChildren = item.children
+        .map((child) => {
+          const childFlag = menuIdToFlag[child.id];
+          return childFlag ? (flags[childFlag] ? child : null) : child;
+        })
+        .filter((child): child is NavItem => child !== null);
+
+      // If no children remain, hide parent
+      if (filteredChildren.length === 0) {
+        return null;
+      }
+
+      return { ...item, children: filteredChildren };
+    }
+
+    return item;
+  }
+
+  // Filter all items
+  return items
+    .map((item) => {
+      if (item.type === 'collapse' && item.children) {
+        return filterCollapse(item);
+      } else {
+        return filterItem(item);
+      }
+    })
+    .filter((item): item is NavItem => item !== null);
 }

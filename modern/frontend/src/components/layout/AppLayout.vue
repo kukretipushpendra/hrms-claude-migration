@@ -2,7 +2,9 @@
 import { ref, computed, watch } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useDisplay } from 'vuetify';
+import { storeToRefs } from 'pinia';
 import { useAuthStore } from '@/stores/auth.store';
+import { useFeatureFlagStore } from '@/stores/featureFlag.store';
 import { navigationItems, filterNavigation } from '@/config/navigation';
 import type { NavItem } from '@/types/navigation';
 import SubmitSupportButton from '@/components/support/SubmitSupportButton.vue';
@@ -10,6 +12,8 @@ import SubmitSupportButton from '@/components/support/SubmitSupportButton.vue';
 const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
+const featureFlagStore = useFeatureFlagStore();
+const { flags } = storeToRefs(featureFlagStore);
 const { lgAndUp, mdAndDown } = useDisplay();
 
 // Layout constants matching legacy
@@ -42,11 +46,11 @@ const isRail = computed(() => {
   return lgAndUp.value && drawerMini.value && !drawerHover.value;
 });
 
-// Filtered navigation based on user's permitted menus (matching legacy)
+// Filtered navigation based on user's permitted menus AND feature flags (matching legacy)
 const filteredNavigation = computed(() => {
   const menus = authStore.user?.menus || [];
   const role = authStore.user?.roleName || '';
-  return filterNavigation(navigationItems, menus, role);
+  return filterNavigation(navigationItems, menus, role, flags.value);
 });
 
 // User initials for avatar

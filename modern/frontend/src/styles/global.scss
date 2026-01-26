@@ -296,8 +296,20 @@ body {
       white-space: nowrap;
     }
 
-    tr:hover {
-      background-color: $grey-50;
+    tbody tr {
+      // Row striping
+      &:nth-of-type(odd) {
+        background-color: #ffffff;
+      }
+
+      &:nth-of-type(even) {
+        background-color: #fafafa;
+      }
+
+      // Hover overrides striping
+      &:hover {
+        background-color: #f5f5f5 !important;
+      }
     }
   }
 }

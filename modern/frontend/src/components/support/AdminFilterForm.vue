@@ -73,8 +73,8 @@ function handleSearch() {
   const { from, to } = getDateRange();
 
   const filters: FeedbackSearchFilter = {
-    ticketStatus: ticketStatus.value as FeedbackStatusType | null ?? undefined,
-    feedbackType: feedbackType.value as FeedbackTypeValue | null ?? undefined,
+    ticketStatus: (ticketStatus.value as FeedbackStatusType | null) ?? undefined,
+    feedbackType: (feedbackType.value as FeedbackTypeValue | null) ?? undefined,
     searchQuery: searchQuery.value || '',
     createdOnFrom: from,
     createdOnTo: to,

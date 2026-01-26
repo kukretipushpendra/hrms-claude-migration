@@ -349,6 +349,13 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/certificates/CertificatesListView.vue'),
     meta: { requiresAuth: true, title: 'Certificate Details' },
   },
+  // Document routes
+  {
+    path: '/documents',
+    name: 'documents',
+    component: () => import('@/views/documents/DocumentListView.vue'),
+    meta: { requiresAuth: true, title: 'Documents' },
+  },
   // Exit Management routes
   {
     path: '/resignation-form/:userId?',
@@ -374,17 +381,68 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/exit/ExitDetailsPageView.vue'),
     meta: { requiresAuth: true, permission: 'Read.Employees', title: 'Exit Details' },
   },
+  // Email Template routes
+  {
+    path: '/settings/email-and-notification',
+    name: 'email-templates',
+    component: () => import('@/views/email/EmailTemplateListView.vue'),
+    meta: { requiresAuth: true, title: 'Email and Notification' },
+  },
+  {
+    path: '/settings/email-and-notification/add',
+    name: 'email-template-add',
+    component: () => import('@/views/email/EmailTemplateFormView.vue'),
+    meta: { requiresAuth: true, title: 'Add Email Template' },
+  },
+  {
+    path: '/settings/email-and-notification/edit/:id',
+    name: 'email-template-edit',
+    component: () => import('@/views/email/EmailTemplateFormView.vue'),
+    meta: { requiresAuth: true, title: 'Edit Email Template' },
+  },
+  // User Guide routes
+  {
+    path: '/settings/user-guides',
+    name: 'user-guides',
+    component: () => import('@/views/userguide/UserGuideListView.vue'),
+    meta: { requiresAuth: true, title: 'User Guides' },
+  },
+  {
+    path: '/settings/user-guides/add',
+    name: 'user-guide-add',
+    component: () => import('@/views/userguide/UserGuideFormView.vue'),
+    meta: { requiresAuth: true, title: 'Add User Guide' },
+  },
+  {
+    path: '/settings/user-guides/:id/edit',
+    name: 'user-guide-edit',
+    component: () => import('@/views/userguide/UserGuideFormView.vue'),
+    meta: { requiresAuth: true, title: 'Edit User Guide' },
+  },
   {
     path: '/settings/:path(.*)?',
     name: 'settings',
     component: () => import('@/views/placeholder/PlaceholderView.vue'),
     meta: { requiresAuth: true, title: 'Settings' },
   },
+  // Developer routes
   {
-    path: '/developer/:path(.*)?',
-    name: 'developer',
-    component: () => import('@/views/placeholder/PlaceholderView.vue'),
-    meta: { requiresAuth: true, title: 'Developer' },
+    path: '/developer/logs',
+    name: 'developer-logs',
+    component: () => import('@/views/developer/DeveloperLogsView.vue'),
+    meta: { requiresAuth: true, permission: 'Read.Logs', title: 'Developer Logs' },
+  },
+  {
+    path: '/developer/logs/:id',
+    name: 'developer-log-detail',
+    component: () => import('@/views/developer/LogDetailsView.vue'),
+    meta: { requiresAuth: true, permission: 'Read.Logs', title: 'Log Details' },
+  },
+  {
+    path: '/developer/cron-jobs',
+    name: 'developer-cron-jobs',
+    component: () => import('@/views/developer/CronJobsView.vue'),
+    meta: { requiresAuth: true, permission: 'Read.Logs', title: 'Cron Jobs' },
   },
   {
     path: '/:pathMatch(.*)*',

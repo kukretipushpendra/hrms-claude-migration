@@ -32,7 +32,7 @@ const lastWorkingDay = ref('');
 // Get target employee ID (from route param or current user)
 const targetEmployeeId = computed(() => {
   const paramId = route.params.userId as string | undefined;
-  return paramId ? Number(paramId) : authStore.user?.userId || 0;
+  return paramId ? Number(paramId) : Number(authStore.user?.id) || 0;
 });
 
 // Validation schema
@@ -85,7 +85,7 @@ const checkResignationStatus = async () => {
       // Redirect if active resignation exists
       router.replace('/not-found');
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     showError(error.response?.data?.message || 'Failed to check resignation status');
     router.replace('/');
   } finally {
@@ -110,7 +110,7 @@ const fetchResignationForm = async () => {
         resignationReason: '',
       });
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     showError(error.response?.data?.message || 'Failed to fetch resignation form');
     router.push('/');
   } finally {
@@ -145,7 +145,7 @@ const onSubmit = handleSubmit(async (values) => {
     );
 
     showConfirmDialog.value = true;
-  } catch (error: any) {
+  } catch (error: unknown) {
     showError(error.response?.data?.message || 'Failed to submit resignation');
   } finally {
     submitting.value = false;
@@ -174,10 +174,10 @@ const handleReset = () => {
 // Check permission for viewing other users' data
 onMounted(() => {
   const paramId = route.params.userId as string | undefined;
-  const currentUserId = authStore.user?.userId;
+  const currentUserId = authStore.user?.id;
 
   // If viewing another user's form, check permission
-  if (paramId && Number(paramId) !== currentUserId) {
+  if (paramId && Number(paramId) !== Number(currentUserId)) {
     const hasPermission = authStore.hasPermission('Read.Employees');
     if (!hasPermission) {
       router.replace('/unauthorized');

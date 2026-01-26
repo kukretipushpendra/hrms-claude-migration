@@ -24,22 +24,24 @@ const existingAttachment = ref<string | null>(null);
 
 // Validation schema
 const schema = toTypedSchema(
-  z.object({
-    advanceBonusRecoveryAmount: z.number().min(0, 'Amount must be non-negative'),
-    serviceAgreementDetails: z.string(),
-    currentEL: z.number().min(0, 'Current EL must be non-negative'),
-    numberOfBuyOutDays: z.number().min(0, 'Buy-out days must be non-negative'),
-    exitInterviewStatus: z.boolean(),
-    exitInterviewDetails: z.string().refine(
-      (val, ctx) => {
-        if (ctx.parent.exitInterviewStatus && !val.trim()) {
-          return false;
-        }
-        return true;
-      },
-      { message: 'Exit interview details are required when status is completed' }
-    ),
-  })
+  z
+    .object({
+      advanceBonusRecoveryAmount: z.number().min(0, 'Amount must be non-negative'),
+      serviceAgreementDetails: z.string(),
+      currentEL: z.number().min(0, 'Current EL must be non-negative'),
+      numberOfBuyOutDays: z.number().min(0, 'Buy-out days must be non-negative'),
+      exitInterviewStatus: z.boolean(),
+      exitInterviewDetails: z.string(),
+    })
+    .superRefine((val, ctx) => {
+      if (val.exitInterviewStatus && !val.exitInterviewDetails.trim()) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Exit interview details are required when status is completed',
+          path: ['exitInterviewDetails'],
+        });
+      }
+    })
 );
 
 const { defineField, handleSubmit, errors, setValues, resetForm } = useForm({
@@ -82,7 +84,7 @@ const fetchClearance = async () => {
       });
       existingAttachment.value = data.attachment;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     showError(error.response?.data?.message || 'Failed to fetch HR clearance');
   } finally {
     loading.value = false;
@@ -117,7 +119,7 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await upsertHRClearance(request);
     showSuccess(response.message || 'HR clearance saved successfully');
     await fetchClearance();
-  } catch (error: any) {
+  } catch (error: unknown) {
     showError(error.response?.data?.message || 'Failed to save HR clearance');
   } finally {
     submitting.value = false;

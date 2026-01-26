@@ -24,23 +24,22 @@ const existingAttachment = ref<string | null>(null);
 
 // Validation schema
 const schema = toTypedSchema(
-  z.object({
-    fnFStatus: z.boolean(),
-    fnFAmount: z
-      .number()
-      .nullable()
-      .refine(
-        (val, ctx) => {
-          if (ctx.parent.fnFStatus && (val === null || val === undefined)) {
-            return false;
-          }
-          return true;
-        },
-        { message: 'F&F amount is required when F&F status is checked' }
-      ),
-    issueNoDueCertificate: z.boolean(),
-    note: z.string(),
-  })
+  z
+    .object({
+      fnFStatus: z.boolean(),
+      fnFAmount: z.number().nullable(),
+      issueNoDueCertificate: z.boolean(),
+      note: z.string(),
+    })
+    .superRefine((val, ctx) => {
+      if (val.fnFStatus && (val.fnFAmount === null || val.fnFAmount === undefined)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'F&F amount is required when F&F status is checked',
+          path: ['fnFAmount'],
+        });
+      }
+    })
 );
 
 const { defineField, handleSubmit, errors, setValues, resetForm, values } = useForm({
@@ -77,7 +76,7 @@ const fetchClearance = async () => {
       });
       existingAttachment.value = data.accountAttachment;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     showError(error.response?.data?.message || 'Failed to fetch account clearance');
   } finally {
     loading.value = false;
@@ -110,7 +109,7 @@ const onSubmit = handleSubmit(async (formValues) => {
     const response = await upsertAccountClearance(request);
     showSuccess(response.message || 'Account clearance saved successfully');
     await fetchClearance();
-  } catch (error: any) {
+  } catch (error: unknown) {
     showError(error.response?.data?.message || 'Failed to save account clearance');
   } finally {
     submitting.value = false;

@@ -67,7 +67,7 @@ const fetchEmployees = async () => {
       items.value = response.result.exitEmployeeList;
       totalItems.value = response.result.totalRecords;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     showError(error.response?.data?.message || 'Failed to fetch resignation list');
   } finally {
     loading.value = false;

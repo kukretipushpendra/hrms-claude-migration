@@ -100,7 +100,7 @@ const fetchClearance = async () => {
       });
       existingAttachment.value = data.attachmentUrl;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     showError(error.response?.data?.message || 'Failed to fetch IT clearance');
   } finally {
     loading.value = false;
@@ -134,7 +134,7 @@ const onSubmit = handleSubmit(async (formValues) => {
     const response = await upsertITClearance(request);
     showSuccess(response.message || 'IT clearance saved successfully');
     await fetchClearance();
-  } catch (error: any) {
+  } catch (error: unknown) {
     showError(error.response?.data?.message || 'Failed to save IT clearance');
   } finally {
     submitting.value = false;

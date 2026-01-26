@@ -5,6 +5,8 @@ import {
   RESIGNATION_STATUS_LABELS,
   EmployeeStatus,
   type ExitEmployeeSearchFilter,
+  type ResignationStatusType,
+  type EmployeeStatusType,
 } from '@/types/exit.types';
 
 interface Props {
@@ -20,7 +22,7 @@ const emit = defineEmits<{
 // State
 const employeeCode = ref('');
 const employeeName = ref('');
-const resignationStatus = ref<number | null>(null);
+const resignationStatus = ref<ResignationStatusType | null>(null);
 const branchId = ref<number | null>(null);
 const departmentId = ref<number | null>(null);
 const itNoDue = ref<boolean | null>(null);
@@ -28,7 +30,7 @@ const accountsNoDue = ref<boolean | null>(null);
 const lastWorkingDayFrom = ref('');
 const lastWorkingDayTo = ref('');
 const resignationDate = ref('');
-const employeeStatus = ref<number | null>(null);
+const employeeStatus = ref<EmployeeStatusType | null>(null);
 
 // Options
 const resignationStatusOptions = [

@@ -1,7 +1,8 @@
 # Feature: Grievance Management
 
 ## Status
-STATUS: human-review
+STATUS: complete
+APPROVED: 2026-01-27
 PRIORITY: wave-4
 COMPLEXITY: high
 DEPENDENCIES: authentication, employee-management

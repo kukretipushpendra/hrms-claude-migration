@@ -1,7 +1,8 @@
 # Feature: User Guides
 
 ## Status
-STATUS: human-review
+STATUS: complete
+APPROVED: 2026-01-27
 PRIORITY: wave-5
 COMPLEXITY: medium
 DEPENDENCIES: authentication

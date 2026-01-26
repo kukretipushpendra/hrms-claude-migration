@@ -349,6 +349,13 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/certificates/CertificatesListView.vue'),
     meta: { requiresAuth: true, title: 'Certificate Details' },
   },
+  // Document routes
+  {
+    path: '/documents',
+    name: 'documents',
+    component: () => import('@/views/documents/DocumentListView.vue'),
+    meta: { requiresAuth: true, title: 'Documents' },
+  },
   // Exit Management routes
   {
     path: '/resignation-form/:userId?',

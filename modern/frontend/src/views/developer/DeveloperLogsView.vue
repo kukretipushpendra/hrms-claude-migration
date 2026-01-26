@@ -1,16 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch } from 'vue';
 import { useRouter } from 'vue-router';
-import {
-  VContainer,
-  VCard,
-  VCardTitle,
-  VCardText,
-  VDataTableServer,
-  VChip,
-  VBtn,
-  VIcon,
-} from 'vuetify/components';
 import LogsFilterForm from '@/components/developer/LogsFilterForm.vue';
 import { getDeveloperLogs } from '@/services/developer/developer.service';
 import type { DeveloperLog, DeveloperLogsFilter } from '@/types/developer.types';
@@ -134,17 +124,17 @@ onMounted(() => {
 </script>
 
 <template>
-  <VContainer fluid>
-    <VCard>
-      <VCardTitle class="d-flex justify-space-between align-center">
+  <v-container fluid>
+    <v-card>
+      <v-card-title class="d-flex justify-space-between align-center">
         <span>Developer Logs</span>
-        <VBtn :color="showFilters ? 'primary' : 'default'" @click="toggleFilters">
-          <VIcon start>{{ showFilters ? 'mdi-filter-off' : 'mdi-filter' }}</VIcon>
+        <v-btn :color="showFilters ? 'primary' : 'default'" @click="toggleFilters">
+          <v-icon start>{{ showFilters ? 'mdi-filter-off' : 'mdi-filter' }}</v-icon>
           {{ showFilters ? 'Hide Filters' : 'Show Filters' }}
-        </VBtn>
-      </VCardTitle>
+        </v-btn>
+      </v-card-title>
 
-      <VCardText>
+      <v-card-text>
         <LogsFilterForm
           v-if="showFilters"
           :initial-filters="filters"
@@ -152,7 +142,7 @@ onMounted(() => {
           @reset="handleReset"
         />
 
-        <VDataTableServer
+        <v-data-table-server
           :headers="headers"
           :items="logs"
           :loading="loading"
@@ -169,9 +159,9 @@ onMounted(() => {
           </template>
 
           <template #item.logLevel="{ item }">
-            <VChip :color="getLogLevelColor(item.logLevel)" size="small">
+            <v-chip :color="getLogLevelColor(item.logLevel)" size="small">
               {{ item.logLevel }}
-            </VChip>
+            </v-chip>
           </template>
 
           <template #item.timestamp="{ item }">
@@ -183,14 +173,14 @@ onMounted(() => {
           </template>
 
           <template #item.actions="{ item }">
-            <VBtn color="primary" size="small" variant="text" @click="viewLogDetails(item)">
+            <v-btn color="primary" size="small" variant="text" @click="viewLogDetails(item)">
               View
-            </VBtn>
+            </v-btn>
           </template>
-        </VDataTableServer>
-      </VCardText>
-    </VCard>
-  </VContainer>
+        </v-data-table-server>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <style scoped>

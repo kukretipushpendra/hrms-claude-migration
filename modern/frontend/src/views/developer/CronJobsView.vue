@@ -1,18 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, watch, computed } from 'vue';
 import { useRouter } from 'vue-router';
-import {
-  VContainer,
-  VCard,
-  VCardTitle,
-  VCardText,
-  VRow,
-  VCol,
-  VSelect,
-  VTextField,
-  VBtn,
-  VAlert,
-} from 'vuetify/components';
 import CronLogsTable from '@/components/developer/CronLogsTable.vue';
 import { getCronTypes, getCronLogs, runCron } from '@/services/developer/developer.service';
 import type {
@@ -156,14 +144,14 @@ onMounted(() => {
 </script>
 
 <template>
-  <VContainer fluid>
+  <v-container fluid>
     <!-- Cron Run Section -->
-    <VCard class="mb-4">
-      <VCardTitle>Cron Run</VCardTitle>
-      <VCardText>
-        <VRow>
-          <VCol cols="12" md="6">
-            <VSelect
+    <v-card class="mb-4">
+      <v-card-title>Cron Run</v-card-title>
+      <v-card-text>
+        <v-row>
+          <v-col cols="12" md="6">
+            <v-select
               v-model="selectedCronType"
               :items="cronTypeOptions"
               label="Select Cron Type"
@@ -171,11 +159,11 @@ onMounted(() => {
               density="compact"
               clearable
             />
-          </VCol>
+          </v-col>
 
           <!-- TimedDoctor Form -->
-          <VCol v-if="showTimeDoctorForm" cols="12" md="6">
-            <VTextField
+          <v-col v-if="showTimeDoctorForm" cols="12" md="6">
+            <v-text-field
               v-model="cronPayload.date"
               label="Date (YYYY-MM-DD)"
               type="date"
@@ -183,11 +171,11 @@ onMounted(() => {
               density="compact"
               placeholder="2026-01-26"
             />
-          </VCol>
+          </v-col>
 
           <!-- Monthly Leave Credit Form -->
-          <VCol v-if="showLeaveCreditForm" cols="12" md="6">
-            <VTextField
+          <v-col v-if="showLeaveCreditForm" cols="12" md="6">
+            <v-text-field
               v-model="cronPayload.month"
               label="Month (1-12)"
               type="number"
@@ -197,10 +185,10 @@ onMounted(() => {
               min="1"
               max="12"
             />
-          </VCol>
+          </v-col>
 
-          <VCol v-if="showLeaveCreditForm" cols="12" md="6">
-            <VTextField
+          <v-col v-if="showLeaveCreditForm" cols="12" md="6">
+            <v-text-field
               v-model="cronPayload.year"
               label="Year"
               type="number"
@@ -208,38 +196,38 @@ onMounted(() => {
               density="compact"
               placeholder="2026"
             />
-          </VCol>
+          </v-col>
 
-          <VCol cols="12">
-            <VBtn
+          <v-col cols="12">
+            <v-btn
               color="primary"
               :loading="isRunning"
               :disabled="!selectedCronType"
               @click="handleRunCron"
             >
               Run Cron
-            </VBtn>
-          </VCol>
+            </v-btn>
+          </v-col>
 
-          <VCol v-if="runSuccess" cols="12">
-            <VAlert type="success" closable @click:close="runSuccess = null">
+          <v-col v-if="runSuccess" cols="12">
+            <v-alert type="success" closable @click:close="runSuccess = null">
               {{ runSuccess }}
-            </VAlert>
-          </VCol>
+            </v-alert>
+          </v-col>
 
-          <VCol v-if="runError" cols="12">
-            <VAlert type="error" closable @click:close="runError = null">
+          <v-col v-if="runError" cols="12">
+            <v-alert type="error" closable @click:close="runError = null">
               {{ runError }}
-            </VAlert>
-          </VCol>
-        </VRow>
-      </VCardText>
-    </VCard>
+            </v-alert>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
 
     <!-- Cron Logs Table -->
-    <VCard>
-      <VCardTitle>Cron Jobs History</VCardTitle>
-      <VCardText>
+    <v-card>
+      <v-card-title>Cron Jobs History</v-card-title>
+      <v-card-text>
         <CronLogsTable
           :logs="logs"
           :loading="logsLoading"
@@ -250,9 +238,9 @@ onMounted(() => {
           @update:items-per-page="itemsPerPage = $event"
           @view-log="viewLogDetails"
         />
-      </VCardText>
-    </VCard>
-  </VContainer>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <style scoped>

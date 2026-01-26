@@ -1,17 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import {
-  VContainer,
-  VCard,
-  VCardTitle,
-  VCardText,
-  VRow,
-  VCol,
-  VChip,
-  VBtn,
-  VProgressCircular,
-} from 'vuetify/components';
 import { getDeveloperLogById } from '@/services/developer/developer.service';
 import type { DeveloperLog } from '@/types/developer.types';
 import { LogLevel } from '@/types/developer.types';
@@ -76,78 +65,78 @@ onMounted(() => {
 </script>
 
 <template>
-  <VContainer fluid>
-    <VCard>
-      <VCardTitle class="d-flex justify-space-between align-center">
+  <v-container fluid>
+    <v-card>
+      <v-card-title class="d-flex justify-space-between align-center">
         <span>Log Details</span>
-        <VBtn variant="outlined" @click="goBack">Back to Logs</VBtn>
-      </VCardTitle>
+        <v-btn variant="outlined" @click="goBack">Back to Logs</v-btn>
+      </v-card-title>
 
-      <VCardText>
+      <v-card-text>
         <div v-if="loading" class="text-center py-8">
-          <VProgressCircular indeterminate color="primary" size="64" />
+          <v-progress-circular indeterminate color="primary" size="64" />
         </div>
 
         <div v-else-if="error" class="text-center py-8 text-error">
           {{ error }}
         </div>
 
-        <VRow v-else-if="log" dense>
-          <VCol cols="12" md="6">
+        <v-row v-else-if="log" dense>
+          <v-col cols="12" md="6">
             <div class="detail-row">
               <strong>ID:</strong>
               <span>{{ log.id }}</span>
             </div>
-          </VCol>
+          </v-col>
 
-          <VCol cols="12" md="6">
+          <v-col cols="12" md="6">
             <div class="detail-row">
               <strong>Log Level:</strong>
-              <VChip :color="getLogLevelColor(log.logLevel)" size="small">
+              <v-chip :color="getLogLevelColor(log.logLevel)" size="small">
                 {{ log.logLevel }}
-              </VChip>
+              </v-chip>
             </div>
-          </VCol>
+          </v-col>
 
-          <VCol cols="12" md="6">
+          <v-col cols="12" md="6">
             <div class="detail-row">
               <strong>Timestamp:</strong>
               <span>{{ formatDate(log.timestamp) }}</span>
             </div>
-          </VCol>
+          </v-col>
 
-          <VCol cols="12" md="6">
+          <v-col cols="12" md="6">
             <div class="detail-row">
               <strong>Request ID:</strong>
               <code class="request-id">{{ log.requestId || 'N/A' }}</code>
             </div>
-          </VCol>
+          </v-col>
 
-          <VCol cols="12" md="6">
+          <v-col cols="12" md="6">
             <div class="detail-row">
               <strong>Log Event:</strong>
               <span>{{ log.logEvent || 'N/A' }}</span>
             </div>
-          </VCol>
+          </v-col>
 
-          <VCol cols="12">
+          <v-col cols="12">
             <div class="detail-row">
               <strong>Message:</strong>
               <p class="message-text">{{ log.message || 'N/A' }}</p>
             </div>
-          </VCol>
+          </v-col>
 
-          <VCol cols="12">
+          <v-col cols="12">
             <div class="detail-row">
               <strong>Exception:</strong>
               <pre v-if="log.exception" class="exception-text">{{ log.exception }}</pre>
               <span v-else>No exception</span>
             </div>
-          </VCol>
-        </VRow>
-      </VCardText>
-    </VCard>
-  </VContainer>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-container>
 </template>
 
 <style scoped>

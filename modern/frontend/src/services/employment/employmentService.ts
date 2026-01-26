@@ -122,6 +122,25 @@ export async function getRoleList() {
   return response.data;
 }
 
+/**
+ * Get personal profile by employee ID (includes profile image)
+ * GET /UserProfile/GetPersonalProfileByIdAsync/{id}
+ * Called after login to get profile image
+ */
+export async function getPersonalProfileById(userId: string | number) {
+  const response = await httpClient.get<{
+    statusCode: number;
+    message: string;
+    result: {
+      id: number;
+      firstName: string;
+      lastName: string;
+      fileName: string | null; // Profile image URL
+    };
+  }>(`${baseRoute}/GetPersonalProfileByIdAsync/${userId}`);
+  return response.data;
+}
+
 // Note: Branch list and Employee Status list use constants (see utils.ts)
 // - BRANCH_LOCATION_OPTIONS
 // - EMPLOYEE_STATUS_OPTIONS

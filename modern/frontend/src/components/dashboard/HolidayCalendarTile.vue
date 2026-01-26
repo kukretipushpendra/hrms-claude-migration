@@ -207,7 +207,7 @@ function openDialog() {
                 <td class="table-cell">{{ formatDateWithYear(item.date) }}</td>
                 <td class="table-cell">{{ getDayOfWeek(item.date) }}</td>
                 <td class="table-cell">{{ item.title }}</td>
-                <td class="table-cell">{{ selectedLocation === 'india' ? 'India' : 'USA' }}</td>
+                <td class="table-cell">{{ item.location }}</td>
               </tr>
             </tbody>
           </v-table>
@@ -341,7 +341,8 @@ function openDialog() {
     font-weight: bold;
     font-size: 10.5px;
     padding: 12px 16px;
-    background: #fafafa;
+    background: #1e75bb !important; // Blue header matching legacy
+    color: #ffffff !important;
   }
 }
 

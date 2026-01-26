@@ -144,14 +144,15 @@ async function fetchDashboardData() {
 
 // Fetch data that requires permissions
 async function fetchPermissionGatedData() {
-  const { days } = dateRange.value;
+  const { from, to, days } = dateRange.value;
 
   const promises: Promise<void>[] = [];
 
   // Employee count (non-employee roles only AND has permission)
+  // Legacy sends all three params: { from, to, days }
   if (!isEmployee.value && hasEmploymentDetailsPermission.value) {
     promises.push(
-      getEmployeesCount({ days })
+      getEmployeesCount({ from, to, days })
         .then((res) => {
           if (res.result) {
             employeeCount.value = res.result;
@@ -173,9 +174,10 @@ async function fetchPermissionGatedData() {
   }
 
   // Company policies (requires permission)
+  // Legacy sends only { from, to } - NOT days
   if (hasCompanyPolicyPermission.value) {
     promises.push(
-      getPublishedCompanyPolicies({ days })
+      getPublishedCompanyPolicies({ from, to })
         .then((res) => {
           companyPolicies.value = res.result || [];
         })

@@ -17,13 +17,15 @@ const baseRoute = '/Dashboard';
  * Get employee count statistics (active, new, exited)
  * POST /Dashboard/GetEmployeesCount
  * Requires: ReadEmploymentDetails permission
+ * Legacy sends ALL three params: { from, to, days }
  */
 export async function getEmployeesCount(params: GetEmployeeCountParams) {
-  // .NET expects null (not empty string) for DateOnly? when using days filter
-  const requestBody =
-    params.days && params.days > 0
-      ? { days: params.days, from: null, to: null }
-      : { days: 0, from: params.from || null, to: params.to || null };
+  // Legacy sends all three parameters together
+  const requestBody = {
+    from: params.from || null,
+    to: params.to || null,
+    days: params.days || 0,
+  };
 
   const response = await httpClient.post<ApiResponse<EmployeeCount>>(
     `${baseRoute}/GetEmployeesCount`,
@@ -94,13 +96,14 @@ export async function getUpcomingEvents() {
  * Get published company policies
  * POST /Dashboard/GetPublishedCompanyPolicies
  * Requires: ReadCompanyPolicy permission
+ * Legacy sends only { from, to } - NOT days
  */
 export async function getPublishedCompanyPolicies(params: GetPublishedCompanyPoliciesParams) {
-  // .NET expects null (not empty string) for DateOnly? when using days filter
-  const requestParams =
-    params.days && params.days > 0
-      ? { days: params.days, from: null, to: null }
-      : { days: 0, from: params.from || null, to: params.to || null };
+  // Legacy only sends from and to, not days
+  const requestParams = {
+    from: params.from || null,
+    to: params.to || null,
+  };
 
   const response = await httpClient.post<ApiResponse<CompanyPolicyDocument[] | null>>(
     `${baseRoute}/GetPublishedCompanyPolicies`,

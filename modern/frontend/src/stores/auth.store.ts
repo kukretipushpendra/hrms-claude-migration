@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref, computed } from 'vue';
 import httpClient, { API_KEY } from '@/services/api/http-client';
 import { cleanupFeatureFlags } from '@/plugins/featureFlags';
+import { getPersonalProfileById } from '@/services/employment/employmentService';
 
 // Menu types matching legacy
 export interface SubMenu {
@@ -68,6 +69,7 @@ export interface User {
   roleName: string;
   menus: Menu[];
   permissions: string[];
+  profileImage?: string | null; // Profile image URL from GetPersonalProfileByIdAsync
 }
 
 export const useAuthStore = defineStore('auth', () => {
@@ -144,6 +146,17 @@ export const useAuthStore = defineStore('auth', () => {
 
       // Store user
       user.value = mapUserDataToUser(userData);
+
+      // Fetch profile image (matching legacy behavior - calls GetPersonalProfileByIdAsync after login)
+      try {
+        const profileRes = await getPersonalProfileById(userData.userId);
+        if (profileRes.result?.fileName) {
+          user.value.profileImage = profileRes.result.fileName;
+        }
+      } catch (e) {
+        console.warn('Failed to fetch profile image:', e);
+        // Non-blocking - continue even if profile image fetch fails
+      }
 
       // Store user data in localStorage for persistence
       localStorage.setItem('userData', JSON.stringify(user.value));
@@ -248,6 +261,18 @@ export const useAuthStore = defineStore('auth', () => {
 
       // Store user
       user.value = mapUserDataToUser(userData);
+
+      // Fetch profile image (matching legacy behavior - calls GetPersonalProfileByIdAsync after login)
+      try {
+        const profileRes = await getPersonalProfileById(userData.userId);
+        if (profileRes.result?.fileName) {
+          user.value.profileImage = profileRes.result.fileName;
+        }
+      } catch (e) {
+        console.warn('Failed to fetch profile image:', e);
+        // Non-blocking - continue even if profile image fetch fails
+      }
+
       localStorage.setItem('userData', JSON.stringify(user.value));
     } catch (e: unknown) {
       const errorMessage = e instanceof Error ? e.message : 'SSO login failed';

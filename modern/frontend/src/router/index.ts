@@ -262,6 +262,31 @@ const routes: RouteRecordRaw[] = [
     component: () => import('@/views/certificates/CertificatesListView.vue'),
     meta: { requiresAuth: true, title: 'Certificate Details' },
   },
+  // Exit Management routes
+  {
+    path: '/resignation-form/:userId?',
+    name: 'resignation-form',
+    component: () => import('@/views/exit/ResignationFormView.vue'),
+    meta: { requiresAuth: true, title: 'Resignation Form' },
+  },
+  {
+    path: '/profile/exit-details',
+    name: 'exit-details',
+    component: () => import('@/views/exit/ExitDetailsView.vue'),
+    meta: { requiresAuth: true, title: 'Exit Details' },
+  },
+  {
+    path: '/employees/employee-exit',
+    name: 'exit-employee-list',
+    component: () => import('@/views/exit/ExitEmployeeListView.vue'),
+    meta: { requiresAuth: true, permission: 'Read.Employees', title: 'Employee Exit' },
+  },
+  {
+    path: '/employees/employee-exit/:resignationId',
+    name: 'exit-employee-details',
+    component: () => import('@/views/exit/ExitDetailsPageView.vue'),
+    meta: { requiresAuth: true, permission: 'Read.Employees', title: 'Exit Details' },
+  },
   {
     path: '/settings/:path(.*)?',
     name: 'settings',

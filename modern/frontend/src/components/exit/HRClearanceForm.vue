@@ -84,8 +84,9 @@ const fetchClearance = async () => {
       });
       existingAttachment.value = data.attachment;
     }
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to fetch HR clearance');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to fetch HR clearance');
   } finally {
     loading.value = false;
   }
@@ -119,8 +120,9 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await upsertHRClearance(request);
     showSuccess(response.message || 'HR clearance saved successfully');
     await fetchClearance();
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to save HR clearance');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to save HR clearance');
   } finally {
     submitting.value = false;
   }

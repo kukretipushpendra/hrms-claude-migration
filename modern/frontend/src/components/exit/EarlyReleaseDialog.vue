@@ -26,7 +26,10 @@ const schema = toTypedSchema(
         const selectedDate = dayjs(val);
         const today = dayjs().startOf('day');
         const lwd = dayjs(props.lastWorkingDay).startOf('day');
-        return selectedDate.isSameOrAfter(today) && selectedDate.isSameOrBefore(lwd);
+        return (
+          (selectedDate.isAfter(today) || selectedDate.isSame(today, 'day')) &&
+          (selectedDate.isBefore(lwd) || selectedDate.isSame(lwd, 'day'))
+        );
       },
       {
         message: 'Early release date must be between today and last working day',

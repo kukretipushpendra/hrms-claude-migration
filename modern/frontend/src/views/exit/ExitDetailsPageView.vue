@@ -79,8 +79,9 @@ const fetchResignationDetails = async () => {
       showError('Resignation not found');
       router.push({ name: 'exit-employee-list' });
     }
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to fetch resignation details');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to fetch resignation details');
     router.push({ name: 'exit-employee-list' });
   } finally {
     loading.value = false;
@@ -97,8 +98,9 @@ const handleAcceptResignation = async () => {
     showSuccess(response.message || 'Resignation accepted successfully');
     showAcceptDialog.value = false;
     await fetchResignationDetails();
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to accept resignation');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to accept resignation');
   } finally {
     actionLoading.value = false;
   }
@@ -122,8 +124,9 @@ const handleRejectResignation = async (reason: string) => {
     showSuccess(response.message || 'Resignation rejected successfully');
     showRejectResignationDialog.value = false;
     await fetchResignationDetails();
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to reject resignation');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to reject resignation');
   } finally {
     actionLoading.value = false;
   }
@@ -141,8 +144,9 @@ const handleAcceptEarlyRelease = async () => {
     });
     showSuccess(response.message || 'Early release accepted successfully');
     await fetchResignationDetails();
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to accept early release');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to accept early release');
   } finally {
     actionLoading.value = false;
   }
@@ -166,8 +170,9 @@ const handleRejectEarlyRelease = async (reason: string) => {
     showSuccess(response.message || 'Early release rejected successfully');
     showRejectEarlyReleaseDialog.value = false;
     await fetchResignationDetails();
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to reject early release');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to reject early release');
   } finally {
     actionLoading.value = false;
   }
@@ -187,8 +192,9 @@ const handleUpdateLWD = async (newLWD: string) => {
     showSuccess(response.message || 'Last working day updated successfully');
     showUpdateLWDDialog.value = false;
     await fetchResignationDetails();
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to update last working day');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to update last working day');
   } finally {
     actionLoading.value = false;
   }

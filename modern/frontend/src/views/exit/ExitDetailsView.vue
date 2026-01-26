@@ -75,8 +75,9 @@ const fetchDetails = async () => {
       showError('No resignation found');
       router.push('/profile');
     }
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to fetch resignation details');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to fetch resignation details');
     router.push('/profile');
   } finally {
     loading.value = false;
@@ -95,8 +96,9 @@ const handleRevoke = async () => {
     const response = await revokeResignation(resignationDetails.value.id);
     showSuccess(response.message || 'Resignation revoked successfully');
     await fetchDetails();
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to revoke resignation');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to revoke resignation');
   } finally {
     revoking.value = false;
   }
@@ -114,8 +116,9 @@ const handleEarlyReleaseSubmit = async (earlyReleaseDate: string) => {
     showSuccess(response.message || 'Early release request submitted');
     showEarlyReleaseDialog.value = false;
     await fetchDetails();
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to request early release');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to request early release');
   }
 };
 

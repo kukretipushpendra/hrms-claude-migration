@@ -35,25 +35,30 @@ const assetConditionOptions = [
 
 // Validation schema
 const schema = toTypedSchema(
-  z.object({
-    accessRevoked: z.boolean(),
-    assetReturned: z.boolean(),
-    assetCondition: z.number(),
-    note: z.string().refine(
-      (val, ctx) => {
-        const condition = ctx.parent.assetCondition;
+  z
+    .object({
+      accessRevoked: z.boolean(),
+      assetReturned: z.boolean(),
+      assetCondition: z.number(),
+      note: z.string(),
+      itClearanceCertification: z.boolean(),
+    })
+    .refine(
+      (data) => {
+        // If condition is damaged or faulty, note is required
         if (
-          (condition === AssetCondition.damage || condition === AssetCondition.missing) &&
-          !val.trim()
+          data.assetCondition === AssetCondition.damage ||
+          data.assetCondition === AssetCondition.missing
         ) {
-          return false;
+          return data.note && data.note.trim().length > 0;
         }
         return true;
       },
-      { message: 'Note is required when asset is damaged or faulty' }
-    ),
-    itClearanceCertification: z.boolean(),
-  })
+      {
+        message: 'Note is required when asset condition is damaged or faulty',
+        path: ['note'],
+      }
+    )
 );
 
 const { defineField, handleSubmit, errors, setValues, resetForm, values } = useForm({
@@ -100,8 +105,9 @@ const fetchClearance = async () => {
       });
       existingAttachment.value = data.attachmentUrl;
     }
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to fetch IT clearance');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to fetch IT clearance');
   } finally {
     loading.value = false;
   }
@@ -134,8 +140,9 @@ const onSubmit = handleSubmit(async (formValues) => {
     const response = await upsertITClearance(request);
     showSuccess(response.message || 'IT clearance saved successfully');
     await fetchClearance();
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to save IT clearance');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to save IT clearance');
   } finally {
     submitting.value = false;
   }

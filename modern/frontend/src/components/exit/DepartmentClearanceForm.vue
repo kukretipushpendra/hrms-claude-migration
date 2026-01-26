@@ -6,7 +6,7 @@ import { z } from 'zod';
 import { useSnackbar } from '@/composables/useSnackbar';
 import { getDepartmentClearance, upsertDepartmentClearance } from '@/services/exit/exit.service';
 import { KTStatus, KT_STATUS_LABELS } from '@/types/exit.types';
-import type { UpsertDepartmentClearanceRequest, KTStatusType } from '@/types/exit.types';
+import type { UpsertDepartmentClearanceRequest } from '@/types/exit.types';
 
 interface Props {
   resignationId: number;
@@ -48,7 +48,7 @@ const { defineField, handleSubmit, errors, setValues, resetForm } = useForm({
   },
 });
 
-const [ktStatus, ktStatusAttrs] = defineField<KTStatusType>('ktStatus');
+const [ktStatus, ktStatusAttrs] = defineField('ktStatus');
 const [ktNotes, ktNotesAttrs] = defineField('ktNotes');
 const [ktUsers, ktUsersAttrs] = defineField('ktUsers');
 
@@ -67,8 +67,9 @@ const fetchClearance = async () => {
       });
       existingAttachment.value = data.attachment;
     }
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to fetch department clearance');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to fetch department clearance');
   } finally {
     loading.value = false;
   }
@@ -99,8 +100,9 @@ const onSubmit = handleSubmit(async (values) => {
     const response = await upsertDepartmentClearance(request);
     showSuccess(response.message || 'Department clearance saved successfully');
     await fetchClearance();
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to save department clearance');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to save department clearance');
   } finally {
     submitting.value = false;
   }

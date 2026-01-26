@@ -76,8 +76,9 @@ const fetchClearance = async () => {
       });
       existingAttachment.value = data.accountAttachment;
     }
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to fetch account clearance');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to fetch account clearance');
   } finally {
     loading.value = false;
   }
@@ -109,8 +110,9 @@ const onSubmit = handleSubmit(async (formValues) => {
     const response = await upsertAccountClearance(request);
     showSuccess(response.message || 'Account clearance saved successfully');
     await fetchClearance();
-  } catch (error: unknown) {
-    showError(error.response?.data?.message || 'Failed to save account clearance');
+  } catch (error) {
+    const err = error as { response?: { data?: { message?: string } } };
+    showError(err.response?.data?.message || 'Failed to save account clearance');
   } finally {
     submitting.value = false;
   }

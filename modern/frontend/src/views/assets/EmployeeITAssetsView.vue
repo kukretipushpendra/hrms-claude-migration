@@ -97,7 +97,7 @@ const fetchEmployeeAssets = async () => {
     // Get employee ID from query param or auth store
     const employeeId = route.query.employeeId
       ? Number(route.query.employeeId)
-      : Number(authStore.userData?.userId);
+      : Number(authStore.user?.id);
 
     const response = await getEmployeeAsset(employeeId);
 

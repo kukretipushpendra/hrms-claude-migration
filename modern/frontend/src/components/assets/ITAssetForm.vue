@@ -331,6 +331,8 @@ import {
   BRANCH_LOCATION_OPTIONS,
   AssetStatus,
   AssetCondition,
+  type AssetType,
+  type BranchLocation,
   type AssetData,
   type UpsertITAssetPayload,
 } from '@/types/asset.types';
@@ -353,8 +355,8 @@ const emit = defineEmits<{
 }>();
 
 const loading = ref(false);
-const originalAssetStatus = ref<number | null>(null);
-const originalAssetCondition = ref<number | null>(null);
+const originalAssetStatus = ref<AssetStatus | null>(null);
+const originalAssetCondition = ref<AssetCondition | null>(null);
 const { showSuccess, showError } = useSnackbar();
 
 // Validation Schema
@@ -368,10 +370,34 @@ const createValidationSchema = (isDisabled: boolean) => {
         invoiceNumber: z.string().min(1, 'Invoice Number is required'),
         manufacturer: z.string().min(1, 'Manufacturer is required'),
         model: z.string().min(1, 'Model is required'),
-        assetType: z.number({ required_error: 'Asset Type is required' }),
-        assetStatus: z.number({ required_error: 'Asset Status is required' }),
-        assetCondition: z.number({ required_error: 'Asset Condition is required' }),
-        branch: z.number({ required_error: 'Branch is required' }),
+        assetType: z.union(
+          [
+            z.literal(1),
+            z.literal(2),
+            z.literal(3),
+            z.literal(4),
+            z.literal(5),
+            z.literal(6),
+            z.literal(7),
+            z.literal(8),
+            z.literal(9),
+            z.literal(10),
+            z.literal(11),
+            z.literal(12),
+            z.literal(13),
+            z.literal(14),
+          ],
+          { required_error: 'Asset Type is required' }
+        ),
+        assetStatus: z.union([z.literal(1), z.literal(2), z.literal(3)], {
+          required_error: 'Asset Status is required',
+        }),
+        assetCondition: z.union([z.literal(1), z.literal(2), z.literal(3)], {
+          required_error: 'Asset Condition is required',
+        }),
+        branch: z.union([z.literal(1), z.literal(2), z.literal(3)], {
+          required_error: 'Branch is required',
+        }),
         purchaseDate: z.string().min(1, 'Purchase Date is required'),
         warrantyExpires: z.string().min(1, 'Warranty Expires Date is required'),
         specification: z.string().nullable().optional(),
@@ -456,10 +482,10 @@ const { value: serialNumber } = useField<string>('serialNumber');
 const { value: invoiceNumber } = useField<string>('invoiceNumber');
 const { value: manufacturer } = useField<string>('manufacturer');
 const { value: model } = useField<string>('model');
-const { value: assetType } = useField<number>('assetType');
-const { value: assetStatus } = useField<number>('assetStatus');
-const { value: assetCondition } = useField<number>('assetCondition');
-const { value: branch } = useField<number>('branch');
+const { value: assetType } = useField<AssetType>('assetType');
+const { value: assetStatus } = useField<AssetStatus>('assetStatus');
+const { value: assetCondition } = useField<AssetCondition>('assetCondition');
+const { value: branch } = useField<BranchLocation>('branch');
 const { value: purchaseDate } = useField<string>('purchaseDate');
 const { value: warrantyExpires } = useField<string>('warrantyExpires');
 const { value: specification } = useField<string | null>('specification');

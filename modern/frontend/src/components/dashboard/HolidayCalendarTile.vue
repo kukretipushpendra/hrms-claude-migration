@@ -7,23 +7,43 @@
  * - View More arrow icon to open modal
  * - Modal with full calendar table
  */
-import { ref, computed } from 'vue';
+import { ref, computed, withDefaults } from 'vue';
 import type { Holiday } from '@/services/dashboard';
 
 interface Props {
   indiaHolidays: Holiday[];
   usaHolidays: Holiday[];
+  allIndiaHolidays?: Holiday[];
+  allUsaHolidays?: Holiday[];
 }
 
-const props = defineProps<Props>();
+const props = withDefaults(defineProps<Props>(), {
+  allIndiaHolidays: () => [],
+  allUsaHolidays: () => [],
+});
 
 // State
 const selectedLocation = ref<'india' | 'usa'>('india');
 const showDialog = ref(false);
 
 // Get holidays based on selected location
+// For tile preview: use upcoming holidays
+// For modal: use all holidays if available, otherwise use upcoming
 const filteredHolidays = computed(() => {
-  const holidays = selectedLocation.value === 'india' ? props.indiaHolidays : props.usaHolidays;
+  let holidays: Holiday[];
+  
+  if (selectedLocation.value === 'india') {
+    // Use all holidays for modal if available, otherwise use upcoming
+    holidays = props.allIndiaHolidays && props.allIndiaHolidays.length > 0 
+      ? props.allIndiaHolidays 
+      : props.indiaHolidays;
+  } else {
+    // Use all holidays for modal if available, otherwise use upcoming
+    holidays = props.allUsaHolidays && props.allUsaHolidays.length > 0 
+      ? props.allUsaHolidays 
+      : props.usaHolidays;
+  }
+  
   return [...holidays].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
 });
 
@@ -66,7 +86,7 @@ function openDialog() {
 </script>
 
 <template>
-  <v-card flat class="dashboard-tile background-1">
+  <v-card flat class="dashboard-tile background-0">
     <!-- Tile Header - matching legacy exactly -->
     <div class="tile-header">
       <div class="d-flex align-center">
@@ -231,9 +251,10 @@ function openDialog() {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  filter: drop-shadow(2.939px 4.045px 5px rgba(0, 0, 0, 0.08));
 
-  &.background-1 {
-    background-color: #f0f9ff;
+  &.background-0 {
+    background-color: #f4fafd;
   }
 }
 

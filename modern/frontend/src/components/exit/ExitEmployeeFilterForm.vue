@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { getDepartmentList } from '@/services/employees';
 import {
   ResignationStatus,
   RESIGNATION_STATUS_LABELS,
@@ -31,6 +32,9 @@ const lastWorkingDayFrom = ref('');
 const lastWorkingDayTo = ref('');
 const resignationDate = ref('');
 const employeeStatus = ref<EmployeeStatusType | null>(null);
+
+// Loaded data
+const departments = ref<Array<{ id: number; departmentName: string }>>([]);
 
 // Options
 const resignationStatusOptions = [
@@ -97,8 +101,19 @@ const handleReset = () => {
   emit('reset');
 };
 
-// Initialize from props
-onMounted(() => {
+// Initialize from props and load departments
+onMounted(async () => {
+  // Load departments
+  try {
+    const response = await getDepartmentList();
+    if (response.result) {
+      departments.value = response.result;
+    }
+  } catch (error) {
+    console.error('Failed to load departments:', error);
+  }
+
+  // Initialize filter values from props
   if (props.initialFilters) {
     employeeCode.value = props.initialFilters.employeeCode || '';
     employeeName.value = props.initialFilters.employeeName || '';
@@ -152,7 +167,7 @@ onMounted(() => {
           />
         </v-col>
 
-        <!-- Branch ID (Placeholder - replace with actual branch dropdown) -->
+        <!-- Branch ID -->
         <v-col cols="12" md="4">
           <v-text-field
             v-model.number="branchId"
@@ -163,14 +178,17 @@ onMounted(() => {
           />
         </v-col>
 
-        <!-- Department ID (Placeholder - replace with actual department dropdown) -->
+        <!-- Department Dropdown -->
         <v-col cols="12" md="4">
-          <v-text-field
-            v-model.number="departmentId"
-            label="Department ID"
-            type="number"
+          <v-select
+            v-model="departmentId"
+            label="Department"
+            :items="departments"
+            item-title="departmentName"
+            item-value="id"
             variant="outlined"
             density="compact"
+            clearable
           />
         </v-col>
 

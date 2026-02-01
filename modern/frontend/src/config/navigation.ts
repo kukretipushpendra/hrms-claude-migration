@@ -54,7 +54,6 @@ export const navigationItems: NavItem[] = [
         type: 'item',
         url: '/employees/employee-exit',
         icon: 'mdi-chevron-right',
-        roles: ['SUPER_ADMIN'],
       },
     ],
   },

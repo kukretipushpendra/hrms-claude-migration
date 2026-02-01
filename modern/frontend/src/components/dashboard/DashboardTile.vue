@@ -33,12 +33,19 @@ defineProps<Props>();
 
 <style scoped lang="scss">
 .dashboard-tile {
-  height: 250px;
-  border-radius: 15px;
   border: 1px solid #c7d9eb;
-  filter: drop-shadow(2.939px 4.045px 5px rgba(0, 0, 0, 0.08));
-  background-color: #f4fafd;
+  border-radius: 15px;
+  height: 250px;
   padding: 10px 15px;
+  background-color: #f4fafd;
+  display: flex;
+  flex-direction: column;
+  filter: drop-shadow(2.939px 4.045px 5px rgba(0, 0, 0, 0.08));
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: scale(1.01);
+  }
 }
 
 .tile-header {
@@ -46,16 +53,17 @@ defineProps<Props>();
   align-items: center;
   padding: 0;
   margin-bottom: 12px;
+  border-bottom: none;
 }
 
 .tile-title {
-  font-size: 1.25rem; // 20px
+  font-size: 0.9375rem;
   font-weight: 600;
   color: #1e75bb;
 }
 
 .tile-content {
-  max-height: 180px;
+  flex: 1;
   overflow-y: auto;
 
   // Custom scrollbar

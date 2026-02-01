@@ -10,6 +10,7 @@ import {
   getBirthdayList,
   getWorkAnniversaryList,
   getUpcomingHolidayList,
+  getHolidayList,
   getUpcomingEvents,
   getPublishedCompanyPolicies,
 } from '@/services/dashboard';
@@ -50,6 +51,9 @@ const workAnniversaries = ref<WorkAnniversary[]>([]);
 // Separate India and USA holidays (matching legacy)
 const indiaHolidays = ref<Holiday[]>([]);
 const usaHolidays = ref<Holiday[]>([]);
+// All holidays for modal (not just upcoming)
+const allIndiaHolidays = ref<Holiday[]>([]);
+const allUsaHolidays = ref<Holiday[]>([]);
 const upcomingEventsList = ref<UpcomingEvent[]>([]);
 const companyPolicies = ref<CompanyPolicyDocument[]>([]);
 
@@ -61,27 +65,11 @@ const dayOptions = [
   { title: 'Custom', value: '-1' },
 ];
 
-// Check if user is Employee role (for hiding analytics)
-const isEmployee = computed(() => {
-  return authStore.user?.roleName === 'EMPLOYEE';
-});
-
-// Check permissions for tiles
-const hasAttendancePermission = computed(() => authStore.hasPermission('Read.Attendance'));
-const hasLeavePermission = computed(() => authStore.hasPermission('Read.Leave'));
-const hasCompanyPolicyPermission = computed(() => authStore.hasPermission('Read.CompanyPolicy'));
-const hasEventsPermission = computed(() => authStore.hasPermission('Read.Events'));
-const hasEmploymentDetailsPermission = computed(() =>
-  authStore.hasPermission('Read.EmploymentDetails')
-);
-
-// Show "Apply New" tile if attendance OR leave enabled AND has permission
+// Show "Apply New" tile if attendance OR leave enabled
 const showApplyNewTile = computed(() => {
   const enableAttendance = featureFlagStore.flags.enableAttendance;
   const enableLeave = featureFlagStore.flags.enableLeave;
-  return (
-    (hasAttendancePermission.value && enableAttendance) || (hasLeavePermission.value && enableLeave)
-  );
+  return enableAttendance || enableLeave;
 });
 
 // Calculate from/to dates based on selected days or custom range
@@ -116,20 +104,27 @@ async function fetchDashboardData() {
 
   try {
     // Fetch all data in parallel (like legacy)
-    const [birthdayRes, workAnniversaryRes, holidaysRes] = await Promise.all([
+    const [birthdayRes, workAnniversaryRes, upcomingHolidaysRes, allHolidaysRes] = await Promise.all([
       getBirthdayList(),
       getWorkAnniversaryList(),
       getUpcomingHolidayList(),
+      getHolidayList(),
     ]);
 
     // Set public data
     birthdays.value = birthdayRes.result || [];
     workAnniversaries.value = workAnniversaryRes.result || [];
 
-    // Store India and USA holidays separately (matching legacy)
-    if (holidaysRes.result) {
-      indiaHolidays.value = holidaysRes.result.india || [];
-      usaHolidays.value = holidaysRes.result.usa || [];
+    // Store upcoming holidays separately (for preview in tile)
+    if (upcomingHolidaysRes.result) {
+      indiaHolidays.value = upcomingHolidaysRes.result.india || [];
+      usaHolidays.value = upcomingHolidaysRes.result.usa || [];
+    }
+
+    // Store all holidays (for modal display)
+    if (allHolidaysRes.result) {
+      allIndiaHolidays.value = allHolidaysRes.result.india || [];
+      allUsaHolidays.value = allHolidaysRes.result.usa || [];
     }
 
     // Fetch permission-gated data
@@ -142,48 +137,43 @@ async function fetchDashboardData() {
   }
 }
 
-// Fetch data that requires permissions
+// Fetch data for all sections (no permission checks)
 async function fetchPermissionGatedData() {
   const { from, to, days } = dateRange.value;
 
+  // Fetch all data in parallel
   const promises: Promise<void>[] = [];
 
-  // Employee count (non-employee roles only AND has permission)
+  // Employee count (all roles)
   // Legacy sends all three params: { from, to, days }
-  if (!isEmployee.value && hasEmploymentDetailsPermission.value) {
-    promises.push(
-      getEmployeesCount({ from, to, days })
-        .then((res) => {
-          if (res.result) {
-            employeeCount.value = res.result;
-          }
-        })
-        .catch((e) => console.error('Employee count error:', e))
-    );
-  }
+  promises.push(
+    getEmployeesCount({ from, to, days })
+      .then((res) => {
+        if (res.result) {
+          employeeCount.value = res.result;
+        }
+      })
+      .catch((e) => console.error('Employee count error:', e))
+  );
 
-  // Upcoming events (requires permission)
-  if (hasEventsPermission.value) {
-    promises.push(
-      getUpcomingEvents()
-        .then((res) => {
-          upcomingEventsList.value = res.result || [];
-        })
-        .catch((e) => console.error('Events error:', e))
-    );
-  }
+  // Upcoming events (always fetch)
+  promises.push(
+    getUpcomingEvents()
+      .then((res) => {
+        upcomingEventsList.value = res.result || [];
+      })
+      .catch((e) => console.error('Events error:', e))
+  );
 
-  // Company policies (requires permission)
+  // Company policies (always fetch)
   // Legacy sends only { from, to } - NOT days
-  if (hasCompanyPolicyPermission.value) {
-    promises.push(
-      getPublishedCompanyPolicies({ from, to })
-        .then((res) => {
-          companyPolicies.value = res.result || [];
-        })
-        .catch((e) => console.error('Policies error:', e))
-    );
-  }
+  promises.push(
+    getPublishedCompanyPolicies({ from, to })
+      .then((res) => {
+        companyPolicies.value = res.result || [];
+      })
+      .catch((e) => console.error('Policies error:', e))
+  );
 
   await Promise.all(promises);
 }
@@ -321,8 +311,8 @@ onMounted(() => {
 
     <!-- Dashboard Content -->
     <template v-else>
-      <!-- Analytics Section (Non-Employee roles only) -->
-      <v-row v-if="!isEmployee" class="mb-6">
+      <!-- Analytics Section (All users can see) -->
+      <v-row class="mb-6">
         <v-col cols="12" md="4">
           <AnalyticsCard
             title="Total Active Employees"
@@ -385,16 +375,20 @@ onMounted(() => {
 
         <!-- Upcoming Holidays -->
         <v-col cols="12" md="4">
-          <HolidayCalendarTile :india-holidays="indiaHolidays" :usa-holidays="usaHolidays" />
+          <HolidayCalendarTile 
+            :india-holidays="indiaHolidays" 
+            :usa-holidays="usaHolidays"
+            :all-india-holidays="allIndiaHolidays"
+            :all-usa-holidays="allUsaHolidays"
+          />
         </v-col>
 
         <!-- Apply New (if attendance OR leave enabled) -->
         <v-col v-if="showApplyNewTile" cols="12" md="4">
-          <DashboardTile title="Apply New" background-class="background-2" icon="mdi-plus-circle">
+          <DashboardTile title="Apply New" background-class="background-0" icon="mdi-plus-circle">
             <template #content>
               <div class="d-flex flex-column gap-3">
                 <v-btn
-                  v-if="hasLeavePermission"
                   color="primary"
                   variant="outlined"
                   to="/leave/apply-leave"
@@ -404,7 +398,6 @@ onMounted(() => {
                   Apply Leave
                 </v-btn>
                 <v-btn
-                  v-if="hasAttendancePermission"
                   color="primary"
                   variant="outlined"
                   to="/attendance/my-attendance"
@@ -420,7 +413,7 @@ onMounted(() => {
 
         <!-- Birthdays -->
         <v-col cols="12" md="4">
-          <DashboardTile title="Birthdays" background-class="background-3" icon="mdi-cake">
+          <DashboardTile title="Birthdays" background-class="background-0" icon="mdi-cake">
             <template #content>
               <div v-if="birthdays.length === 0" class="no-data">No birthdays this week</div>
               <v-list v-else density="compact" class="pa-0">
@@ -443,11 +436,11 @@ onMounted(() => {
           </DashboardTile>
         </v-col>
 
-        <!-- Company Policy Document (if permission) -->
-        <v-col v-if="hasCompanyPolicyPermission" cols="12" md="4">
+        <!-- Company Policy Document -->
+        <v-col cols="12" md="4">
           <DashboardTile
             title="Company Policy Document"
-            background-class="background-4"
+            background-class="background-0"
             icon="mdi-file-document"
           >
             <template #content>
@@ -475,11 +468,11 @@ onMounted(() => {
           </DashboardTile>
         </v-col>
 
-        <!-- Upcoming Events (if permission) -->
-        <v-col v-if="hasEventsPermission" cols="12" md="4">
+        <!-- Upcoming Events -->
+        <v-col cols="12" md="4">
           <DashboardTile
             title="Upcoming Events"
-            background-class="background-5"
+            background-class="background-0"
             icon="mdi-calendar-text"
           >
             <template #content>

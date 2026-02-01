@@ -151,7 +151,7 @@ export interface ImportEmployeesDataResponse {
 }
 
 export interface GetEmployeeDetailResponse {
-  statusCode number;
+  statusCode: number;
   message: string;
   modelErrors: string[];
   result: EmployeeType;

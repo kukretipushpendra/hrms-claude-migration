@@ -186,29 +186,35 @@ body {
 
 // Dashboard Tiles
 .dashboard-tile {
-  border-radius: 12px;
-  min-height: 300px;
+  border-radius: 15px;
+  min-height: 250px;
+  height: 250px;
+  border: 1px solid #c7d9eb;
+  background-color: #f4fafd;
+  filter: drop-shadow(2.939px 4.045px 5px rgba(0, 0, 0, 0.08));
+  display: flex;
+  flex-direction: column;
 
   &.background-0 {
-    background-color: #fff5f5;
+    background-color: #f4fafd;
   }
   &.background-1 {
-    background-color: #f0f9ff;
+    background-color: #f4fafd;
   }
   &.background-2 {
-    background-color: #f0fdf4;
+    background-color: #f4fafd;
   }
   &.background-3 {
-    background-color: #fef3c7;
+    background-color: #f4fafd;
   }
   &.background-4 {
-    background-color: #faf5ff;
+    background-color: #f4fafd;
   }
   &.background-5 {
-    background-color: #ecfeff;
+    background-color: #f4fafd;
   }
   &.background-6 {
-    background-color: #fff1f2;
+    background-color: #f4fafd;
   }
 }
 

@@ -79,11 +79,11 @@ export async function getDepartmentList() {
 
 /**
  * Get designation list for filters
- * GET /Employee/GetDesignationList
+ * GET /UserProfile/GetDesignationList
  */
 export async function getDesignationList() {
   const response = await httpClient.get<GetDesignationListResponse>(
-    `${baseRoute}/GetDesignationList`
+    `/UserProfile/GetDesignationList`
   );
   return response.data;
 }

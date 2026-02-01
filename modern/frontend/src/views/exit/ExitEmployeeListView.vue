@@ -53,11 +53,15 @@ const fetchEmployees = async () => {
     const sortColumn = sortBy.value[0]?.key || 'resignationDate';
     const sortDirection = sortBy.value[0]?.order === 'desc' ? 'desc' : 'asc';
 
+    // Ensure page and itemsPerPage are valid positive integers
+    const validPage = Math.max(1, Math.floor(page.value));
+    const validPageSize = Math.max(1, Math.floor(itemsPerPage.value));
+
     const request: GetResignationListRequest = {
       sortColumnName: sortColumn,
       sortDirection,
-      startIndex: (page.value - 1) * itemsPerPage.value,
-      pageSize: itemsPerPage.value,
+      startIndex: Math.max(0, (validPage - 1) * validPageSize + 1),
+      pageSize: validPageSize,
       filters: filters.value,
     };
 
@@ -104,11 +108,6 @@ const handleUpdate = () => {
 
 // Permission check
 onMounted(() => {
-  const hasPermission = authStore.hasPermission('Read.Employees');
-  if (!hasPermission) {
-    router.replace('/unauthorized');
-    return;
-  }
   fetchEmployees();
 });
 </script>

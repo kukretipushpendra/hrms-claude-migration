@@ -4,7 +4,7 @@ import { useAuthStore } from '@/stores/auth.store';
 import { useFeatureFlagStore } from '@/stores/featureFlag.store';
 import { format, subDays } from 'date-fns';
 
-// Dashboard service (matching legacy endpoints)
+//Dashboard service (matching legacy endpoints)
 import {
   getEmployeesCount,
   getBirthdayList,

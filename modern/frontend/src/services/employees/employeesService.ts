@@ -11,9 +11,16 @@ import type {
   GetEmployeeDetailResponse,
   EmployeeSearchFilter,
   EmployeeSearchFilterRequest,
+  CreateEmployeeRequest,
+  UpdateEmployeeRequest,
+  CreateOrUpdateEmployeeResponse,
+  GetLatestEmployeeCodeResponse,
+  GetBranchListResponse,
+  GetReportingManagerListResponse,
 } from './types';
 
 const baseRoute = '/Employee';
+const userProfileRoute = '/UserProfile';
 
 /**
  * Transform camelCase filters to PascalCase for .NET API
@@ -131,3 +138,63 @@ export async function importEmployeesData(file: File, importConfirmed: boolean) 
   );
   return response.data;
 }
+
+/**
+ * Get latest employee code (auto-increment)
+ * GET /UserProfile/GetLatestEmployeeCode
+ */
+export async function getLatestEmployeeCode() {
+  const response = await httpClient.get<GetLatestEmployeeCodeResponse>(
+    `${userProfileRoute}/GetLatestEmployeeCode`
+  );
+  return response.data;
+}
+
+/**
+ * Get branch list for dropdown
+ * GET /UserProfile/GetBranchList
+ */
+export async function getBranchList() {
+  const response = await httpClient.get<GetBranchListResponse>(
+    `${userProfileRoute}/GetBranchList`
+  );
+  return response.data;
+}
+
+/**
+ * Get reporting manager list for dropdown
+ * GET /UserProfile/GetReportingManagerList
+ */
+export async function getReportingManagerList() {
+  const response = await httpClient.get<GetReportingManagerListResponse>(
+    `${userProfileRoute}/GetReportingManagerList`
+  );
+  return response.data;
+}
+
+/**
+ * Create new employee
+ * POST /UserProfile/AddEmploymentDetail
+ * Permission: Create.Employees
+ */
+export async function createEmployee(data: CreateEmployeeRequest) {
+  const response = await httpClient.post<CreateOrUpdateEmployeeResponse>(
+    `${userProfileRoute}/AddEmploymentDetail`,
+    data
+  );
+  return response.data;
+}
+
+/**
+ * Update existing employee
+ * POST /UserProfile/UpdateEmploymentDetail
+ * Permission: Edit.Employees
+ */
+export async function updateEmployee(data: UpdateEmployeeRequest) {
+  const response = await httpClient.post<CreateOrUpdateEmployeeResponse>(
+    `${userProfileRoute}/UpdateEmploymentDetail`,
+    data
+  );
+  return response.data;
+}
+

@@ -37,6 +37,12 @@ const routes: RouteRecordRaw[] = [
     component: ProfileView,
     meta: { requiresAuth: true, title: 'My Profile' },
   },
+  {
+    path: '/profile/personal-details',
+    name: 'profile-personal-details',
+    component: () => import('@/views/profile/PersonalDetailsView.vue'),
+    meta: { requiresAuth: true, title: 'Personal Details' },
+  },
   // Roles routes
   {
     path: '/roles',
@@ -84,6 +90,10 @@ const routes: RouteRecordRaw[] = [
   // Employee routes
   {
     path: '/employees',
+    redirect: '/employees/employee-list',
+  },
+  {
+    path: '/employees/employee-list',
     name: 'employees',
     component: () => import('@/views/employees/EmployeeListView.vue'),
     meta: { requiresAuth: true, title: 'Employees' },

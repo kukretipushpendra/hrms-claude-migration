@@ -143,7 +143,7 @@
                     size="small"
                     variant="text"
                     color="primary"
-                    :to="`/employees/view/${item.id}`"
+                    @click="openEmployeeProfile(item.id)"
                   >
                     <v-icon size="20">mdi-eye</v-icon>
                   </v-btn>
@@ -285,7 +285,7 @@ const headers = computed(() => [
 
 const breadcrumbs = [
   { title: 'Dashboard', to: '/dashboard' },
-  { title: 'Employees', to: '/employees', disabled: true },
+  { title: 'Employees List', to: '/employees/employee-list', disabled: true },
 ];
 
 // Branch labels (from legacy constants)
@@ -397,6 +397,11 @@ const handleExport = async () => {
   } finally {
     isExporting.value = false;
   }
+};
+
+const openEmployeeProfile = (employeeId: number) => {
+  const profileUrl = `/profile/personal-details?employeeId=${employeeId}`;
+  window.open(profileUrl, '_blank');
 };
 
 const handleImport = async () => {

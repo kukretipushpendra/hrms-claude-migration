@@ -210,7 +210,10 @@ watch(
           <v-divider />
 
           <v-list density="compact">
-            <v-list-item to="/profile" @click="profileMenu = false">
+            <v-list-item
+              to="/profile/personal-details"
+              @click="profileMenu = false"
+            >
               <template #prepend>
                 <v-icon size="20">mdi-account</v-icon>
               </template>
